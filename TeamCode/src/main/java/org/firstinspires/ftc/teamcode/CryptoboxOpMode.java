@@ -31,7 +31,7 @@ public class CryptoboxOpMode extends OpMode
 
         cryptoboxDetector.downScaleFactor = 0.4;
         cryptoboxDetector.detectionMode = CryptoboxDetector.CryptoboxDetectionMode.HSV_RED; // Also HSV_BLUE for blue
-        cryptoboxDetector.speed = CryptoboxDetector.CryptoboxSpeed.BALANCED;
+        cryptoboxDetector.speed = CryptoboxDetector.CryptoboxSpeed.SLOW;
         cryptoboxDetector.rotateMat = false;
 
         //Optional Test Code to load images via Drawables

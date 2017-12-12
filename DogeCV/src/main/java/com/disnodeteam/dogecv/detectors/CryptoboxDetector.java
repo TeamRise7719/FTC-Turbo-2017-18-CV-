@@ -25,7 +25,7 @@ public class CryptoboxDetector extends OpenCVPipeline {
     }
 
     public enum CryptoboxSpeed {
-        VERY_FAST, FAST, BALANCED, SLOW, VERY_SLOW
+        VERY_FAST, FAST, BALANCED, SLOW, VERY_SLOW, DANGER_ZONE
     }
 
 
@@ -122,6 +122,11 @@ public class CryptoboxDetector extends OpenCVPipeline {
                 Imgproc.blur(hsv,hsv,new Size(8,8));
                 structure = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,60));
                 Imgproc.morphologyEx(mask,mask,Imgproc.MORPH_CLOSE, structure);
+                break;
+
+            case DANGER_ZONE:
+                Imgproc.blur(hsv,hsv,new Size(14, 14));
+                structure = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(4, 90));
                 break;
         }
 

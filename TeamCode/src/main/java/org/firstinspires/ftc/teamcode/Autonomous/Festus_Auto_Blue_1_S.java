@@ -1,0 +1,194 @@
+package org.firstinspires.ftc.teamcode.Autonomous;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.teamcode.subsystems.PID_Library;
+import org.firstinspires.ftc.teamcode.subsystems.RobotVision;
+import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
+
+/**
+ * Created by nonba on 12/4/2017.
+ */
+@Autonomous(name = "Festus_Auto_Blue_1_S", group = "Festus")
+public class Festus_Auto_Blue_1_S extends LinearOpMode {
+    DcMotor liftMotor;
+    ColorSensor color;
+
+
+    RobotVision vMod;
+    ServoManagementV2 srvo;
+    PID_Library enc;
+
+    ElapsedTime etime = new ElapsedTime();
+
+    int position = 0;
+
+    public void waitFor(int time){
+        time = time/1000;
+        etime.reset();
+        while ((etime.time() < time)&&(opModeIsActive())) {
+            idle();
+        }
+    }
+
+    public void runOpMode() throws InterruptedException {
+
+        //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
+        srvo = new ServoManagementV2(hardwareMap);
+        srvo.init();
+
+
+        vMod = new RobotVision(hardwareMap, telemetry);
+        vMod.init();
+
+        enc = new PID_Library(hardwareMap, telemetry,this);
+
+        liftMotor = hardwareMap.dcMotor.get("lift");
+        liftMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        color = hardwareMap.colorSensor.get("color");
+        color.enableLed(true);
+
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
+
+        //-------------------------------------=+(Initialization Config)+=------------------------------------\\
+        srvo.raiseJewel();
+        telemetry.addData(">", "Robot Ready!");
+        telemetry.update();
+        waitForStart();
+        //-------------------------------------=+(Initialization Config)+=------------------------------------\\
+
+        // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
+        while (opModeIsActive()) {
+            //-----------------------------------------=+(Autonomous)+=-------------------------------------------\\
+
+            //Step 1: Close The Claw
+            srvo.closeClaw();
+            waitFor(1000);
+
+            //Step 2: Lift Cube
+            liftMotor.setPower(-0.8);
+            waitFor(850);
+            liftMotor.setPower(0);
+
+            //Step 3: Lower Jewel Arm
+            srvo.lowerJewel();
+            waitFor(2700);
+
+            //Reset time for Jewel method
+            etime.reset();
+            while ((etime.time() < 2)&&(opModeIsActive())) {
+                //Step 4: Jewel Knock Method
+                if (color.red() > color.blue()) {//if red
+                    //Knock off Blue
+                    srvo.knockJewel(-0.5);
+                    waitFor(1500);
+                    srvo.knockJewel(0);
+                    waitFor(1500);
+
+                    //Bring up Arm
+                    srvo.raiseJewel();
+                    waitFor(1000);
+                    break;
+                } else if (color.red() < color.blue()) {//if blue
+                    //Knock off Blue
+                    srvo.knockJewel(0.5);
+                    waitFor(1500);
+                    srvo.knockJewel(0);
+                    waitFor(1500);
+
+                    //Bring up Arm
+                    srvo.raiseJewel();
+                    waitFor(1000);
+                    break;
+                }
+                telemetry.addData("RED",color.red());
+                telemetry.addData("GREEN",color.green());
+                telemetry.addData("BLUE",color.blue());
+                telemetry.update();
+            }
+            //Bring up Arm
+            srvo.raiseJewel();
+            waitFor(1500);
+
+            //Step 6: Vision method
+            //Get Position from Vision
+            // 0 LEFT
+            // 1 CENTER
+            // 2 RIGHT
+
+            //Reset time for Vision method
+            etime.reset();
+            while ((etime.time() < 2)&&(opModeIsActive())) {
+                vMod.getVuMark();
+                if (vMod.vuMark == RelicRecoveryVuMark.LEFT) {
+                    telemetry.addData("VuMark Status - ", "Left");
+                    position = 2;
+                    break;
+                } else if (vMod.vuMark == RelicRecoveryVuMark.CENTER) {
+                    telemetry.addData("VuMark Status - ", "Center");
+                    position = 1;
+                    break;
+                } else if (vMod.vuMark == RelicRecoveryVuMark.RIGHT) {
+                    telemetry.addData("VuMark Status - ", "Right");
+                    position = 0;
+                    break;
+                }
+                telemetry.update();
+                idle();
+            }
+            //If 2 Second timeout failed use 1 (CENTER)
+            if (vMod.vuMark == RelicRecoveryVuMark.UNKNOWN) {
+                position = 1;
+            }
+            //Display Position
+            telemetry.addData("Position:", position);
+            telemetry.update();
+            waitFor(500);
+
+            //AUTO CALIBRATION
+            //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
+            //then all you need to do is make sure center works and use the differences to have left and right working!!
+            enc.gyroDrive(enc.DRIVE_SPEED, 23, 0);
+
+            double centerPosition = 37.5;
+            double offset = 0;
+            if (position == 0) { //Right
+                offset = 7.5;
+            }else if (position == 2) { //Left
+                offset = -7.5;
+            }
+            double distance = (centerPosition-23)+offset;
+
+            //Step 8: Turn 90 Degrees
+            enc.gyroTurn(enc.TURN_SPEED, -90);
+            waitFor(1000);
+
+            enc.gyroStrafeDistance(enc.DRIVE_SPEED,distance,-90);
+            waitFor(500);
+
+            //Step 9: Open Claw
+            srvo.openClaw();
+
+            //Step 10: Push Glyph into Column
+            waitFor(500);
+            enc.gyroDrive(enc.DRIVE_SPEED, -8, -90);
+            enc.gyroDrive(enc.DRIVE_SPEED, 5, -90);
+
+            //Step 11: Turn around towards field
+            enc.gyroTurn(enc.TURN_SPEED, 90);
+            srvo.openClaw();
+
+            //End While Loop
+            break;
+        }
+        stop();
+    }
+}

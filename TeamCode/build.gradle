@@ -17,3 +17,6 @@ apply from: '../build.common.gradle'
 dependencies {
     compile project(path: ':DogeCV')
 }
+android {
+    buildToolsVersion '26.0.2'
+}

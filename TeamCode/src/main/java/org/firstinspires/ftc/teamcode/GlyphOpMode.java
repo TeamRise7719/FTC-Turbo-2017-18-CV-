@@ -32,7 +32,7 @@ public class GlyphOpMode extends OpMode
         glyphDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
         glyphDetector.minScore = 1;
         glyphDetector.downScaleFactor = 0.3;
-        glyphDetector.speed = GlyphDetector.GlyphDetectionSpeed.SLOW;
+        glyphDetector.speed = GlyphDetector.GlyphDetectionSpeed.VERY_SLOW;
         glyphDetector.enable();
 
 
