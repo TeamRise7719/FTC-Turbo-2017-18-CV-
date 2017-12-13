@@ -59,7 +59,7 @@ public class EvanTeleOp extends OpMode {
             srvo.openClaw();
         } else if (gamepad2.x) {
             srvo.closeClaw();
-        } else if (gamepad2.right_bumper) {
+        } else if (gamepad2.right_stick_button) {
             srvo.slightClaw();
         }
 

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
  * Created by nonba on 12/4/2017.
  */
 @Autonomous(name = "Festus_Auto_Blue_1_S", group = "Festus")
+@Disabled
 public class Festus_Auto_Blue_1_S extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
