@@ -33,7 +33,9 @@ public class PID_Library {
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    public  final double     DRIVE_SPEED             = 0.8;     // Nominal speed for better accuracy.
+    public  final double     DRIVE_SPEED             = 0.8;     // Nominal speed
+    public  final double     DRIVE_SPEED_SLOW             = 0.4;     // Slower speed for better accuracy.
+
     public  final double     TURN_SPEED              = 0.3;     // Nominal half speed for better accuracy.
 
     private static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
@@ -41,8 +43,6 @@ public class PID_Library {
 
     private static final double     P_TURN_COEFF            = 0.8;     // Larger is more responsive, but also less stable
     private static final double     P_DRIVE_COEFF           = 0.16;     // Larger is more responsive, but also less stable
-
-    private static boolean steeringToggle = true;
 
     public PID_Library(HardwareMap hardwareMap, Telemetry tel, LinearOpMode opMode) {
 
@@ -84,10 +84,7 @@ public class PID_Library {
         right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        }
-
-    public void disableSteering(){steeringToggle = false;}
-    public void enableSteering(){steeringToggle = true;}
+    }
 
     //Stop All Motors
     public void stop_all_motors(){
@@ -115,7 +112,8 @@ public class PID_Library {
      */
     public void gyroDrive ( double speed,
                             double distance,
-                            double angle) {
+                            double angle,
+                            boolean steeringToggle) {
 
         int     newLeftTarget;
         int     newRightTarget;
@@ -211,7 +209,8 @@ public class PID_Library {
 
     public void gyroStrafeTime ( double speed,
                             double time,
-                            double angle) {
+                            double angle,
+                                 boolean steeringToggle) {
 
         double  max;
         double  error;
@@ -291,7 +290,9 @@ public class PID_Library {
 
     public void gyroStrafeDistance ( double speed,
                              double distance,
-                             double angle) {
+                             double angle,
+                                     boolean steeringToggle) {
+
 
         int     newLeftTarget;
         int     newRightTarget;

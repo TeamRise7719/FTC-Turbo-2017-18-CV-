@@ -158,7 +158,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //AUTO CALIBRATION
             //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
-            enc.gyroDrive(enc.DRIVE_SPEED, 23, 0);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, 23, 0,false);
 
             double centerPosition = 37.5;
             double offset = 0;
@@ -173,7 +173,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             enc.gyroTurn(enc.TURN_SPEED, -90);
             waitFor(1000);
 
-            enc.gyroStrafeDistance(enc.DRIVE_SPEED,distance,-90);
+            enc.gyroStrafeDistance(enc.DRIVE_SPEED,distance,-90,true);
             waitFor(500);
 
             //Step 9: Open Claw
@@ -181,8 +181,8 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //Step 10: Push Glyph into Column
             waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, -8, -90);
-            enc.gyroDrive(enc.DRIVE_SPEED, 5, -90);
+            enc.gyroDrive(enc.DRIVE_SPEED, -8, -90,true);
+            enc.gyroDrive(enc.DRIVE_SPEED, 5, -90,true);
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);

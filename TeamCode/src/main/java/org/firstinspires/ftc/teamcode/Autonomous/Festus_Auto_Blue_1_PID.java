@@ -167,7 +167,7 @@ public class Festus_Auto_Blue_1_PID extends LinearOpMode {
             double distance = centerPosition+offset;
 
             //Step 7: Drive to Appropriate Column
-            enc.gyroDrive(enc.DRIVE_SPEED, distance, 0);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 0,false);
             waitFor(500);
 
             //Step 8: Turn 90 Degrees
@@ -180,8 +180,8 @@ public class Festus_Auto_Blue_1_PID extends LinearOpMode {
 
             //Step 10: Push Glyph into Column
             waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, -8, -90);
-            enc.gyroDrive(enc.DRIVE_SPEED, 5, -90);
+            enc.gyroDrive(enc.DRIVE_SPEED, -8, -90,true);
+            enc.gyroDrive(enc.DRIVE_SPEED, 5, -90,true);
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);

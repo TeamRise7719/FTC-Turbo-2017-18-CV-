@@ -160,10 +160,8 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             waitFor(2000);
 
             //Step 7: Drive off Balancing Stone
-            enc.disableSteering();
-            enc.gyroDrive(enc.DRIVE_SPEED, -22.5, 0);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -22.5, 0,false);
             waitFor(1500);
-            enc.enableSteering();
 
             //Step 8: Turn Back Straight
             // enc.gyroHold(enc.TURN_SPEED, 0, 1.5);
@@ -191,7 +189,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             double distance = centerPosition+offset;
 
             //Step 10: Drive to Appropriate Column
-            enc.gyroDrive(enc.DRIVE_SPEED, -distance, 90);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance, 90,true);
             waitFor(2000);
 
             //Step 11: Turn back to 0 Degrees
@@ -204,8 +202,8 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
 
             //Step 10: Push Glyph into Column
             waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, -6, 0);
-            enc.gyroDrive(enc.DRIVE_SPEED, 5, 0);
+            enc.gyroDrive(enc.DRIVE_SPEED, -6, 0,true);
+            enc.gyroDrive(enc.DRIVE_SPEED, 5, 0,true);
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 180);
