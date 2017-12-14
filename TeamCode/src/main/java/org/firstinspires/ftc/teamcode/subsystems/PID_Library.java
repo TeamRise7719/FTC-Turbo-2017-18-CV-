@@ -207,6 +207,89 @@ public class PID_Library {
         }
     }
 
+
+    public void gyroDriveTime ( double speed,
+                                double time,
+                            double angle,
+                            boolean steeringToggle) {
+
+        double  max;
+        double  error;
+        double  steer;
+        double  leftSpeed;
+        double  rightSpeed;
+
+        // Ensure that the opmode is still active
+        if (linearOpMode.opModeIsActive()) {
+
+            // Set Target and Turn On RUN_TO_POSITION
+            left_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            left_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            // start motion.
+            speed = Range.clip(Math.abs(speed), 0.0, 1.0);
+            left_back_drive.setPower(speed);
+            left_front_drive.setPower(-speed);
+            right_back_drive.setPower(-speed);
+            right_front_drive.setPower(speed);
+
+            // keep looping while we are still active, and BOTH motors are running.
+            etime.reset();
+            while ((etime.time() < time)&&(linearOpMode.opModeIsActive())) {
+
+                // adjust relative speed based on heading error.
+                error = getError(angle);
+                steer = getSteer(error, P_DRIVE_COEFF);
+
+                // if driving in reverse, the motor correction also needs to be reversed
+                if (speed > 0) {
+                    steer *= -1.0;
+                }
+
+                if(steeringToggle) {
+                    leftSpeed = speed - steer;
+                    rightSpeed = speed + steer;
+                }
+                else {
+                    leftSpeed = speed;
+                    rightSpeed = speed;
+                }
+
+                // Normalize speeds if either one exceeds +/- 1.0;
+                max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+                if (max > 1.0)
+                {
+                    leftSpeed /= max;
+                    rightSpeed /= max;
+                }
+
+                left_back_drive.setPower(-leftSpeed);
+                left_front_drive.setPower(-leftSpeed);
+                right_back_drive.setPower(-rightSpeed);
+                right_front_drive.setPower(-rightSpeed);
+
+                // Display drive status for the driver.
+                telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
+                telemetry.addData("Speed",   "%5.2f:%5.2f",  -leftSpeed, -rightSpeed);
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            left_back_drive.setPower(0);
+            left_front_drive.setPower(0);
+            right_back_drive.setPower(0);
+            right_front_drive.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            left_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            left_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
+
     public void gyroStrafeTime ( double speed,
                             double time,
                             double angle,
