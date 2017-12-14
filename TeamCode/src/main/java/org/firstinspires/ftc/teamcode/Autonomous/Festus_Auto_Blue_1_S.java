@@ -185,7 +185,6 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
-            srvo.openClaw();
 
             //NEW CODE TO GET SECOND GLYPH //
 
