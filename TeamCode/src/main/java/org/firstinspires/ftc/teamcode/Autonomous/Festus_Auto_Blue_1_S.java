@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,7 +15,6 @@ import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
  * Created by nonba on 12/4/2017.
  */
 @Autonomous(name = "Festus_Auto_Blue_1_S", group = "Festus")
-@Disabled
 public class Festus_Auto_Blue_1_S extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
@@ -158,7 +156,6 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //AUTO CALIBRATION
             //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, 23, 0,false);
 
             double centerPosition = 37.5;
             double offset = 0;
@@ -167,14 +164,16 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             }else if (position == 2) { //Left
                 offset = -7.5;
             }
-            double distance = (centerPosition-23)+offset;
+            double distance = centerPosition+offset;
+
+            //Step 7: Drive to Appropriate Column
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 0,false);
+            waitFor(500);
 
             //Step 8: Turn 90 Degrees
             enc.gyroTurn(enc.TURN_SPEED, -90);
-            waitFor(1000);
-
-            enc.gyroStrafeDistance(enc.DRIVE_SPEED,distance,-90,true);
             waitFor(500);
+            enc.gyroHold(enc.TURN_SPEED, -90, 1.5);
 
             //Step 9: Open Claw
             srvo.openClaw();
@@ -187,6 +186,39 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
             srvo.openClaw();
+
+            //NEW CODE TO GET SECOND GLYPH //
+
+            //Slight Claw
+            srvo.slightClaw();
+            waitFor(500);
+
+            //Drive to Glyph
+            enc.gyroDrive(enc.DRIVE_SPEED, -26, 90,true);
+            waitFor(500);
+
+            //Close and Lift
+            srvo.closeClaw();
+            waitFor(500);
+            liftMotor.setPower(-0.8);
+            waitFor(1100);
+            liftMotor.setPower(0);
+
+            //Turn Around
+            enc.gyroTurn(enc.TURN_SPEED, -90);
+            waitFor(500);
+
+            //Drive to Column
+            enc.gyroDrive(enc.DRIVE_SPEED, -28, -90,true);
+            waitFor(500);
+
+            //Back Off
+            srvo.openClaw();
+            waitFor(500);
+            enc.gyroDrive(enc.DRIVE_SPEED, 3, -90,true);
+            waitFor(500);
+
+            //END NEW CODE TO GET SECOND GLYPH //
 
             //End While Loop
             break;
