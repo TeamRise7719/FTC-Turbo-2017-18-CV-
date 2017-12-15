@@ -75,8 +75,8 @@ public class Festus_Auto_Red_1_PID extends LinearOpMode {
             waitFor(1000);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.8);
-            waitFor(850);
+            liftMotor.setPower(-0.7);
+            waitFor(1000);
             liftMotor.setPower(0);
 
             //Step 3: Lower Jewel Arm

@@ -72,11 +72,11 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
             //Step 1: Close The Claw
             srvo.closeClaw();
-            waitFor(1000);
+            waitFor(800);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.8);
-            waitFor(850);
+            liftMotor.setPower(-0.7);
+            waitFor(1000);
             liftMotor.setPower(0);
 
             //Step 3: Lower Jewel Arm
