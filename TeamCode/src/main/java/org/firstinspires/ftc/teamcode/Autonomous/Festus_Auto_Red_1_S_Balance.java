@@ -12,10 +12,11 @@ import org.firstinspires.ftc.teamcode.subsystems.RobotVision;
 import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
 
 /**
- * Created by nonba on 12/4/2017.
+ * Created by Evan McLoughlin on 12/14/2017.
  */
-@Autonomous(name = "Festus_Auto_Red_1_S", group = "Festus")
-public class Festus_Auto_Red_1_S extends LinearOpMode {
+
+@Autonomous(name = "Festus Auto Red 1 Balance", group = "Festus")
+public class Festus_Auto_Red_1_S_Balance extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
 
@@ -158,7 +159,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 32.75;
+            double centerPosition = 36;
             double offset = 0;
             if (position == 0) { //Left
                 offset = 7.5;
@@ -170,17 +171,6 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             //Step 7: Drive to Appropriate Column
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance, 0,false);
             waitFor(2000);
-
-            //New step: reposition w/ balancing stone
-
-            enc.gyroDrive(enc.DRIVE_SPEED, distance, 0,false);
-            waitFor(500);
-
-            //New step 2: Drive back to desired position
-            //12 inches is subtracted from distance because this is the offset from the center to edge of the balance board
-            //9 inches is again subtracted from distance because this is the offset from the edge of the balance board to the center of the bot
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance + 9 + 12, 0,false);
-            waitFor(500);
 
             //Step 8: Turn 90 Degrees
             enc.gyroTurn(enc.TURN_SPEED, -90);

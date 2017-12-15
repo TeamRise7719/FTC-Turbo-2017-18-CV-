@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystems.RobotVision;
 import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
 
 /**
- * Created by nonba on 12/4/2017.
+ * Created by Evan on 12/4/2017.
  */
 @Autonomous(name = "Festus_Auto_Blue_1_S", group = "Festus")
 public class Festus_Auto_Blue_1_S extends LinearOpMode {

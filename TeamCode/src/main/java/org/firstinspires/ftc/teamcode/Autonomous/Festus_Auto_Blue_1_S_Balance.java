@@ -12,10 +12,11 @@ import org.firstinspires.ftc.teamcode.subsystems.RobotVision;
 import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
 
 /**
- * Created by nonba on 12/4/2017.
+ * Created by Evan McLoughlin on 12/14/2017.
  */
-@Autonomous(name = "Festus_Auto_Red_1_S", group = "Festus")
-public class Festus_Auto_Red_1_S extends LinearOpMode {
+
+@Autonomous(name = "Festus Blue 1 Balance", group = "Festus")
+public class Festus_Auto_Blue_1_S_Balance extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
 
@@ -59,7 +60,6 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
         //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
 
         //-------------------------------------=+(Initialization Config)+=------------------------------------\\
-        //srvo.rotateRelic(0.5);
         srvo.raiseJewel();
         telemetry.addData(">", "Robot Ready!");
         telemetry.update();
@@ -72,7 +72,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
             //Step 1: Close The Claw
             srvo.closeClaw();
-            waitFor(800);
+            waitFor(1000);
 
             //Step 2: Lift Cube
             liftMotor.setPower(-0.7);
@@ -89,7 +89,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
                 //Step 4: Jewel Knock Method
                 if (color.red() > color.blue()) {//if red
                     //Knock off Blue
-                    srvo.knockJewel(0.5);
+                    srvo.knockJewel(-0.5);
                     waitFor(1500);
                     srvo.knockJewel(0);
                     waitFor(1500);
@@ -100,7 +100,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
                     break;
                 } else if (color.red() < color.blue()) {//if blue
                     //Knock off Blue
-                    srvo.knockJewel(-0.5);
+                    srvo.knockJewel(0.5);
                     waitFor(1500);
                     srvo.knockJewel(0);
                     waitFor(1500);
@@ -131,7 +131,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
                 vMod.getVuMark();
                 if (vMod.vuMark == RelicRecoveryVuMark.LEFT) {
                     telemetry.addData("VuMark Status - ", "Left");
-                    position = 0;
+                    position = 2;
                     break;
                 } else if (vMod.vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("VuMark Status - ", "Center");
@@ -139,7 +139,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
                     break;
                 } else if (vMod.vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("VuMark Status - ", "Right");
-                    position = 2;
+                    position = 0;
                     break;
                 }
                 telemetry.update();
@@ -152,34 +152,36 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             //Display Position
             telemetry.addData("Position:", position);
             telemetry.update();
-            waitFor(2000);
+            waitFor(500);
 
             //AUTO CALIBRATION
             //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 32.75;
+            double centerPosition = 36;
             double offset = 0;
-            if (position == 0) { //Left
+            if (position == 0) { //Right
                 offset = 7.5;
-            }else if (position == 2) { //Right
+            }else if (position == 2) { //Left
                 offset = -7.5;
             }
             double distance = centerPosition+offset;
 
+            //New code for measuring distance from balancing stone
+
             //Step 7: Drive to Appropriate Column
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance, 0,false);
-            waitFor(2000);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 0,false);
+            waitFor(500);
 
             //New step: reposition w/ balancing stone
 
-            enc.gyroDrive(enc.DRIVE_SPEED, distance, 0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED, -distance, 0,false);
             waitFor(500);
 
             //New step 2: Drive back to desired position
             //12 inches is subtracted from distance because this is the offset from the center to edge of the balance board
             //9 inches is again subtracted from distance because this is the offset from the edge of the balance board to the center of the bot
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance + 9 + 12, 0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance - 9 - 12, 0,false);
             waitFor(500);
 
             //Step 8: Turn 90 Degrees
@@ -205,7 +207,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             waitFor(500);
 
             //Drive to Glyph
-            enc.gyroDrive(enc.DRIVE_SPEED, -26, 90,true);
+            enc.gyroDrive(1.0, -26, 90,true);
             waitFor(500);
 
             //Close and Lift
@@ -220,7 +222,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             waitFor(500);
 
             //Drive to Column
-            enc.gyroDrive(enc.DRIVE_SPEED, -28, -90,true);
+            enc.gyroDrive(1.0, -28, -90,true);
             waitFor(500);
 
             //Back Off
