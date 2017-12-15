@@ -82,37 +82,25 @@ public class ServoManagementV2 {
 
     //Close Claw
     public void closeClaw() {
-        if (clawOpen!=0) {
             glyph1.setPower(-.25);
             glyph2.setPower(-.25);
             glyph3.setPower(-.25);
             glyph4.setPower(-.25);
-
-            clawOpen = 0;
-        }
     }
 
     public void slightClaw() {
-        if (clawOpen!=1) {
             glyph1.setPower(0);
             glyph2.setPower(0);
             glyph3.setPower(0);
             glyph4.setPower(0);
-
-            clawOpen = 1;
-        }
     }
 
     //Open Claw
     public void openClaw() {
-        if (clawOpen!=2) {
             glyph1.setPower(0.5);
             glyph2.setPower(0.5);
             glyph3.setPower(0.5);
             glyph4.setPower(0.5);
-
-            clawOpen = 2;
-        }
     }
 
 

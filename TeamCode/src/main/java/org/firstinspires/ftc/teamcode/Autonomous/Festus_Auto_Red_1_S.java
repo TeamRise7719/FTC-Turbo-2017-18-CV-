@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
 /**
  * Created by nonba on 12/4/2017.
  */
-@Autonomous(name = "Festus_Auto_Blue_1_S", group = "Festus")
-public class Festus_Auto_Blue_1_S extends LinearOpMode {
+@Autonomous(name = "Festus_Auto_Red_1_S", group = "Festus")
+public class Festus_Auto_Red_1_S extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
 
@@ -59,6 +59,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
         //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
 
         //-------------------------------------=+(Initialization Config)+=------------------------------------\\
+        //srvo.rotateRelic(0.5);
         srvo.raiseJewel();
         telemetry.addData(">", "Robot Ready!");
         telemetry.update();
@@ -88,7 +89,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
                 //Step 4: Jewel Knock Method
                 if (color.red() > color.blue()) {//if red
                     //Knock off Blue
-                    srvo.knockJewel(-0.5);
+                    srvo.knockJewel(0.5);
                     waitFor(1500);
                     srvo.knockJewel(0);
                     waitFor(1500);
@@ -99,7 +100,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
                     break;
                 } else if (color.red() < color.blue()) {//if blue
                     //Knock off Blue
-                    srvo.knockJewel(0.5);
+                    srvo.knockJewel(-0.5);
                     waitFor(1500);
                     srvo.knockJewel(0);
                     waitFor(1500);
@@ -130,7 +131,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
                 vMod.getVuMark();
                 if (vMod.vuMark == RelicRecoveryVuMark.LEFT) {
                     telemetry.addData("VuMark Status - ", "Left");
-                    position = 2;
+                    position = 0;
                     break;
                 } else if (vMod.vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("VuMark Status - ", "Center");
@@ -138,7 +139,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
                     break;
                 } else if (vMod.vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("VuMark Status - ", "Right");
-                    position = 0;
+                    position = 2;
                     break;
                 }
                 telemetry.update();
@@ -151,24 +152,24 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //Display Position
             telemetry.addData("Position:", position);
             telemetry.update();
-            waitFor(500);
+            waitFor(2000);
 
             //AUTO CALIBRATION
             //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 37.5;
+            double centerPosition = 32.75;
             double offset = 0;
-            if (position == 0) { //Right
+            if (position == 0) { //Left
                 offset = 7.5;
-            }else if (position == 2) { //Left
+            }else if (position == 2) { //Right
                 offset = -7.5;
             }
             double distance = centerPosition+offset;
 
             //Step 7: Drive to Appropriate Column
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 0,false);
-            waitFor(500);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance, 0,false);
+            waitFor(2000);
 
             //Step 8: Turn 90 Degrees
             enc.gyroTurn(enc.TURN_SPEED, -90);
