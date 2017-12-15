@@ -72,11 +72,11 @@ public class Festus_Auto_Blue_1_S_Balance extends LinearOpMode {
 
             //Step 1: Close The Claw
             srvo.closeClaw();
-            waitFor(1000);
+            waitFor(500);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.7);
-            waitFor(1000);
+            liftMotor.setPower(-0.3);
+            waitFor(500);
             liftMotor.setPower(0);
 
             //Step 3: Lower Jewel Arm
@@ -173,15 +173,18 @@ public class Festus_Auto_Blue_1_S_Balance extends LinearOpMode {
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 0,false);
             waitFor(500);
 
+            //New step: Turn around to align back with stone
+            enc.gyroTurn(enc.TURN_SPEED, 180);
+
             //New step: reposition w/ balancing stone
 
-            enc.gyroDrive(enc.DRIVE_SPEED, -distance, 0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED, distance - 6 - 12, 0,false);
             waitFor(500);
 
             //New step 2: Drive back to desired position
             //12 inches is subtracted from distance because this is the offset from the center to edge of the balance board
             //9 inches is again subtracted from distance because this is the offset from the edge of the balance board to the center of the bot
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance - 9 - 12, 0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance + 9 + 12, 0,false);
             waitFor(500);
 
             //Step 8: Turn 90 Degrees
@@ -194,7 +197,7 @@ public class Festus_Auto_Blue_1_S_Balance extends LinearOpMode {
 
             //Step 10: Push Glyph into Column
             waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, -8, -90,true);
+            enc.gyroDrive(enc.DRIVE_SPEED, -8, -90,false);
             enc.gyroDrive(enc.DRIVE_SPEED, 5, -90,true);
 
             //Step 11: Turn around towards field

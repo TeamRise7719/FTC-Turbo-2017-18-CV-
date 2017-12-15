@@ -76,8 +76,9 @@ public class Festus_Auto_Red_1_S_Balance extends LinearOpMode {
             waitFor(800);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.7);
-            waitFor(1000);
+            liftMotor.setPower(-0.3);
+            waitFor(500);
+
             liftMotor.setPower(0);
 
             //Step 3: Lower Jewel Arm
@@ -174,7 +175,7 @@ public class Festus_Auto_Red_1_S_Balance extends LinearOpMode {
 
             //New step: reposition w/ balancing stone
 
-            enc.gyroDrive(enc.DRIVE_SPEED, distance, 0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance - 9 - 12, 0,false);
             waitFor(500);
 
             //New step 2: Drive back to desired position

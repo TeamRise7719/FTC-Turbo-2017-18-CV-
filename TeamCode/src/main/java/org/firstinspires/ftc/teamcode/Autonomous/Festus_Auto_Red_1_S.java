@@ -75,7 +75,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             waitFor(800);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.7);
+            liftMotor.setPower(-0.3);
             waitFor(1000);
             liftMotor.setPower(0);
 
