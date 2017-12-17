@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.Sensing;
 
-import android.util.Log;
+//import android.util.Log;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cController;
@@ -352,6 +352,6 @@ public class Wire implements I2cController.I2cPortReadyCallback {
         for (int i=0;i<showCount;i++) {
             msg += String.format(" 0x%02X",cache[4+i]);
         }
-        Log.i("Wire",msg);
+        //Log.i("Wire",msg);
     }
 }
