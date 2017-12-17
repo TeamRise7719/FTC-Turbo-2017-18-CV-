@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.teamcode.subsystems.PID_Library;
-import org.firstinspires.ftc.teamcode.subsystems.RobotVision;
-import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.PID_Library;
+import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 
 /**
  * Created by nonba on 12/4/2017.

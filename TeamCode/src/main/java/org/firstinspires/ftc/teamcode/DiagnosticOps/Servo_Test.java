@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.FestusDrivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 
 /**
  * Created by Evan on 11/6/17.
@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
 @TeleOp(name = "ServoTest", group = "Festus")
 public class Servo_Test extends OpMode {
     //Import 2017 Drivetrain Subsystems
-    Drivetrain drivetrain;
+    FestusDrivetrain drivetrain;
     ServoManagementV2 srvo;
     DcMotor liftMotor;
 
@@ -26,7 +26,7 @@ public void init() {
 //    public void init() {
 
     //Initialize Drivetrain
-    drivetrain = new Drivetrain(hardwareMap);
+    drivetrain = new FestusDrivetrain(hardwareMap, telemetry);
 
     //Initialize Servos
     srvo = new ServoManagementV2(hardwareMap);
@@ -43,9 +43,6 @@ public void init() {
 
     public void loop() {
         //----------------------------------------------=+(Drivetrain)+=----------------------------------------------\\
-
-        drivetrain.drive(gamepad1);
-
         //----------------------------------------------=+(Drivetrain)+=----------------------------------------------\\
 
 
@@ -68,7 +65,6 @@ public void init() {
         } else if (gamepad2.b) {
             srvo.closeClaw();
         }
-        //srvo.claw(gamepad2);
         //----------------------------------------------=+(Glyph Claw)+=----------------------------------------------\\
 
 

@@ -7,8 +7,8 @@ package org.firstinspires.ftc.teamcode.TestOpModes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.subsystems.FestusDrivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.FestusDrivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.detectors.*;
 import com.qualcomm.robotcore.util.ElapsedTime;

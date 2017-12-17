@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.DiagnosticOps;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.subsystems.RobotVision;
+import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
 
 /**
  * Created by seancardosi on 6/14/17.

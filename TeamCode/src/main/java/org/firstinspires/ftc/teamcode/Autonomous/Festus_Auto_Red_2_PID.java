@@ -7,10 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.PID_Library;
-import org.firstinspires.ftc.teamcode.subsystems.RobotVision;
-import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.PID_Library;
+import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 
 /**
  * Created by seancardosi on 12/5/17.
@@ -20,7 +19,6 @@ import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
 public class Festus_Auto_Red_2_PID extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
-    Drivetrain drivetrain;
 
 
     RobotVision vMod;
@@ -44,9 +42,6 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
         //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
         srvo = new ServoManagementV2(hardwareMap);
         srvo.init();
-
-        drivetrain = new Drivetrain(hardwareMap);
-
 
         vMod = new RobotVision(hardwareMap, telemetry);
         vMod.init();

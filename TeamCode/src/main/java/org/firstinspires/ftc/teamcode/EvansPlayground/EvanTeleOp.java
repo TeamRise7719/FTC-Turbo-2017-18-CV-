@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.EvansPlayground;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.subsystems.FestusDrivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.ServoManagementV2;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.FestusDrivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 
 /**
  * Created by Evan McLoughlin on 11/14/2017.
