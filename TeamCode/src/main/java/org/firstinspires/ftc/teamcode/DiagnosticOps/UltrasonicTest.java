@@ -32,6 +32,8 @@ public class UltrasonicTest extends OpMode {
 
     @Override
     public void loop(){
+
+        //Write to Register to get Data from Ultrasonic
         if((System.currentTimeMillis() -pingTime) > 100 ){
             ds.requestFrom(0,2);
             ds.beginWrite(0x51);
@@ -40,11 +42,15 @@ public class UltrasonicTest extends OpMode {
             pingTime = System.currentTimeMillis();
         }
 
+        //If Response is in Wire Library
         if(ds.responseCount() > 0){
             ds.getResponse();
             if(ds.isRead()){
+                //Get Time From Wire Library
                 long micros = ds.micros();
+                //Get Distance From Wire Library
                 distance = ds.readHL();
+                //Not sure why this is 760 you may want to check this
                 if(distance < 760) {
                     readCount++;
                     telemetry.addData("Count", readCount);
