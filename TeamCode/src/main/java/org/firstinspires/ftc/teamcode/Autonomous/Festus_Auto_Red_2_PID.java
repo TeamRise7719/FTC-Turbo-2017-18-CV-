@@ -75,7 +75,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             waitFor(1000);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.7);
+            liftMotor.setPower(-0.4);
             waitFor(1000);
             liftMotor.setPower(0);
 
@@ -197,8 +197,15 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
 
             //Step 10: Push Glyph into Column
             waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, -6, 0,true);
-            enc.gyroDrive(enc.DRIVE_SPEED, 5, 0,true);
+            enc.gyroDrive(enc.DRIVE_SPEED, -9, 0,true);
+            waitFor(1000);
+
+            srvo.openClaw();
+            waitFor(500);
+
+            enc.gyroDrive(enc.DRIVE_SPEED, 6, 0,true);
+            waitFor(1000);
+            //Step 12: Open Claw
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 180);

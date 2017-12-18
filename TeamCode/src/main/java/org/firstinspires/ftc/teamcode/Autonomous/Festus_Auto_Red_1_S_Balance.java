@@ -57,6 +57,7 @@ public class Festus_Auto_Red_1_S_Balance extends LinearOpMode {
 
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
 
         //-------------------------------------=+(Initialization Config)+=------------------------------------\\
@@ -77,7 +78,7 @@ public class Festus_Auto_Red_1_S_Balance extends LinearOpMode {
 
             //Step 2: Lift Cube
             liftMotor.setPower(-0.3);
-            waitFor(500);
+            waitFor(250);
 
             liftMotor.setPower(0);
 
