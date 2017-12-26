@@ -12,6 +12,10 @@ import com.qualcomm.robotcore.hardware.configuration.I2cSensor;
 import com.qualcomm.robotcore.util.TypeConversion;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+
+import java.util.Arrays;
+import java.util.HashMap;
+
 import static java.lang.Thread.sleep;
 
 @I2cSensor(name = "MaxSonar I2CXL v2", description = "MaxSonar I2CXL Sensor from MaxBotix", xmlTag = "MaxSonarI2CXLv2")
@@ -86,7 +90,33 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
         return lastDistance;
     }
 
-    public void sampleDistance(){
+    public static int mode(int []array)
+    {
+        HashMap<Integer,Integer> hm = new HashMap<Integer,Integer>();
+        int max  = 1;
+        int temp = 0;
+
+        for(int i = 0; i < array.length; i++) {
+
+            if (hm.get(array[i]) != null) {
+
+                int count = hm.get(array[i]);
+                count++;
+                hm.put(array[i], count);
+
+                if(count > max) {
+                    max  = count;
+                    temp = array[i];
+                }
+            }
+
+            else
+                hm.put(array[i],1);
+        }
+        return temp;
+    }
+
+    public int sampleDistance(){
 
         //declare the array
         int distanceArray[];
@@ -94,12 +124,13 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
         //allocate memory for 100 indices
         distanceArray = new int[100];
 
-        for (int loopCount = 0; loopCount <= distanceArray.length; loopCount++ ) {
+        for (int loopCount = 0; loopCount < distanceArray.length; loopCount++ ) {
             distanceArray[loopCount] = getDistance();
         }
 
+        int distance = mode(distanceArray);
 
-
+        return distance;
 
 
     }

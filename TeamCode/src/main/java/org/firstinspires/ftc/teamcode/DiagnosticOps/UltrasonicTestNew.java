@@ -17,7 +17,6 @@ public class UltrasonicTestNew extends OpMode {
     I2CXL ultrasonic;
 
 
-
     @Override
     public void init() {
 
@@ -30,7 +29,7 @@ public class UltrasonicTestNew extends OpMode {
     @Override
     public void loop() {
 
-        telemetry.addData("Distance", ultrasonic.getDistance());
+        telemetry.addData("Distance", ultrasonic.sampleDistance());
 
     }
 
