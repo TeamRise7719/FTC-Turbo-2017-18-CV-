@@ -122,7 +122,7 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
         int distanceArray[];
 
         //allocate memory for 100 indices
-        distanceArray = new int[100];
+        distanceArray = new int[25];
 
         for (int loopCount = 0; loopCount < distanceArray.length; loopCount++ ) {
             distanceArray[loopCount] = getDistance();
