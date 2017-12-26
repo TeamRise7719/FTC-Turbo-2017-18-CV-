@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.Maxbotix.I2CXL;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 //https://en.wikipedia.org/wiki/PID_controller#Ideal_versus_standard_PID_form
 //
 //Standard form of the PID formula:
-//kp * (e + (integral(e) / ti) + (td * derivative(e)))
+//kp * (e + (integral(e) / ki) + (kd * derivative(e)))
 
 public class PID_Control {
 
@@ -34,6 +35,11 @@ public class PID_Control {
 
     Telemetry telemetry;
     LinearOpMode linearOpMode;
+
+    I2CXL ultrasonicFront;
+    I2CXL ultrasonicBack;
+    I2CXL ultrasonicRight;
+    I2CXL ultrasonicLeft;
 
     ElapsedTime eTime;
 
@@ -76,12 +82,24 @@ public class PID_Control {
         rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        ultrasonicFront = hardwareMap.get(I2CXL.class, "ultsonFront");
+        ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
+        ultrasonicLeft = hardwareMap.get(I2CXL.class, "ultsonLeft");
+        ultrasonicRight = hardwareMap.get(I2CXL.class, "ultsonRight");
+
+        ultrasonicFront.initialize();
+        ultrasonicBack.initialize();
+        ultrasonicLeft.initialize();
+        ultrasonicRight.initialize();
+
+        //
+
     }
 
 
     private double kp;//Proportional
-    private double ti;//Integral
-    private double td;//Derivative
+    private double ki;//Integral
+    private double kd;//Derivative
     private double integralMin;// The min of the running integral
     private double integralMax;// The max of the running integral
     private double encThreshold; //
@@ -100,12 +118,14 @@ public class PID_Control {
     //ticksPerInch --- This is where the last three parameters are implemented to determine the ticks on the encoder per inch driven
     private static final double ticksPerInch = (ticksPerMotorRev * drivetrainReduction) / (wheelDiamInches * pi);
 
+    private static final double inchesPerCM = 2.54;
 
-    public PID_Control(double kp, double ti, double td, double integralMin,
+
+    public PID_Control(double kp, double ki, double kd, double integralMin,
                        double integralMax, double encThreshold) {
         this.kp = kp;
-        this.ti = ti;
-        this.td = td;
+        this.ki = ki;
+        this.kd = kd;
         this.integralMin = integralMin;
         this.integralMax = integralMax;
 
@@ -123,7 +143,7 @@ public class PID_Control {
 
         runningIntegral = clipValue(runningIntegral + e * dt, integralMin, integralMax);
         double d = (e - previousError) / dt;
-        double output = kp * (e + (runningIntegral / ti) + (td * d));
+        double output = kp * (e + (runningIntegral / ki) + (kd * d));
 
         previousError = e;
         return output;
@@ -132,7 +152,7 @@ public class PID_Control {
 
     public void PID_Loop(double targetDistance, double targetAngle) {
 
-        int distance = (int) (targetDistance * ticksPerInch);
+        int distance = (int) (targetDistance * inchesPerCM);
         int realLeftDistance;
         int realRightDistance;
         double leftSpeed;
@@ -164,7 +184,7 @@ public class PID_Control {
 //
 //                runningIntegral = clipValue(runningIntegral + e * dt, integralMin, integralMax);
 //                double d = (e - previousError) / dt;
-//                double output = kp * (e + (runningIntegral / ti) + (td * d));
+//                double output = kp * (e + (runningIntegral / ki) + (kd * d));
 //
 //                previousError = e;
 //                return output;
