@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.teamcode.Transitioning.AutoTransitioner;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.PID_Library;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
@@ -237,6 +238,6 @@ public class Festus_Auto_Red_1_S_Balance extends LinearOpMode {
             //End While Loop
             break;
         }
-        stop();
+        AutoTransitioner.transitionOnStop(this, "EvanTeleOp");
     }
 }
