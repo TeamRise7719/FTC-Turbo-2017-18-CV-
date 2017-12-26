@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.I2cDeviceSynchDevice;
 import com.qualcomm.robotcore.hardware.I2cWaitControl;
 import com.qualcomm.robotcore.hardware.configuration.I2cSensor;
 import com.qualcomm.robotcore.util.TypeConversion;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import static java.lang.Thread.sleep;
 
@@ -83,5 +84,23 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
         }
 
         return lastDistance;
+    }
+
+    public void sampleDistance(){
+
+        //declare the array
+        int distanceArray[];
+
+        //allocate memory for 100 indices
+        distanceArray = new int[100];
+
+        for (int loopCount = 0; loopCount <= distanceArray.length; loopCount++ ) {
+            distanceArray[loopCount] = getDistance();
+        }
+
+
+
+
+
     }
 }

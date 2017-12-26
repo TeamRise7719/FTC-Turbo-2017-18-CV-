@@ -15,13 +15,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class UltrasonicTestNew extends OpMode {
 
     I2CXL ultrasonic;
-    Telemetry telemetry;
-    HardwareMap hardwareMap;
+
+
 
     @Override
     public void init() {
 
-        ultrasonic = hardwareMap.get(I2CXL.class, "ultrasonic");
+        ultrasonic = hardwareMap.get(I2CXL.class, "ultson");
         ultrasonic.initialize();
 
 
