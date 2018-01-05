@@ -3,34 +3,60 @@ package org.firstinspires.ftc.teamcode.DiagnosticOps;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import com.qualcomm.hardware.Maxbotix.I2CXL;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.FestusDrivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.PID_Library;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
+import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
 
 /**
  * Created by Evan McLoughlin on 12/18/2017.
  */
-@TeleOp
-public class UltrasonicTestNew extends OpMode {
+@Autonomous
+public class UltrasonicTestNew extends LinearOpMode {
 
-    I2CXL ultrasonic;
+    FestusDrivetrain robot;
+
+
+
+    DcMotor liftMotor;
+    ColorSensor color;
+
+
+    RobotVision vMod;
+    ServoManagementV2 srvo;
+    PID_Library enc;
+
+    ElapsedTime etime = new ElapsedTime();
+
+    int position = 0;
+
+    public void waitFor(int time){
+        time = time/1000;
+        etime.reset();
+        while ((etime.time() < time)&&(opModeIsActive())) {
+            idle();
+        }
+    }
+
 
 
     @Override
-    public void init() {
+    public void runOpMode() throws InterruptedException {
 
-        ultrasonic = hardwareMap.get(I2CXL.class, "ultson");
-        ultrasonic.initialize();
+        enc = new PID_Library(hardwareMap, telemetry,this);
 
+        waitForStart();
 
-    }
+        enc.UltrasonicGyroDrive(enc.DRIVE_SPEED_SLOW, 36, 0,false, 0.5, true);
 
-    @Override
-    public void loop() {
-
-        telemetry.addData("Distance", ultrasonic.sampleDistance());
 
     }
-
 }

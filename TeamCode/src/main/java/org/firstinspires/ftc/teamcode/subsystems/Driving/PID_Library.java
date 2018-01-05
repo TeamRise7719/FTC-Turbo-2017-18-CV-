@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.Driving;
 
+import com.qualcomm.hardware.Maxbotix.I2CXL;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -24,6 +25,9 @@ public class PID_Library {
     Telemetry telemetry;
     LinearOpMode linearOpMode;
     ElapsedTime etime;
+
+    I2CXL ultrasonicFront;
+    I2CXL ultrasonicBack;
 
     private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;
     private static final double     DRIVE_GEAR_REDUCTION    = 0.6666;     // This is < 1.0 if geared UP
@@ -83,6 +87,12 @@ public class PID_Library {
         left_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        ultrasonicFront = hardwareMap.get(I2CXL.class, "ultsonFront");
+        ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
+
+        ultrasonicFront.initialize();
+        ultrasonicBack.initialize();
 
     }
 
@@ -596,4 +606,160 @@ public class PID_Library {
         return Range.clip(error * PCoeff, -1, 1);
     }
 
+
+    public void UltrasonicGyroDrive(double speed,
+                                    double distance,
+                                    double angle,
+                                    boolean steeringToggle,
+                                    double UltraTolerance,
+                                    boolean isBack) {
+
+        int newLeftTarget;
+        int newRightTarget;
+        int moveCounts;
+        double max;
+        double error;
+        double steer;
+        double leftSpeed;
+        double rightSpeed;
+
+
+
+        // Ensure that the opmode is still active
+        if (linearOpMode.opModeIsActive()) {
+
+            double ultrasonicValue;
+
+            //Determine whether to use back or front and then convert to freedom units
+
+            if (isBack) {
+                ultrasonicValue = (double)(ultrasonicBack.sampleDistance() / 2.54);
+            } else {
+
+                ultrasonicValue = (double)(ultrasonicFront.sampleDistance() / 2.54);
+            }
+
+            double ultraError = distance - ultrasonicValue;
+
+            while (linearOpMode.opModeIsActive() && java.lang.Math.abs(ultraError) > UltraTolerance) {
+
+                moveCounts = 0;
+
+
+                // Find the remainder of the ultraError to iterate through the distance supplied to the function
+                if (java.lang.Math.abs(ultraError) > 5 ) {
+
+                    if (ultraError > 5){
+
+                        moveCounts = (int) (5 * COUNTS_PER_INCH);
+
+                    } else if (ultraError < -5){
+
+                        moveCounts = (int) (-5 * COUNTS_PER_INCH);
+
+                    }
+
+
+
+                } else if (java.lang.Math.abs(ultraError) < 5 && java.lang.Math.abs(ultraError) > UltraTolerance) {
+
+                    moveCounts = (int)(ultraError * COUNTS_PER_INCH);
+
+                }
+
+
+
+                // Determine new target position, and pass to motor controller
+
+                newLeftTarget = left_back_drive.getCurrentPosition() + moveCounts;
+                newRightTarget = right_back_drive.getCurrentPosition() + moveCounts;
+
+
+                // Set Target and Turn On RUN_TO_POSITION
+                left_back_drive.setTargetPosition(newLeftTarget);
+                left_front_drive.setTargetPosition(newLeftTarget);
+                right_back_drive.setTargetPosition(newRightTarget);
+                right_front_drive.setTargetPosition(newRightTarget);
+
+                left_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                // start motion.
+                speed = Range.clip(Math.abs(speed), 0.0, 1.0);
+                left_back_drive.setPower(speed);
+                left_front_drive.setPower(speed);
+                right_back_drive.setPower(speed);
+                right_front_drive.setPower(speed);
+
+                // keep looping while we are still active, and BOTH motors are running.
+                while (linearOpMode.opModeIsActive() && (Math.abs(newLeftTarget - left_back_drive.getCurrentPosition()) > ENCODER_THRESHOLD || Math.abs(newRightTarget - right_back_drive.getCurrentPosition()) > ENCODER_THRESHOLD)) {
+                    // adjust relative speed based on heading error.
+                    error = getError(angle);
+                    steer = getSteer(error, P_DRIVE_COEFF);
+
+                    // if driving in reverse, the motor correction also needs to be reversed
+                    if (distance > 0) {
+                        steer *= -1.0;
+                    }
+
+                    if (steeringToggle) {
+                        leftSpeed = speed - steer;
+                        rightSpeed = speed + steer;
+                    } else {
+                        leftSpeed = speed;
+                        rightSpeed = speed;
+                    }
+
+                    // Normalize speeds if either one exceeds +/- 1.0;
+                    max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+                    if (max > 1.0) {
+                        leftSpeed /= max;
+                        rightSpeed /= max;
+                    }
+
+                    left_back_drive.setPower(-leftSpeed);
+                    left_front_drive.setPower(-leftSpeed);
+                    right_back_drive.setPower(-rightSpeed);
+                    right_front_drive.setPower(-rightSpeed);
+
+                    // Display drive status for the driver.
+                    telemetry.addData("Err/St", "%5.1f/%5.1f", error, steer);
+                    telemetry.addData("Target", "%7d:%7d", newLeftTarget, newRightTarget);
+                    telemetry.addData("Actual", "%7d:%7d", left_back_drive.getCurrentPosition(),
+                            right_back_drive.getCurrentPosition());
+                    telemetry.addData("Speed", "%5.2f:%5.2f", -leftSpeed, -rightSpeed);
+                    telemetry.update();
+                }
+
+                // Stop all motion;
+                left_back_drive.setPower(0);
+                left_front_drive.setPower(0);
+                right_back_drive.setPower(0);
+                right_front_drive.setPower(0);
+
+                // Turn off RUN_TO_POSITION
+                left_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                left_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+                if (isBack) {
+                    ultrasonicValue = (double)(ultrasonicBack.sampleDistance() / 2.54);
+                } else {
+                    ultrasonicValue = (double)(ultrasonicFront.sampleDistance() / 2.54);
+                }
+
+                ultraError = distance - ultrasonicValue;
+
+
+
+            }
+
+
+
+        }
+    }
 }

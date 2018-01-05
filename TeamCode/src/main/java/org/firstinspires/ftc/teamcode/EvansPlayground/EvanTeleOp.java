@@ -102,12 +102,16 @@ public class EvanTeleOp extends OpMode {
             srvo.rotateDown();
         }
 
+        if (gamepad2.left_trigger > 0.1) {
+            srvo.relicRelease();
+        }
+
 
         robot.winch(gamepad2.left_stick_x);
         //----------------------------------------------=+(Relic)+=----------------------------------------------\\
 
 
-        telemetry.addData("plz", "blease");
+
 //        telemetry.addData("srvo",srvo.getRotate());
 
 
@@ -121,8 +125,6 @@ public class EvanTeleOp extends OpMode {
             robot.stopLift();
         }
 
-        telemetry.addData("encoders", robot.liftMotor.getCurrentPosition());
-        telemetry.update();
 
 
         //This is a very useful function, it just needs to be massively recalibrated to work with the current lift

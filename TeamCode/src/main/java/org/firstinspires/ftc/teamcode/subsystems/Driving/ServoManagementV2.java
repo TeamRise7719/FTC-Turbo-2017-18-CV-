@@ -112,6 +112,10 @@ public class ServoManagementV2 {
         relicGrab.setPower(.75);
     }
 
+    public void  relicRelease() {
+        relicGrab.setPower(-0.25);
+    }
+
     public void rotateUp() {
         relicRot.setPower(-.75);
     }
@@ -119,7 +123,10 @@ public class ServoManagementV2 {
     public void rotateDown() {
         relicRot.setPower(.75);
     }
+
     public void getRotate() {
         relicRot.getPower();
     }
+
+
 }
