@@ -36,7 +36,7 @@ public class FieldOriented_CV_Test extends OpMode {
         cryptoboxDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
 
         cryptoboxDetector.downScaleFactor = 0.4;
-        cryptoboxDetector.detectionMode = CryptoboxDetector.CryptoboxDetectionMode.HSV_RED; // Also HSV_BLUE for blue
+        cryptoboxDetector.detectionMode = CryptoboxDetector.CryptoboxDetectionMode.RED;
         cryptoboxDetector.speed = CryptoboxDetector.CryptoboxSpeed.SLOW;
         cryptoboxDetector.rotateMat = false;
 

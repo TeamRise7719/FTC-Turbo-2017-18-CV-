@@ -36,7 +36,7 @@ public class CryptoboxPositioningTest extends OpMode {
         cryptoboxDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
 
         cryptoboxDetector.downScaleFactor = 0.4;
-        cryptoboxDetector.detectionMode = CryptoboxDetector.CryptoboxDetectionMode.HSV_RED; // Also HSV_BLUE for blue
+        cryptoboxDetector.detectionMode = CryptoboxDetector.CryptoboxDetectionMode.RED; // Also HSV_BLUE for blue
         cryptoboxDetector.speed = CryptoboxDetector.CryptoboxSpeed.BALANCED;
         cryptoboxDetector.rotateMat = false;
 
