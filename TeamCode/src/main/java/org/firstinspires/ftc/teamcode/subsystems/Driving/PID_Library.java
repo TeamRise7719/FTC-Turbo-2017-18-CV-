@@ -796,25 +796,21 @@ public class PID_Library {
                     rightSpeed /= max;
                 }
 
-               /*
-                if(isBack) {
-                    left_back_drive.setPower(-leftSpeed);
-                    left_front_drive.setPower(-leftSpeed);
-                    right_back_drive.setPower(-rightSpeed);
-                    right_front_drive.setPower(-rightSpeed);
+                if(!isBack) {
+                    leftSpeed = leftSpeed*-1;
+                    rightSpeed = rightSpeed*-1;
                 }
-                else{
-                    left_back_drive.setPower(leftSpeed);
-                    left_front_drive.setPower(leftSpeed);
-                    right_back_drive.setPower(rightSpeed);
-                    right_front_drive.setPower(rightSpeed);
-                }
+                /*
+                left_back_drive.setPower(leftSpeed);
+                left_front_drive.setPower(leftSpeed);
+                right_back_drive.setPower(rightSpeed);
+                right_front_drive.setPower(rightSpeed);
                 */
-               
+
                 // Display drive status for the driver.
                 telemetry.addData("Target", "%7d", distance);
                 telemetry.addData("Error", "%5.1f", ultraError);
-                telemetry.addData("Speed", "%5.2f:%5.2f", -leftSpeed, -rightSpeed);
+                telemetry.addData("Speed", "%5.2f:%5.2f", leftSpeed, rightSpeed);
                 telemetry.update();
             }
 
