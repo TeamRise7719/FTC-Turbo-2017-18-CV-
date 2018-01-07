@@ -47,6 +47,7 @@ public class PID_Library {
 
     private static final double     P_TURN_COEFF            = 0.8;     // Larger is more responsive, but also less stable
     private static final double     P_DRIVE_COEFF           = 0.16;     // Larger is more responsive, but also less stable
+    private static final double     ULTRA_COEFF           = 0.16;     // Larger is more responsive, but also less stable
 
     public PID_Library(HardwareMap hardwareMap, Telemetry tel, LinearOpMode opMode) {
 
@@ -596,6 +597,26 @@ public class PID_Library {
         return robotError;
     }
 
+    public double getErrorUltra(double targetDistance, boolean isBack) {
+
+        double ultrasonicValue;
+        double robotError;
+
+        // calculate error
+        if (isBack) {
+            //use the back sensor
+            ultrasonicValue = (ultrasonicBack.sampleDistance() / 2.54);
+
+        } else {
+
+            //use the front sensor
+            ultrasonicValue = (ultrasonicFront.sampleDistance() / 2.54);
+
+        }
+        robotError = targetDistance - ultrasonicValue;
+
+        return robotError;
+    }
     /**
      * returns desired steering force.  +/- 1 range.  +ve = steer left
      * @param error   Error angle in robot relative degrees
@@ -722,4 +743,77 @@ public class PID_Library {
                 right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
+    public void UltrasonicGyroDriveIterative(
+                                    double distance,
+                                    double angle,
+                                    boolean steeringToggle,
+                                    double UltraTolerance,
+                                    boolean isBack) {
+        double speed;
+        double max;
+        double error;
+        double steer;
+        double leftSpeed;
+        double rightSpeed;
+        double ultraError;
+
+
+        // Ensure that the opmode is still active
+        if (linearOpMode.opModeIsActive()) {
+            left_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            left_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            ultraError = getErrorUltra(distance,isBack);
+
+            // keep looping while we are still active, and BOTH motors are running.
+            while ((linearOpMode.opModeIsActive())  && (java.lang.Math.abs(ultraError) > UltraTolerance)) {
+                // adjust relative speed based on heading error.
+                ultraError = getErrorUltra(distance,isBack);
+                speed = ultraError*ULTRA_COEFF;
+
+                error = getError(angle);
+                steer = getSteer(error, P_DRIVE_COEFF);
+
+                // if driving in reverse, the motor correction also needs to be reversed
+                if (distance > 0) {
+                    steer *= -1.0;
+                }
+
+                if (steeringToggle) {
+                    leftSpeed = speed - steer;
+                    rightSpeed = speed + steer;
+                } else {
+                    leftSpeed = speed;
+                    rightSpeed = speed;
+                }
+
+                // Normalize speeds if either one exceeds +/- 1.0;
+                max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+                if (max > 1.0) {
+                    leftSpeed /= max;
+                    rightSpeed /= max;
+                }
+
+                left_back_drive.setPower(-leftSpeed);
+                left_front_drive.setPower(-leftSpeed);
+                right_back_drive.setPower(-rightSpeed);
+                right_front_drive.setPower(-rightSpeed);
+
+                // Display drive status for the driver.
+                telemetry.addData("Target", "%7d", distance);
+                telemetry.addData("Error", "%5.1f", ultraError);
+                telemetry.addData("Speed", "%5.2f:%5.2f", -leftSpeed, -rightSpeed);
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            left_back_drive.setPower(0);
+            left_front_drive.setPower(0);
+            right_back_drive.setPower(0);
+            right_front_drive.setPower(0);
+        }
+    }
+
 }
