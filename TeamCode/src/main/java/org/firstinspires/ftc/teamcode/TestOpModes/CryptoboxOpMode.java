@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="DogeCV Red Cryptobox Detector 1", group="DogeCV")
+@TeleOp(name="DogeCV Red Cryptobox Detector", group="DogeCV")
 public class CryptoboxOpMode extends OpMode
 {
     // Declare OpMode members.
@@ -31,8 +31,8 @@ public class CryptoboxOpMode extends OpMode
 
         cryptoboxDetector.downScaleFactor = 0.4;
         cryptoboxDetector.detectionMode = CryptoboxDetector.CryptoboxDetectionMode.RED; // Also HSV_BLUE for blue
-        cryptoboxDetector.speed = CryptoboxDetector.CryptoboxSpeed.VERY_SLOW;
-        cryptoboxDetector.rotateMat = true;
+        cryptoboxDetector.speed = CryptoboxDetector.CryptoboxSpeed.BALANCED;
+        cryptoboxDetector.rotateMat = false;
 
         //Optional Test Code to load images via Drawables
         //cryptoboxDetector.useImportedImage = true;

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems.Driving;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -50,15 +51,15 @@ public class FestusDrivetrain {
 
         lr = hardwareMap.dcMotor.get("1");
         lf = hardwareMap.dcMotor.get("2");
-        lr.setDirection(DcMotor.Direction.REVERSE);
-        lf.setDirection(DcMotor.Direction.REVERSE);
+        lr.setDirection(DcMotor.Direction.FORWARD);
+        lf.setDirection(DcMotor.Direction.FORWARD);
         lr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         rr = hardwareMap.dcMotor.get("3");
         rf = hardwareMap.dcMotor.get("4");
-        rr.setDirection(DcMotor.Direction.FORWARD);
-        rf.setDirection(DcMotor.Direction.FORWARD);
+        rr.setDirection(DcMotor.Direction.REVERSE);
+        rf.setDirection(DcMotor.Direction.REVERSE);
         rr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 

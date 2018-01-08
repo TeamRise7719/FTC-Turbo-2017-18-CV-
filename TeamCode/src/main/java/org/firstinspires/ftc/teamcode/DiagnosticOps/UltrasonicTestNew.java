@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.DiagnosticOps;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import com.qualcomm.hardware.Maxbotix.I2CXL;
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
 /**
  * Created by Evan McLoughlin on 12/18/2017.
  */
+@Disabled
 @Autonomous
 public class UltrasonicTestNew extends LinearOpMode {
 

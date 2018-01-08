@@ -15,28 +15,13 @@ public class EvanTeleOp extends OpMode {
     private FestusDrivetrain robot;
      ServoManagementV2 srvo;
 
-     I2CXL ultrasonicFront;
-     I2CXL ultrasonicBack;
-     I2CXL ultrasonicRight;
-     I2CXL ultrasonicLeft;
 
 
     @Override
     public void init() {
         //Initialize robot
         robot = new FestusDrivetrain(hardwareMap, telemetry);
-//        robot.runUsingEncoders();
-
-        //Initialize Ultrasonic (Testing)
-        ultrasonicFront = hardwareMap.get(I2CXL.class, "ultsonFront");
-        ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
-        ultrasonicLeft = hardwareMap.get(I2CXL.class, "ultsonLeft");
-        ultrasonicRight = hardwareMap.get(I2CXL.class, "ultsonRight");
-
-        ultrasonicFront.initialize();
-        ultrasonicBack.initialize();
-        ultrasonicLeft.initialize();
-        ultrasonicRight.initialize();
+//        robot.runUsingEncoders()
 
 
         //Initialize Servos
@@ -52,11 +37,6 @@ public class EvanTeleOp extends OpMode {
     public void loop() {
         srvo.knockJewel(0);
 
-        //Telemetry for Ultrasonic Test
-        telemetry.addData("Front:", ultrasonicFront.sampleDistance());
-        telemetry.addData("Back:", ultrasonicBack.sampleDistance());
-        telemetry.addData("Left:", ultrasonicLeft.sampleDistance());
-        telemetry.addData("Right", ultrasonicRight.sampleDistance());
 
         //----------------------------------------------=+(Drivetrain)+=----------------------------------------------\\
         robot.arcadeMode = true;

@@ -40,12 +40,12 @@ public class PID_Library {
     public  final double     DRIVE_SPEED             = 0.8;     // Nominal speed
     public  final double     DRIVE_SPEED_SLOW             = 0.4;     // Slower speed for better accuracy.
 
-    public  final double     TURN_SPEED              = 0.3;     // Nominal half speed for better accuracy.
+    public  final double     TURN_SPEED              = 0.4;     // Nominal half speed for better accuracy.
 
     private static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     private static final double     ENCODER_THRESHOLD       = 10;      // As tight as we can make it with an integer gyro
 
-    private static final double     P_TURN_COEFF            = 0.8;     // Larger is more responsive, but also less stable
+    private static final double     P_TURN_COEFF            = 0.06;     // Larger is more responsive, but also less stable
     private static final double     P_DRIVE_COEFF           = 0.16;     // Larger is more responsive, but also less stable
     private static final double     ULTRA_COEFF           = 0.16;     // Larger is more responsive, but also less stable
 
@@ -557,7 +557,7 @@ public class PID_Library {
         }
         else {
             steer = getSteer(error, PCoeff);
-            rightSpeed  = (speed * steer);
+            rightSpeed  = -(speed * steer);
             leftSpeed   = -rightSpeed;
         }
 

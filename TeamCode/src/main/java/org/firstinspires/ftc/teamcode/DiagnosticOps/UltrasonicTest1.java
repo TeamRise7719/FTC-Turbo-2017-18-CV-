@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.DiagnosticOps;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -9,6 +10,8 @@ import org.firstinspires.ftc.teamcode.subsystems.Sensing.Ultrasonic;
 /**
  * Created by Admin on 12/17/2017.
  */
+
+@Disabled
 @TeleOp(name = "UltrasonicTest1", group = "Festus")
 public class UltrasonicTest1 extends LinearOpMode {
 

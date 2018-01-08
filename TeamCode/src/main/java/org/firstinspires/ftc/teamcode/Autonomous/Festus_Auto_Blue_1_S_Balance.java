@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
  * Created by Evan McLoughlin on 12/14/2017.
  */
 
+@Disabled
 @Autonomous(name = "Festus Blue 1 Balance", group = "Festus")
 public class Festus_Auto_Blue_1_S_Balance extends LinearOpMode {
     DcMotor liftMotor;
@@ -159,7 +161,7 @@ public class Festus_Auto_Blue_1_S_Balance extends LinearOpMode {
             //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 36;
+            double centerPosition = 35;
             double offset = 0;
             if (position == 0) { //Right
                 offset = 7.5;

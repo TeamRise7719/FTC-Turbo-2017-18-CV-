@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.DiagnosticOps;
 
 import android.graphics.Path;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Sensing.Wire;
 /**
  * Created by Admin on 12/17/2017.
  */
+@Disabled
 @TeleOp(name = "UltrasonicTest", group = "Festus")
 public class UltrasonicTest extends OpMode {
     private Wire ds;
