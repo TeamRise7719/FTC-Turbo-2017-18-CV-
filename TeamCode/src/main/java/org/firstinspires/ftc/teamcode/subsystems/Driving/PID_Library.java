@@ -47,7 +47,7 @@ public class PID_Library {
 
     private static final double     P_TURN_COEFF            = 0.06;     // Larger is more responsive, but also less stable
     private static final double     P_DRIVE_COEFF           = 0.16;     // Larger is more responsive, but also less stable
-    private static final double     ULTRA_COEFF           = 0.16;     // Larger is more responsive, but also less stable
+    private static final double     ULTRA_COEFF           = 0.06;     // Larger is more responsive, but also less stable
 
     public PID_Library(HardwareMap hardwareMap, Telemetry tel, LinearOpMode opMode) {
 
@@ -627,124 +627,7 @@ public class PID_Library {
         return Range.clip(error * PCoeff, -1, 1);
     }
 
-    public void UltrasonicGyroDrive(double speed,
-                                             double distance,
-                                             double angle,
-                                             boolean steeringToggle,
-                                             double UltraTolerance,
-                                             boolean isBack) {
-
-        int newLeftTarget;
-        int newRightTarget;
-        int moveCounts;
-        double max;
-        double error;
-        double steer;
-        double leftSpeed;
-        double rightSpeed;
-
-
-
-        // Ensure that the opmode is still active
-        if (linearOpMode.opModeIsActive()) {
-
-             double ultrasonicValue;
-
-            //Determine whether to use back or front and then convert to freedom units
-
-             if (isBack) {
-
-                //use the back sensor
-                ultrasonicValue = (ultrasonicBack.sampleDistance() / 2.54);
-
-             } else {
-
-                //use the front sensor
-                ultrasonicValue = (ultrasonicFront.sampleDistance() / 2.54);
-
-             }
-              //take the first calculation of the distance error
-              double ultraError = distance - ultrasonicValue;
-              moveCounts = (int)(ultraError * COUNTS_PER_INCH);
-
-                // Determine new target position, and pass to motor controller
-                newLeftTarget = left_back_drive.getCurrentPosition() + moveCounts;
-                newRightTarget = right_back_drive.getCurrentPosition() + moveCounts;
-
-
-                // Set Target and Turn On RUN_TO_POSITION
-                left_back_drive.setTargetPosition(newLeftTarget);
-                left_front_drive.setTargetPosition(newLeftTarget);
-                right_back_drive.setTargetPosition(newRightTarget);
-                right_front_drive.setTargetPosition(newRightTarget);
-
-                left_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                // start motion.
-                speed = Range.clip(Math.abs(speed), 0.0, 1.0);
-                left_back_drive.setPower(speed);
-                left_front_drive.setPower(speed);
-                right_back_drive.setPower(speed);
-                right_front_drive.setPower(speed);
-
-                // keep looping while we are still active, and BOTH motors are running.
-                while (linearOpMode.opModeIsActive() && (Math.abs(newLeftTarget - left_back_drive.getCurrentPosition()) > ENCODER_THRESHOLD || Math.abs(newRightTarget - right_back_drive.getCurrentPosition()) > ENCODER_THRESHOLD)) {
-                    // adjust relative speed based on heading error.
-                    error = getError(angle);
-                    steer = getSteer(error, P_DRIVE_COEFF);
-
-                    // if driving in reverse, the motor correction also needs to be reversed
-                    if (distance > 0) {
-                        steer *= -1.0;
-                    }
-
-                    if (steeringToggle) {
-                        leftSpeed = speed - steer;
-                        rightSpeed = speed + steer;
-                    } else {
-                        leftSpeed = speed;
-                        rightSpeed = speed;
-                    }
-
-                    // Normalize speeds if either one exceeds +/- 1.0;
-                    max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
-                    if (max > 1.0) {
-                        leftSpeed /= max;
-                        rightSpeed /= max;
-                    }
-
-                    left_back_drive.setPower(-leftSpeed);
-                    left_front_drive.setPower(-leftSpeed);
-                    right_back_drive.setPower(-rightSpeed);
-                    right_front_drive.setPower(-rightSpeed);
-
-                    // Display drive status for the driver.
-                    telemetry.addData("Err/St", "%5.1f/%5.1f", error, steer);
-                    telemetry.addData("Target", "%7d:%7d", newLeftTarget, newRightTarget);
-                    telemetry.addData("Actual", "%7d:%7d", left_back_drive.getCurrentPosition(),
-                            right_back_drive.getCurrentPosition());
-                    telemetry.addData("Speed", "%5.2f:%5.2f", -leftSpeed, -rightSpeed);
-                    telemetry.update();
-                }
-
-                // Stop all motion;
-                left_back_drive.setPower(0);
-                left_front_drive.setPower(0);
-                right_back_drive.setPower(0);
-                right_front_drive.setPower(0);
-
-                // Turn off RUN_TO_POSITION
-                left_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                left_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-    }
-
-    public void UltrasonicGyroDriveIterative(
+    public void UltrasonicGyroDrive(
                                     double distance,
                                     double angle,
                                     boolean steeringToggle,
@@ -796,19 +679,14 @@ public class PID_Library {
                     rightSpeed /= max;
                 }
 
-                if(!isBack) {
-                    leftSpeed = leftSpeed*-1;
-                    rightSpeed = rightSpeed*-1;
-                }
-                /*
                 left_back_drive.setPower(leftSpeed);
                 left_front_drive.setPower(leftSpeed);
                 right_back_drive.setPower(rightSpeed);
                 right_front_drive.setPower(rightSpeed);
-                */
+
 
                 // Display drive status for the driver.
-                telemetry.addData("Target", "%7d", distance);
+                telemetry.addData("Target", distance);
                 telemetry.addData("Error", "%5.1f", ultraError);
                 telemetry.addData("Speed", "%5.2f:%5.2f", leftSpeed, rightSpeed);
                 telemetry.update();

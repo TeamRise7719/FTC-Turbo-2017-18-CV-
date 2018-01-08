@@ -161,9 +161,9 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             double centerPosition = 36;
             double offset = 0;
             if (position == 0) { //Right
-                offset = 7.5;
+                offset = 7;
             }else if (position == 2) { //Left
-                offset = -7.5;
+                offset = -7;
             }
             double distance = centerPosition+offset;
 
@@ -186,6 +186,12 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
+
+            //raise lift
+            liftMotor.setPower(.8);
+            waitFor(1000);
+            liftMotor.setPower(0);
+
 
             //NEW CODE TO GET SECOND GLYPH //
 
