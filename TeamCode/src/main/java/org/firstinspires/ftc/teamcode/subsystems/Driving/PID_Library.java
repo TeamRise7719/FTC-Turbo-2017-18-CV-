@@ -674,9 +674,21 @@ public class PID_Library {
 
                 // Normalize speeds if either one exceeds +/- 1.0;
                 max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
-                if (max > 1.0) {
+                if (max > 1) {
                     leftSpeed /= max;
                     rightSpeed /= max;
+                }
+
+                if (leftSpeed > 0.6){
+                    leftSpeed = 0.6;
+                } else if (leftSpeed < -0.6){
+                    leftSpeed = -0.6;
+                }
+
+                if (rightSpeed > 0.6){
+                    rightSpeed = 0.6;
+                } else if (rightSpeed < -0.6){
+                    rightSpeed = -0.6;
                 }
 
                 left_back_drive.setPower(leftSpeed);

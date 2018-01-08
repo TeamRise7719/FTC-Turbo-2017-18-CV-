@@ -76,7 +76,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             waitFor(1000);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.7);
+            liftMotor.setPower(-0.1);
             waitFor(1000);
             liftMotor.setPower(0);
 
@@ -156,7 +156,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             waitFor(2000);
 
             //Step 7: Drive off Balancing Stone
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, 22.5, 0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -22.5, 0,false);
             waitFor(1500);
 
             //Step 8: Turn Back Straight
@@ -175,7 +175,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             //from this point and below to easily calibrate auto use the EncoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 12.5;
+            double centerPosition = 11.5;
             double offset = 0;
             if (position == 0) { //Left
                 offset = 7.5;
@@ -185,7 +185,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             double distance = centerPosition+offset;
 
             //Step 10: Drive to Appropriate Column
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance, 90,true);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 90,false);
             waitFor(2000);
 
             //Step 11: Turn back to 180 Degrees
@@ -197,8 +197,8 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
 
             //Step 10: Push Glyph into Column
             waitFor(500);
-            enc.gyroDrive(.45, -6, 180,true);
-            enc.gyroDrive(enc.DRIVE_SPEED, 5, 180, true);
+            enc.gyroDrive(.45, 8, 180,false);
+            enc.gyroDrive(enc.DRIVE_SPEED, -6, 180, false);
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 0);

@@ -57,7 +57,7 @@ public class UltrasonicTestNew extends LinearOpMode {
 
         waitForStart();
 
-        enc.UltrasonicGyroDrive( 36, 0,false, 0.5, true);
+        enc.UltrasonicGyroDrive( 20, 0,false, 0.25, true);
 
 
     }
