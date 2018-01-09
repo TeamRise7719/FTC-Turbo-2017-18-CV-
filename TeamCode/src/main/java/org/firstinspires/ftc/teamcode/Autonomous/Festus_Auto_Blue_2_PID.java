@@ -175,17 +175,18 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             //from this point and below to easily calibrate auto use the EncoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 11.5;
+            double centerPosition = 27;
             double offset = 0;
-            if (position == 0) { //Left
-                offset = 7.5;
-            }else if (position == 2) { //Right
-                offset = -7.5;
+            if (position == 0) { //Right
+                offset = 7;
+            }else if (position == 2) { //Left
+                offset = -7;
             }
             double distance = centerPosition+offset;
 
             //Step 10: Drive to Appropriate Column
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 90,false);
+            //enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 90,false);
+            enc.UltrasonicGyroDrive(distance, 90,false, 0.5, true);
             waitFor(2000);
 
             //Step 11: Turn back to 180 Degrees

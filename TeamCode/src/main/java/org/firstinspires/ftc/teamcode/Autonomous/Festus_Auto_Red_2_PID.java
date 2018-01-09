@@ -76,7 +76,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             waitFor(1000);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.4);
+            liftMotor.setPower(-0.1);
             waitFor(1000);
             liftMotor.setPower(0);
 
@@ -165,7 +165,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
 
             //Step 9: Turn Towards Columns
             enc.gyroTurn(enc.TURN_SPEED, 90);
-            waitFor(1000);
+            waitFor(2000);
 
             // enc.gyroHold(enc.TURN_SPEED, 90, 1000);
             //waitFor(1000);
@@ -175,17 +175,17 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             //from this point and below to easily calibrate auto use the EncoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 11.5;
+            double centerPosition = 27;
             double offset = 0;
-            if (position == 0) { //Left
-                offset = 7.5;
-            }else if (position == 2) { //Right
-                offset = -7.5;
+            if (position == 0) { //Right
+                offset = -7;
+            }else if (position == 2) { //Left
+                offset = 7;
             }
             double distance = centerPosition+offset;
 
             //Step 10: Drive to Appropriate Column
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 90,false);
+            enc.UltrasonicGyroDrive(distance, 90,false, 0.25, true);
             waitFor(2000);
 
             //Step 11: Turn back to 0 Degrees

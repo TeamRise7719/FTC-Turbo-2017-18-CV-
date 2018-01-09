@@ -132,7 +132,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
                 vMod.getVuMark();
                 if (vMod.vuMark == RelicRecoveryVuMark.LEFT) {
                     telemetry.addData("VuMark Status - ", "Left");
-                    position = 0;
+                    position = 2;
                     break;
                 } else if (vMod.vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("VuMark Status - ", "Center");
@@ -140,7 +140,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
                     break;
                 } else if (vMod.vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("VuMark Status - ", "Right");
-                    position = 2;
+                    position = 0;
                     break;
                 }
                 telemetry.update();
