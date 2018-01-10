@@ -660,7 +660,7 @@ public class PID_Library {
             etime.reset();
 
             // keep looping while we are still active, and BOTH motors are running.
-            while ((etime.time() < Timeout) && (linearOpMode.opModeIsActive())  /*&& (java.lang.Math.abs(ultraError) > UltraTolerance)*/) {
+            while ((etime.time() < Timeout) && (linearOpMode.opModeIsActive()) /* && (java.lang.Math.abs(ultraError) > UltraTolerance)*/ ){
                 // adjust relative speed based on heading error.
                 ultraError = getErrorUltra(distance,isBack);
                 speed = ultraError*ULTRA_COEFF;
@@ -698,6 +698,11 @@ public class PID_Library {
                     rightSpeed = 0.8;
                 } else if (rightSpeed < -0.8){
                     rightSpeed = -0.8;
+                }
+
+                if(!isBack){
+                    leftSpeed = leftSpeed*-1;
+                    rightSpeed = rightSpeed*-1;
                 }
 
                 left_back_drive.setPower(leftSpeed);

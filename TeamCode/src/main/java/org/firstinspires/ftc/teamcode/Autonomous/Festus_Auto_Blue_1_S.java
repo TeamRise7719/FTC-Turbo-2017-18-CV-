@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import com.qualcomm.hardware.Maxbotix.I2CXL;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 public class Festus_Auto_Blue_1_S extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
+    I2CXL ultrasonicBack;
 
 
     RobotVision vMod;
@@ -56,6 +58,9 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
         color = hardwareMap.colorSensor.get("color");
         color.enableLed(true);
 
+        ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
+        ultrasonicBack.initialize();
+
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
@@ -77,7 +82,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //Step 2: Lift Cube
             liftMotor.setPower(-0.1);
-            waitFor(750);
+            waitFor(1100);
             liftMotor.setPower(0);
 
             //Step 3: Lower Jewel Arm
@@ -96,18 +101,17 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
                     //Bring up Arm
                     srvo.raiseJewel();
-                    waitFor(1000);
+                    waitFor(1500);
                     break;
                 } else if (color.red() < color.blue()) {//if blue
                     //Knock off Blue
                     srvo.knockJewel(0.5);
                     waitFor(1500);
                     srvo.knockJewel(0);
-                    waitFor(1500);
 
                     //Bring up Arm
                     srvo.raiseJewel();
-                    waitFor(1000);
+                    waitFor(1500);
                     break;
                 }
                 telemetry.addData("RED",color.red());
@@ -158,7 +162,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 36;
+            double centerPosition = 50;
             double offset = 0;
             if (position == 0) { //Right
                 offset = 7;
@@ -171,10 +175,25 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance, 0,false);
             waitFor(500);
 
+            /*
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -24, 0,false);
+            waitFor(500);
+            enc.gyroTurn(enc.TURN_SPEED, 180);
+            waitFor(1000);
+
+            distance = distance - (ultrasonicBack.sampleDistance()/2.54);
+
+            telemetry.addData("Distance",distance);
+            telemetry.update();
+            waitFor(3000);
+
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW,distance,0,false);
+            waitFor(500);
+            */
+
             //Step 8: Turn 90 Degrees
             enc.gyroTurn(enc.TURN_SPEED, -90);
             waitFor(500);
-
 
             //Step 9: Open Claw
             srvo.openClaw();
@@ -186,8 +205,6 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
-
-
 
             //NEW CODE TO GET SECOND GLYPH //
 
