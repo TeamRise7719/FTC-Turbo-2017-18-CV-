@@ -48,6 +48,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
         vMod.init();
 
         enc = new PID_Library(hardwareMap, telemetry,this);
+        enc.init();
 
         liftMotor = hardwareMap.dcMotor.get("lift");
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -153,29 +154,20 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             //Display Position
             telemetry.addData("Position:", position);
             telemetry.update();
-            waitFor(2000);
+            waitFor(500);
+
 
             //Step 7: Drive off Balancing Stone
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW, 22.5, 0,false);
             waitFor(1500);
 
-            //Step 8: Turn Back Straight
-            // enc.gyroHold(enc.TURN_SPEED, 0, 1.5);
-            // waitFor(500);
 
             //Step 9: Turn Towards Columns
             enc.gyroTurn(enc.TURN_SPEED, 90);
-            waitFor(2000);
+            waitFor(1000);
 
-            // enc.gyroHold(enc.TURN_SPEED, 90, 1000);
-            //waitFor(1000);
 
-            //NOTES FOR EVAN AND SEAN
-            //AUTO CALIBRATION
-            //from this point and below to easily calibrate auto use the EncoderTest to find the distance between the left/right columns relative to center
-            //then all you need to do is make sure center works and use the differences to have left and right working!!
-
-            double centerPosition = 27;
+            double centerPosition = 26;
             double offset = 0;
             if (position == 0) { //Right
                 offset = -7;
@@ -185,7 +177,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             double distance = centerPosition+offset;
 
             //Step 10: Drive to Appropriate Column
-            enc.UltrasonicGyroDrive(distance, 90,false, 0.25, true);
+            enc.UltrasonicGyroDrive(distance, 90,false, 0.25, true, 5);
             waitFor(2000);
 
             //Step 11: Turn back to 0 Degrees

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 /**
  * Created by Evan on 11/6/17.
  */
-@TeleOp(name = "ServoTest", group = "Festus")
+@TeleOp(name = "Servo Testing", group = "Festus")
 public class Servo_Test extends OpMode {
     //Import 2017 Drivetrain Subsystems
     FestusDrivetrain drivetrain;

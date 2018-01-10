@@ -12,8 +12,11 @@ import com.qualcomm.hardware.Maxbotix.I2CXL;
  */
 @TeleOp(name = "EvanTeleOp", group = "Festus")
 public class EvanTeleOp extends OpMode {
+
+
     private FestusDrivetrain robot;
-     ServoManagementV2 srvo;
+
+    ServoManagementV2 srvo;
 
 
 

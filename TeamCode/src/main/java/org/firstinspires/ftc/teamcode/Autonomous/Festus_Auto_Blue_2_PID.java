@@ -48,6 +48,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
         vMod.init();
 
         enc = new PID_Library(hardwareMap, telemetry,this);
+        enc.init();
 
         liftMotor = hardwareMap.dcMotor.get("lift");
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -175,7 +176,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             //from this point and below to easily calibrate auto use the EncoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 27;
+            double centerPosition = 26;
             double offset = 0;
             if (position == 0) { //Right
                 offset = 7;
@@ -186,7 +187,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
 
             //Step 10: Drive to Appropriate Column
             //enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 90,false);
-            enc.UltrasonicGyroDrive(distance, 90,false, 0.5, true);
+            enc.UltrasonicGyroDrive(distance, 90,false, 0.5, true, 5);
             waitFor(2000);
 
             //Step 11: Turn back to 180 Degrees

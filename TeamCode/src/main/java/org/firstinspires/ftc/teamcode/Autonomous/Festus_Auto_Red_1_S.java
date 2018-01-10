@@ -48,6 +48,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
         vMod.init();
 
         enc = new PID_Library(hardwareMap, telemetry,this);
+        enc.init();
 
         liftMotor = hardwareMap.dcMotor.get("lift");
         liftMotor.setDirection(DcMotor.Direction.REVERSE);

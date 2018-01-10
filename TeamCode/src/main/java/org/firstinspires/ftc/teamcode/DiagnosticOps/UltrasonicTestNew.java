@@ -24,40 +24,19 @@ import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
 @Autonomous
 public class UltrasonicTestNew extends LinearOpMode {
 
-    FestusDrivetrain robot;
-
-
-
-    DcMotor liftMotor;
-    ColorSensor color;
-
-
-    RobotVision vMod;
-    ServoManagementV2 srvo;
     PID_Library enc;
-
-    ElapsedTime etime = new ElapsedTime();
-
-    int position = 0;
-
-    public void waitFor(int time){
-        time = time/1000;
-        etime.reset();
-        while ((etime.time() < time)&&(opModeIsActive())) {
-            idle();
-        }
-    }
-
-
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         enc = new PID_Library(hardwareMap, telemetry,this);
+        enc.init();
 
+        telemetry.addData(">", "Robot Ready!");
+        telemetry.update();
         waitForStart();
 
-        enc.UltrasonicGyroDrive( 20, 0,false, 0.25, true);
+        enc.UltrasonicGyroDrive( 20, 0,false, 0.25, true, 10);
 
 
     }

@@ -50,22 +50,33 @@ public class PID_Library {
     private static final double     ULTRA_COEFF           = 0.06;     // Larger is more responsive, but also less stable
 
     public PID_Library(HardwareMap hardwareMap, Telemetry tel, LinearOpMode opMode) {
+        gyro = hardwareMap.get(BNO055IMU.class, "imu");
+
+        ultrasonicFront = hardwareMap.get(I2CXL.class, "ultsonFront");
+        ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
 
         left_back_drive = hardwareMap.dcMotor.get("1");
         left_front_drive = hardwareMap.dcMotor.get("2");
+
+        right_back_drive = hardwareMap.dcMotor.get("3");
+        right_front_drive = hardwareMap.dcMotor.get("4");
+
+        telemetry = tel;
+        linearOpMode = opMode;
+    }
+
+    public void init(){
+
         left_back_drive.setDirection(DcMotor.Direction.REVERSE);
         left_front_drive.setDirection(DcMotor.Direction.REVERSE);
         left_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         left_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        right_back_drive = hardwareMap.dcMotor.get("3");
-        right_front_drive = hardwareMap.dcMotor.get("4");
         right_back_drive.setDirection(DcMotor.Direction.FORWARD);
         right_front_drive.setDirection(DcMotor.Direction.FORWARD);
         right_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        gyro = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters param = new BNO055IMU.Parameters();
         param.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         param.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -74,9 +85,7 @@ public class PID_Library {
         gyro.initialize(param);
         gyro_angle = gyro.getAngularOrientation();
 
-        telemetry = tel;
-        linearOpMode = opMode;
-        ElapsedTime etime = new ElapsedTime();
+        etime = new ElapsedTime();
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         left_back_drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -88,9 +97,6 @@ public class PID_Library {
         left_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        ultrasonicFront = hardwareMap.get(I2CXL.class, "ultsonFront");
-        ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
 
         ultrasonicFront.initialize();
         ultrasonicBack.initialize();
@@ -632,7 +638,8 @@ public class PID_Library {
                                     double angle,
                                     boolean steeringToggle,
                                     double UltraTolerance,
-                                    boolean isBack) {
+                                    boolean isBack,
+                                    double Timeout) {
         double speed;
         double max;
         double error;
@@ -650,8 +657,10 @@ public class PID_Library {
             right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             ultraError = getErrorUltra(distance,isBack);
 
+            etime.reset();
+
             // keep looping while we are still active, and BOTH motors are running.
-            while ((linearOpMode.opModeIsActive())  && (java.lang.Math.abs(ultraError) > UltraTolerance)) {
+            while ((etime.time() < Timeout) && (linearOpMode.opModeIsActive())  /*&& (java.lang.Math.abs(ultraError) > UltraTolerance)*/) {
                 // adjust relative speed based on heading error.
                 ultraError = getErrorUltra(distance,isBack);
                 speed = ultraError*ULTRA_COEFF;
@@ -679,16 +688,16 @@ public class PID_Library {
                     rightSpeed /= max;
                 }
 
-                if (leftSpeed > 0.6){
-                    leftSpeed = 0.6;
-                } else if (leftSpeed < -0.6){
-                    leftSpeed = -0.6;
+                if (leftSpeed > 0.8){
+                    leftSpeed = 0.8;
+                } else if (leftSpeed < -0.8){
+                    leftSpeed = -0.8;
                 }
 
-                if (rightSpeed > 0.6){
-                    rightSpeed = 0.6;
-                } else if (rightSpeed < -0.6){
-                    rightSpeed = -0.6;
+                if (rightSpeed > 0.8){
+                    rightSpeed = 0.8;
+                } else if (rightSpeed < -0.8){
+                    rightSpeed = -0.8;
                 }
 
                 left_back_drive.setPower(leftSpeed);
