@@ -162,7 +162,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 50;
+            double centerPosition = 36;
             double offset = 0;
             if (position == 0) { //Right
                 offset = 7;
