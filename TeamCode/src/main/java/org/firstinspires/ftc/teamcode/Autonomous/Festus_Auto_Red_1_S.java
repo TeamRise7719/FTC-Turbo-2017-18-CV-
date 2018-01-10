@@ -78,7 +78,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
             //Step 2: Lift Cube
             liftMotor.setPower(-0.1);
-            waitFor(1000);
+            waitFor(750);
             liftMotor.setPower(0);
 
             //Step 3: Lower Jewel Arm
@@ -94,7 +94,6 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
                     srvo.knockJewel(0.5);
                     waitFor(1500);
                     srvo.knockJewel(0);
-                    waitFor(1500);
 
                     //Bring up Arm
                     srvo.raiseJewel();
@@ -105,8 +104,6 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
                     srvo.knockJewel(-0.5);
                     waitFor(1500);
                     srvo.knockJewel(0);
-                    waitFor(1500);
-
                     //Bring up Arm
                     srvo.raiseJewel();
                     waitFor(1000);

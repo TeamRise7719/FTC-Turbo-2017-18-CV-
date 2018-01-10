@@ -77,7 +77,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //Step 2: Lift Cube
             liftMotor.setPower(-0.1);
-            waitFor(1000);
+            waitFor(750);
             liftMotor.setPower(0);
 
             //Step 3: Lower Jewel Arm
@@ -93,7 +93,6 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
                     srvo.knockJewel(-0.5);
                     waitFor(1500);
                     srvo.knockJewel(0);
-                    waitFor(1500);
 
                     //Bring up Arm
                     srvo.raiseJewel();
@@ -188,10 +187,6 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
 
-            //raise lift
-            liftMotor.setPower(.8);
-            waitFor(1000);
-            liftMotor.setPower(0);
 
 
             //NEW CODE TO GET SECOND GLYPH //
