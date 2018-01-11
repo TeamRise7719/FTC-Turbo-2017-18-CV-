@@ -16,6 +16,9 @@ import java.util.HashMap;
 @I2cSensor(name = "MaxSonar I2CXL v2", description = "MaxSonar I2CXL Sensor from MaxBotix", xmlTag = "MaxSonarI2CXLv2")
 public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
 {
+    int lastDistance = -1;
+    long lastPingTime;
+
     @Override
     public Manufacturer getManufacturer()
     {
@@ -61,13 +64,17 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
 
     public int getDistance()
     {
-        int lastDistance = -1;
-        long lastPingTime;
         long curTime;
-        boolean waitingForNextPing = false;
+        boolean waitingForNextPing = true;
 
-        ping();
-        lastPingTime = System.currentTimeMillis();
+        while (waitingForNextPing) {
+            curTime = System.currentTimeMillis();
+            if((curTime - lastPingTime) > 100) {
+                ping();
+                lastPingTime = System.currentTimeMillis();
+                waitingForNextPing = false;
+            }
+        }
 
         while (!waitingForNextPing) {
             curTime = System.currentTimeMillis();
