@@ -21,10 +21,6 @@ import static java.lang.Thread.sleep;
 @I2cSensor(name = "MaxSonar I2CXL v2", description = "MaxSonar I2CXL Sensor from MaxBotix", xmlTag = "MaxSonarI2CXLv2")
 public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
 {
-    int lastDistance = -1;
-    long lastPingTime;
-    boolean waitingForNextPing = true;
-
     @Override
     public Manufacturer getManufacturer()
     {
@@ -70,8 +66,24 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
 
     public int getDistance()
     {
+        int lastDistance = -1;
+        long lastPingTime;
         long curTime = System.currentTimeMillis();
+        boolean waitingForNextPing = false;
 
+        ping();
+        lastPingTime = System.currentTimeMillis();
+
+        while (!waitingForNextPing) {
+            if((curTime - lastPingTime) > 80){
+                int potentialDistance = TypeConversion.byteArrayToShort(deviceClient.read(0x01, 2));
+                lastDistance = potentialDistance;
+                waitingForNextPing = true;
+            }
+        }
+
+        return lastDistance;
+        /*
         if(((curTime - lastPingTime) > 80) && !waitingForNextPing)
         {
             int potentialDistance = TypeConversion.byteArrayToShort(deviceClient.read(0x01, 2));
@@ -88,6 +100,8 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
         }
 
         return lastDistance;
+        */
+
     }
 
     public static int mode(int []array)
