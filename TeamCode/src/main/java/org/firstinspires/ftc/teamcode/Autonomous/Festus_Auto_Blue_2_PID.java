@@ -167,8 +167,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
            // enc.gyroHold(enc.TURN_SPEED, 90, 1000);
             //waitFor(1000);
 
-            //NOTES FOR EVAN AND SEAN
-            //AUTO CALIBRATION
+
             //from this point and below to easily calibrate auto use the EncoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
