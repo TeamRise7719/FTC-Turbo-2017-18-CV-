@@ -10,13 +10,8 @@ import com.qualcomm.robotcore.hardware.I2cDeviceSynchDevice;
 import com.qualcomm.robotcore.hardware.I2cWaitControl;
 import com.qualcomm.robotcore.hardware.configuration.I2cSensor;
 import com.qualcomm.robotcore.util.TypeConversion;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-
-import java.util.Arrays;
 import java.util.HashMap;
 
-import static java.lang.Thread.sleep;
 
 @I2cSensor(name = "MaxSonar I2CXL v2", description = "MaxSonar I2CXL Sensor from MaxBotix", xmlTag = "MaxSonarI2CXLv2")
 public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
@@ -68,13 +63,14 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
     {
         int lastDistance = -1;
         long lastPingTime;
-        long curTime = System.currentTimeMillis();
+        long curTime;
         boolean waitingForNextPing = false;
 
         ping();
         lastPingTime = System.currentTimeMillis();
 
         while (!waitingForNextPing) {
+            curTime = System.currentTimeMillis();
             if((curTime - lastPingTime) > 80){
                 int potentialDistance = TypeConversion.byteArrayToShort(deviceClient.read(0x01, 2));
                 lastDistance = potentialDistance;
@@ -83,6 +79,7 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
         }
 
         return lastDistance;
+
         /*
         if(((curTime - lastPingTime) > 80) && !waitingForNextPing)
         {
