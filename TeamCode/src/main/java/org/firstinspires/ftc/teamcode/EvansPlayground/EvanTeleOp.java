@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.subsystems.Driving.FestusDrivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.PID_Library;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 import com.qualcomm.hardware.Maxbotix.I2CXL;
 
@@ -16,6 +17,7 @@ public class EvanTeleOp extends OpMode {
 
     private FestusDrivetrain robot;
 
+
     ServoManagementV2 srvo;
 
 
@@ -24,6 +26,9 @@ public class EvanTeleOp extends OpMode {
     public void init() {
         //Initialize robot
         robot = new FestusDrivetrain(hardwareMap, telemetry);
+
+
+
 //        robot.runUsingEncoders()
 
 
@@ -51,6 +56,8 @@ public class EvanTeleOp extends OpMode {
         if (gamepad1.x) {
             robot.resetHeading();
         }
+
+
 
         //----------------------------------------------=+(Drivetrain)+=----------------------------------------------\\
 
@@ -111,6 +118,8 @@ public class EvanTeleOp extends OpMode {
 
 
         //This is a very useful function, it just needs to be massively recalibrated to work with the current lift
+
+        //!!!!Possibly deprecated because of new lift design, least priority!!!!
 
 //        if (robot.liftMotor.getCurrentPosition() < -100 || robot.liftMotor.getCurrentPosition() > 100) {
 //

@@ -29,6 +29,5 @@ public class HSVColorFilter extends DogeCVColorFilter{
         Scalar upper = new Scalar(perfect.val[0] + range.val[0], perfect.val[1] + range.val[1],perfect.val[2] + range.val[2]);
         Core.inRange(input,lower,upper,mask);
         input.release();
-
     }
 }

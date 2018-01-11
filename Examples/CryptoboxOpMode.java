@@ -1,23 +1,29 @@
-package org.firstinspires.ftc.teamcode.TestOpModes;
 
-/**
- * Created by Zachary Weingarten on 12/11/2017.
- */
+package org.firstinspires.ftc.teamcode;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.detectors.*;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
+import java.io.IOException;
+
+
 @TeleOp(name="DogeCV Red Cryptobox Detector", group="DogeCV")
+
 public class CryptoboxOpMode extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
 
-    private CryptoboxDetector cryptoboxDetector = null;
+     private CryptoboxDetector cryptoboxDetector = null;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -29,11 +35,11 @@ public class CryptoboxOpMode extends OpMode
         cryptoboxDetector = new CryptoboxDetector();
         cryptoboxDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
 
-        cryptoboxDetector.downScaleFactor = 0.4;
-        cryptoboxDetector.detectionMode = CryptoboxDetector.CryptoboxDetectionMode.RED; // Also HSV_BLUE for blue
-        cryptoboxDetector.speed = CryptoboxDetector.CryptoboxSpeed.BALANCED;
         cryptoboxDetector.rotateMat = false;
 
+        //Optional Test Code to load images via Drawables
+        //cryptoboxDetector.useImportedImage = true;
+        //cryptoboxDetector.SetTestMat(com.qualcomm.ftcrobotcontroller.R.drawable.test_cv4);
 
         cryptoboxDetector.enable();
 

@@ -169,7 +169,9 @@ public class PID_Library {
             right_front_drive.setPower(speed);
 
             // keep looping while we are still active, and BOTH motors are running.
-            while (linearOpMode.opModeIsActive() && (Math.abs(newLeftTarget-left_back_drive.getCurrentPosition())>ENCODER_THRESHOLD || Math.abs(newRightTarget-right_back_drive.getCurrentPosition())>ENCODER_THRESHOLD) ) {
+            while (linearOpMode.opModeIsActive() && (Math.abs(newLeftTarget-left_back_drive.getCurrentPosition())>ENCODER_THRESHOLD
+                   || Math.abs(newRightTarget-right_back_drive.getCurrentPosition())>ENCODER_THRESHOLD) ) {
+
                 // adjust relative speed based on heading error.
                 error = getError(angle);
                 steer = getSteer(error, P_DRIVE_COEFF);
