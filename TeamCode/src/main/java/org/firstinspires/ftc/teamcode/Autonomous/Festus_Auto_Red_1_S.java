@@ -186,7 +186,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             if(distance>13){
                 distance = 11.8;
             }
-            
+
             telemetry.addData("Distance",distance);
             telemetry.update();
             waitFor(3000);
