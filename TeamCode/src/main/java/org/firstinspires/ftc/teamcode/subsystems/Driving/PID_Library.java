@@ -613,12 +613,12 @@ public class PID_Library {
         // calculate error
         if (isBack) {
             //use the back sensor
-            ultrasonicValue = (ultrasonicBack.sampleDistance() / 2.54);
+            ultrasonicValue = (ultrasonicBack.getDistance() / 2.54);
 
         } else {
 
             //use the front sensor
-            ultrasonicValue = (ultrasonicFront.sampleDistance() / 2.54);
+            ultrasonicValue = (ultrasonicFront.getDistance() / 2.54);
 
         }
         robotError = targetDistance - ultrasonicValue;

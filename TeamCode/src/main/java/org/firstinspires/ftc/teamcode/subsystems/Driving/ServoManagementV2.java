@@ -82,8 +82,8 @@ public class ServoManagementV2 {
 
     //Close Claw
     public void closeClaw() {
-            glyph1.setPower(-.25);
-            glyph2.setPower(-.25);
+            glyph1.setPower(-.3);
+            glyph2.setPower(-.3);
             glyph3.setPower(-.25);
             glyph4.setPower(-.25);
     }
