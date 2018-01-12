@@ -1,4 +1,4 @@
-package com.qualcomm.hardware.Maxbotix;
+package org.firstinspires.ftc.teamcode.subsystems.Sensing;
 
 /**
  * Created by Evan McLoughlin on 12/18/2017.
@@ -22,7 +22,7 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
     @Override
     public Manufacturer getManufacturer()
     {
-        return Manufacturer.Maxbotics;
+        return Manufacturer.ModernRobotics;
     }
 
     @Override
