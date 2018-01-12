@@ -162,26 +162,32 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 36;
+            double centerPosition = 50.5;
             double offset = 0;
+
             if (position == 0) { //Right
                 offset = 7;
             }else if (position == 2) { //Left
                 offset = -7;
             }
+
             double distance = centerPosition+offset;
 
-            //Step 7: Drive to Appropriate Column
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance, 0,false);
-            waitFor(500);
+//            //Step 7: Drive to Appropriate Column
+//            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance, 0,false);
+//            waitFor(500);
 
-            /*
+
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -24, 0,false);
             waitFor(500);
             enc.gyroTurn(enc.TURN_SPEED, 180);
             waitFor(1000);
 
-            distance = distance - (ultrasonicBack.sampleDistance()/2.54);
+            distance = distance - (ultrasonicBack.getDistance()/2.54);
+
+            if(distance>13){
+                distance = 11.8;
+            }
 
             telemetry.addData("Distance",distance);
             telemetry.update();
@@ -189,7 +195,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW,distance,0,false);
             waitFor(500);
-            */
+
 
             //Step 8: Turn 90 Degrees
             enc.gyroTurn(enc.TURN_SPEED, -90);
@@ -205,12 +211,14 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
+            liftMotor.setPower(0.1);
 
             //NEW CODE TO GET SECOND GLYPH //
-
+            /*
             //Slight Claw
             srvo.slightClaw();
-            waitFor(500);
+            waitFor(1000);
+            liftMotor.setPower(0);
 
             //Drive to Glyph+9*
             enc.gyroDrive(0.8, 26, 90,false);
@@ -236,7 +244,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             waitFor(500);
             enc.gyroDrive(enc.DRIVE_SPEED, -6, -90,false);
             waitFor(500);
-
+            */
             //END NEW CODE TO GET SECOND GLYPH //
 
             //End While Loop
