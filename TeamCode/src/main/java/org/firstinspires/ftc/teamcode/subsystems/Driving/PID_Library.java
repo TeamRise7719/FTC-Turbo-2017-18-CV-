@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.Driving;
 
-import com.qualcomm.hardware.Maxbotix.I2CXL;
+import org.firstinspires.ftc.teamcode.subsystems.Sensing.I2CXL;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

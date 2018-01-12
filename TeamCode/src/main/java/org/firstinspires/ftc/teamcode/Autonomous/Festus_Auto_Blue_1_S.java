@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import com.qualcomm.hardware.Maxbotix.I2CXL;
+import org.firstinspires.ftc.teamcode.subsystems.Sensing.I2CXL;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
