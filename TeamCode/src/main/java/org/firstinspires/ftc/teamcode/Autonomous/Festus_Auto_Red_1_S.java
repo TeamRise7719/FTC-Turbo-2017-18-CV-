@@ -172,9 +172,6 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             }
             double distance = centerPosition+offset;
 
-            if(distance>13){
-                distance = 11.8;
-            }
 
 //            //Step 7: Drive to Appropriate Column
 //            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 0,false);
@@ -186,6 +183,10 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
             distance = distance - (ultrasonicBack.getDistance()/2.54);
 
+            if(distance>13){
+                distance = 11.8;
+            }
+            
             telemetry.addData("Distance",distance);
             telemetry.update();
             waitFor(3000);
