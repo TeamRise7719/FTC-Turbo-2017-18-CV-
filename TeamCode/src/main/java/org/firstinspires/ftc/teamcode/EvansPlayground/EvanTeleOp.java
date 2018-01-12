@@ -27,7 +27,7 @@ public class EvanTeleOp extends OpMode {
 
 
 
-//        robot.runUsingEncoders()
+        robot.runUsingEncoders();
 
 
         //Initialize Servos

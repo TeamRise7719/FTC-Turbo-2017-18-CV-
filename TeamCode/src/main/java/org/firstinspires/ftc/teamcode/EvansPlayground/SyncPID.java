@@ -1,0 +1,90 @@
+package org.firstinspires.ftc.teamcode.EvansPlayground;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.subsystems.Driving.SynchronousPID;
+
+/**
+ * Created by seancardosi on 10/25/17.
+ */
+@TeleOp(name = "SyncPID Test", group = "Festus")
+public class SyncPID extends OpMode {
+
+    DcMotor left_back_drive;
+    DcMotor left_front_drive;
+    DcMotor right_back_drive;
+    DcMotor right_front_drive;
+
+    SynchronousPID left_back_PID;
+    SynchronousPID left_front_PID;
+    SynchronousPID right_back_PID;
+    SynchronousPID right_front_PID;
+
+    double p = 0.6;
+    double i = 0;
+    double d = 0;
+
+    public void init(){
+        left_back_drive = hardwareMap.dcMotor.get("1");
+        left_back_PID = new SynchronousPID(p,i,d);
+        left_back_PID.setContinuous(true);
+
+        left_front_drive = hardwareMap.dcMotor.get("2");
+        left_front_PID = new SynchronousPID(p,i,d);
+        left_front_PID.setContinuous(true);
+
+        left_back_drive.setDirection(DcMotor.Direction.REVERSE);
+        left_front_drive.setDirection(DcMotor.Direction.REVERSE);
+        left_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        left_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);;
+
+        right_back_drive = hardwareMap.dcMotor.get("3");
+        right_back_PID = new SynchronousPID(p,i,d);
+        right_back_PID.setContinuous(true);
+
+        right_front_drive = hardwareMap.dcMotor.get("4");
+        right_front_PID = new SynchronousPID(p,i,d);
+        right_front_PID.setContinuous(true);
+
+        right_back_drive.setDirection(DcMotor.Direction.FORWARD);
+        right_front_drive.setDirection(DcMotor.Direction.FORWARD);
+        right_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        right_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        setMotorToEnc();
+    }
+
+
+    private void setMotorToEnc(){
+        left_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        left_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+
+    public void loop(){
+        double tolerance = 10;
+
+        setMotorToEnc();
+        left_front_PID.setSetpoint(200);
+        left_back_PID.setSetpoint(200);
+        right_front_PID.setSetpoint(200);
+        right_back_PID.setSetpoint(200);
+
+        while((!left_front_PID.onTarget(tolerance))||(!right_front_PID.onTarget(tolerance))||(!left_back_PID.onTarget(tolerance))||(!right_back_PID.onTarget(tolerance))){
+            left_front_drive.setPower(left_front_PID.calculate(left_front_drive.getCurrentPosition()));
+            left_back_drive.setPower(left_back_PID.calculate(left_back_drive.getCurrentPosition()));
+            right_front_drive.setPower(right_front_PID.calculate(right_front_drive.getCurrentPosition()));
+            left_back_drive.setPower(right_back_PID.calculate(right_back_drive.getCurrentPosition()));
+
+            telemetry.addData("encoder 1", left_back_drive.getCurrentPosition());
+            telemetry.addData("encoder 2", left_front_drive.getCurrentPosition());
+            telemetry.addData("encoder 3", right_back_drive.getCurrentPosition());
+            telemetry.addData("encoder 4", right_front_drive.getCurrentPosition());
+            telemetry.update();
+        }
+    }
+
+}
