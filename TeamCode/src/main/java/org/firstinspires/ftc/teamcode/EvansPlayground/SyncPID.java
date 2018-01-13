@@ -30,10 +30,12 @@ public class SyncPID extends OpMode {
         left_back_drive = hardwareMap.dcMotor.get("1");
         left_back_PID = new SynchronousPID(p,i,d);
         left_back_PID.setContinuous(true);
+        left_back_PID.setInputRange(0.4,0.8);
 
         left_front_drive = hardwareMap.dcMotor.get("2");
         left_front_PID = new SynchronousPID(p,i,d);
         left_front_PID.setContinuous(true);
+        left_front_PID.setInputRange(0.4,0.8);
 
         left_back_drive.setDirection(DcMotor.Direction.REVERSE);
         left_front_drive.setDirection(DcMotor.Direction.REVERSE);
@@ -43,10 +45,12 @@ public class SyncPID extends OpMode {
         right_back_drive = hardwareMap.dcMotor.get("3");
         right_back_PID = new SynchronousPID(p,i,d);
         right_back_PID.setContinuous(true);
+        right_back_PID.setInputRange(0.4,0.8);
 
         right_front_drive = hardwareMap.dcMotor.get("4");
         right_front_PID = new SynchronousPID(p,i,d);
         right_front_PID.setContinuous(true);
+        right_front_PID.setInputRange(0.4,0.8);
 
         right_back_drive.setDirection(DcMotor.Direction.FORWARD);
         right_front_drive.setDirection(DcMotor.Direction.FORWARD);
