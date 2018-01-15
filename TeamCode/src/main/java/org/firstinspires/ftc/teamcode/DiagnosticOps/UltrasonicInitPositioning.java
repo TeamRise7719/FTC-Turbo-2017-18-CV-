@@ -46,9 +46,16 @@ public class UltrasonicInitPositioning extends OpMode {
         Right.initialize();
 
         telemetry.addData("Front: ", Front.getDistance());
+        telemetry.addData("",Front.getConnectionInfo());
+
         telemetry.addData("Back: ", Back.getDistance());
+        telemetry.addData("",Back.getConnectionInfo());
+
         telemetry.addData("Left: ", Left.getDistance());
+        telemetry.addData("",Left.getConnectionInfo());
+
         telemetry.addData("Right: ", Right.getDistance());
+        telemetry.addData("",Right.getConnectionInfo());
 
         //gource
 

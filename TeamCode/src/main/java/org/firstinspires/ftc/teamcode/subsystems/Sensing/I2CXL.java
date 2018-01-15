@@ -52,6 +52,10 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
         super(i2cDeviceSynch, deviceClientIsOwned);
     }
 
+    public String connectionInfo(){
+        return super.getConnectionInfo();
+    }
+
     public void setI2cAddress(I2cAddr i2cAddr)
     {
         deviceClient.setI2cAddress(i2cAddr);
