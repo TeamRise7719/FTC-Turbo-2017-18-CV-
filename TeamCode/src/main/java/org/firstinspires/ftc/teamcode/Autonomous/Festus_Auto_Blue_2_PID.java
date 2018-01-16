@@ -198,7 +198,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             enc.gyroDrive(enc.DRIVE_SPEED, -6, 180, false);
 
             //Step 11: Turn around towards field
-            enc.gyroTurn(enc.TURN_SPEED, -90);
+            enc.gyroTurn(enc.TURN_SPEED,  90);
             srvo.openClaw();
 
             //End While Loop

@@ -210,7 +210,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
-            liftMotor.setPower(0.1);
+            liftMotor.setPower(0.05);
 
 
             //NEW CODE TO GET SECOND GLYPH //
@@ -227,8 +227,8 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             //Close and Lift
             srvo.closeClaw();
             waitFor(500);
-            liftMotor.setPower(-0.85);
-            waitFor(1);
+            liftMotor.setPower(-1);
+            waitFor(1000);
             liftMotor.setPower(0);
 
             //Turn Around
