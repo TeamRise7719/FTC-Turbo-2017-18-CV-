@@ -707,6 +707,15 @@ public class PID_Library {
                     rightSpeed = rightSpeed*-1;
                 }
 
+                if((isBack)&&(ultrasonicBack.getError())){
+                    leftSpeed = 0;
+                    rightSpeed = 0;
+                }
+                else if((!isBack)&&(ultrasonicFront.getError())){
+                    leftSpeed = 0;
+                    rightSpeed = 0;
+                }
+
                 left_back_drive.setPower(leftSpeed);
                 left_front_drive.setPower(leftSpeed);
                 right_back_drive.setPower(rightSpeed);

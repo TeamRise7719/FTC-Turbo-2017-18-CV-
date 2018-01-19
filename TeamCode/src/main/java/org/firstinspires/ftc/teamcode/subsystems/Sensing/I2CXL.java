@@ -17,8 +17,9 @@ import java.util.HashMap;
 @I2cSensor(name = "MaxSonar I2CXL v2", description = "MaxSonar I2CXL Sensor from MaxBotix", xmlTag = "MaxSonarI2CXLv2")
 public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
 {
-    int lastDistance = -1;
-    long lastPingTime;
+    public boolean error;
+    public int lastDistance = -1;
+    private long lastPingTime;
 
     @Override
     public Manufacturer getManufacturer()
@@ -57,6 +58,10 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
         return super.getConnectionInfo();
     }
 
+    public boolean getError(){
+        return error;
+    }
+
     public void setI2cAddress(I2cAddr i2cAddr)
     {
         deviceClient.setI2cAddress(i2cAddr);
@@ -85,32 +90,20 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
             curTime = System.currentTimeMillis();
             if((curTime - lastPingTime) > 80){
                 int potentialDistance = TypeConversion.byteArrayToShort(deviceClient.read(0x01, 2));
-                lastDistance = potentialDistance;
+
+                if(potentialDistance!=0){
+                    error = false;
+                    lastDistance = potentialDistance;
+                }
+                else{
+                    error = true;
+                }
+
                 waitingForNextPing = true;
             }
         }
 
         return lastDistance;
-
-        /*
-        if(((curTime - lastPingTime) > 80) && !waitingForNextPing)
-        {
-            int potentialDistance = TypeConversion.byteArrayToShort(deviceClient.read(0x01, 2));
-
-            lastDistance = potentialDistance;
-
-            waitingForNextPing = true;
-        }
-        if((System.currentTimeMillis() - lastPingTime) > 100)
-        {
-            ping();
-            lastPingTime = System.currentTimeMillis();
-            waitingForNextPing = false;
-        }
-
-        return lastDistance;
-        */
-
     }
 
     public static int mode(int []array)
