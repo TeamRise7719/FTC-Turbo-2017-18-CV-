@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Transitioning.AutoTransitioner;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.PID_Library;
+import org.firstinspires.ftc.teamcode.subsystems.Sensing.I2CXL;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 public class Festus_Auto_Blue_2_PID extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
+    I2CXL ultrasonicBack;
 
 
     RobotVision vMod;
@@ -49,6 +51,9 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
 
         enc = new PID_Library(hardwareMap, telemetry,this);
         enc.init();
+
+        ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
+        ultrasonicBack.initialize();
 
         liftMotor = hardwareMap.dcMotor.get("lift");
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -156,48 +161,57 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -22.5, 0,false);
             waitFor(1500);
 
-            //Step 8: Turn Back Straight
-           // enc.gyroHold(enc.TURN_SPEED, 0, 1.5);
-           // waitFor(500);
-
-            //Step 9: Turn Towards Columns
+            //Step 8: Turn Towards Columns
             enc.gyroTurn(enc.TURN_SPEED, 90);
             waitFor(1000);
-
-           // enc.gyroHold(enc.TURN_SPEED, 90, 1000);
-            //waitFor(1000);
-
 
             //from this point and below to easily calibrate auto use the EncoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            double centerPosition = 26;
-            double offset = 0;
-            if (position == 0) { //Right
-                offset = 7;
-            }else if (position == 2) { //Left
-                offset = -7;
+            //Step 9: Drive to Appropriate Column
+            double distance;
+
+            if(ultrasonicBack.getDistance()!=0) {
+                double centerPosition = 26;
+                double offset = 0;
+                if (position == 0) { //Right
+                    offset = 7;
+                }else if (position == 2) { //Left
+                    offset = -7;
+                }
+                distance = centerPosition+offset;
+
+                enc.UltrasonicGyroDrive(distance, 90,false, 0.5, true, 5);
+                waitFor(2000);
             }
-            double distance = centerPosition+offset;
+            else{
+                double centerPosition = 12.5;
+                double offset = 0;
 
-            //Step 10: Drive to Appropriate Column
-            //enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 90,false);
-            enc.UltrasonicGyroDrive(distance, 90,false, 0.5, true, 5);
-            waitFor(2000);
+                if (position == 0) { //Right
+                    offset = 7;
+                } else if (position == 2) { //Left
+                    offset = -7;
+                }
+                distance = centerPosition + offset;
 
-            //Step 11: Turn back to 180 Degrees
+                enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 90,false);
+                waitFor(2000);
+            }
+
+            //Step 10: Turn back to 180 Degrees
             enc.gyroTurn(enc.TURN_SPEED, 180);
             waitFor(500);
 
-            //Step 12: Open Claw
+            //Step 11: Open Claw
             srvo.openClaw();
 
-            //Step 10: Push Glyph into Column
+            //Step 12: Push Glyph into Column
             waitFor(500);
             enc.gyroDrive(.45, 8, 180,false);
             enc.gyroDrive(enc.DRIVE_SPEED, -6, 180, false);
 
-            //Step 11: Turn around towards field
+            //Step 13: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED,  90);
             srvo.openClaw();
 

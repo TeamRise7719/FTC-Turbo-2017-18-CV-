@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.subsystems.Sensing;
  * Created by Evan McLoughlin on 12/18/2017.
  */
 
+import com.qualcomm.robotcore.hardware.HardwareDeviceHealth;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynchDevice;
