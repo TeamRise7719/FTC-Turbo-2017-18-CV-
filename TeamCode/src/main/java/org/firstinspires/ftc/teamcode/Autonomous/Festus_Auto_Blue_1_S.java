@@ -158,44 +158,53 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             telemetry.update();
             waitFor(500);
 
-            //AUTO CALIBRATION
-            //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
-            //then all you need to do is make sure center works and use the differences to have left and right working!!
-
-            double centerPosition = 50.5;
-            double offset = 0;
-
-            if (position == 0) { //Right
-                offset = 7;
-            }else if (position == 2) { //Left
-                offset = -7;
-            }
-
-            double distance = centerPosition+offset;
-
-//            //Step 7: Drive to Appropriate Column
-//            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -distance, 0,false);
-//            waitFor(500);
-
-
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -24, 0,false);
             waitFor(500);
             enc.gyroTurn(enc.TURN_SPEED, 180);
             waitFor(1000);
 
-            distance = distance - (ultrasonicBack.getDistance()/2.54);
+            //AUTO CALIBRATION
+            //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
+            //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            if(distance>13){
-                distance = 11.8;
+            //Step 7: Drive to Appropriate Column
+            double distance;
+
+            if(ultrasonicBack.getDistance()!=0) {
+                double centerPosition = 50.5;
+                double offset = 0;
+
+                if (position == 0) { //Right
+                    offset = 7;
+                } else if (position == 2) { //Left
+                    offset = -7;
+                }
+
+                distance = (centerPosition + offset) - (ultrasonicBack.getDistance() / 2.54);
+
+                if (distance > 13) {
+                    distance = 11.8;
+                }
+            }
+            else{
+                double centerPosition = 37.5;
+                double offset = 0;
+
+                if (position == 0) { //Right
+                    offset = 7;
+                } else if (position == 2) { //Left
+                    offset = -7;
+                }
+
+                distance = centerPosition + offset;
             }
 
-            telemetry.addData("Distance",distance);
+            telemetry.addData("Distance", distance);
             telemetry.update();
-            waitFor(3000);
+            waitFor(1000);
 
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW,distance,0,false);
             waitFor(500);
-
 
             //Step 8: Turn 90 Degrees
             enc.gyroTurn(enc.TURN_SPEED, -90);

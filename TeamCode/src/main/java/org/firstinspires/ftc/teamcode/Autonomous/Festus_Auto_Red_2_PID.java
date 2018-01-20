@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Transitioning.AutoTransitioner;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.PID_Library;
+import org.firstinspires.ftc.teamcode.subsystems.Sensing.I2CXL;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 public class Festus_Auto_Red_2_PID extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
+    I2CXL ultrasonicBack;
 
 
     RobotVision vMod;
@@ -49,6 +51,9 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
 
         enc = new PID_Library(hardwareMap, telemetry,this);
         enc.init();
+
+        ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
+        ultrasonicBack.initialize();
 
         liftMotor = hardwareMap.dcMotor.get("lift");
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -166,24 +171,40 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             enc.gyroTurn(enc.TURN_SPEED, 90);
             waitFor(1000);
 
-
-            double centerPosition = 26;
-            double offset = 0;
-            if (position == 0) { //Right
-                offset = -7;
-            }else if (position == 2) { //Left
-                offset = 7;
-            }
-            double distance = centerPosition+offset;
-
             //Step 10: Drive to Appropriate Column
-            enc.UltrasonicGyroDrive(distance, 90,false, 0.25, true, 5);
-            waitFor(2000);
+            double distance;
+
+            if(ultrasonicBack.getDistance()!=0) {
+                double centerPosition = 26;
+                double offset = 0;
+                if (position == 0) { //Right
+                    offset = -7;
+                }else if (position == 2) { //Left
+                    offset = 7;
+                }
+                distance = centerPosition+offset;
+
+                enc.UltrasonicGyroDrive(distance, 90,false, 0.5, true, 5);
+                waitFor(2000);
+            }
+            else{
+                double centerPosition = 12.5;
+                double offset = 0;
+
+                if (position == 0) { //Right
+                    offset = -7;
+                } else if (position == 2) { //Left
+                    offset = 7;
+                }
+                distance = centerPosition + offset;
+
+                enc.gyroDrive(enc.DRIVE_SPEED_SLOW, distance, 90,false);
+                waitFor(2000);
+            }
 
             //Step 11: Turn back to 0 Degrees
             enc.gyroTurn(enc.TURN_SPEED, 0);
             waitFor(500);
-            //enc.gyroHold(enc.TURN_SPEED, 0, 1.5);
 
             //Step 12: Open Claw
             srvo.openClaw();
@@ -192,16 +213,15 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             waitFor(500);
             enc.gyroDrive(enc.DRIVE_SPEED, 8, 0,false);
             waitFor(1000);
-
             srvo.openClaw();
             waitFor(500);
-
             enc.gyroDrive(enc.DRIVE_SPEED, -6, 0,false);
             waitFor(1000);
-            //Step 12: Open Claw
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
+
+            //Step 12: Open Claw
             srvo.openClaw();
 
             //End While Loop
