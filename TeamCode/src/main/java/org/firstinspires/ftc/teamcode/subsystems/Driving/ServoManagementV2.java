@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems.Driving;
 
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ServoManagementV2 {
@@ -12,6 +13,12 @@ public class ServoManagementV2 {
     CRServo relicGrab;
     CRServo relicRot;
     CRServo jewelKnock;
+    CRServo intake1;
+    CRServo intake2;
+    CRServo intake3;
+    CRServo intake4;
+
+
 
 
     int clawOpen = 0;
@@ -23,6 +30,10 @@ public class ServoManagementV2 {
         glyph2 = hardwareMap.crservo.get("glyph2");
         glyph3 = hardwareMap.crservo.get("glyph3");
         glyph4 = hardwareMap.crservo.get("glyph4");
+        intake1 = hardwareMap.crservo.get("intake1");
+        intake2 = hardwareMap.crservo.get("intake2");
+        intake3 = hardwareMap.crservo.get("intake3");
+        intake4 = hardwareMap.crservo.get("intake4");
 
         jewelHinge = hardwareMap.crservo.get("jewel_arm");
         jewelKnock = hardwareMap.crservo.get("jewel_knock");
@@ -31,10 +42,17 @@ public class ServoManagementV2 {
         //Define Servo Direction
         jewelHinge.setDirection(CRServo.Direction.FORWARD);
         jewelKnock.setDirection(CRServo.Direction.FORWARD);
+
         glyph1.setDirection(CRServo.Direction.REVERSE);
         glyph2.setDirection(CRServo.Direction.FORWARD);
         glyph3.setDirection(CRServo.Direction.REVERSE);
         glyph4.setDirection(CRServo.Direction.FORWARD);
+
+        intake1.setDirection(CRServo.Direction.REVERSE);
+        intake2.setDirection(CRServo.Direction.FORWARD);
+        intake3.setDirection(CRServo.Direction.REVERSE);
+        intake4.setDirection(CRServo.Direction.FORWARD);
+
         relicGrab = hardwareMap.crservo.get("relicGrab");
         relicRot = hardwareMap.crservo.get("relicRot");
 
@@ -84,8 +102,8 @@ public class ServoManagementV2 {
     public void closeClaw() {
             glyph1.setPower(-.3);
             glyph2.setPower(-.3);
-            glyph3.setPower(-.25);
-            glyph4.setPower(-.25);
+            glyph3.setPower(-.3);
+            glyph4.setPower(-.3);
     }
 
     public void slightClaw() {
@@ -97,10 +115,28 @@ public class ServoManagementV2 {
 
     //Open Claw
     public void openClaw() {
-            glyph1.setPower(0.5);
-            glyph2.setPower(0.5);
-            glyph3.setPower(0.5);
-            glyph4.setPower(0.5);
+            glyph1.setPower(0.15);
+            glyph2.setPower(0.15);
+            glyph3.setPower(.15);
+            glyph4.setPower(.15);
+    }
+    public void clawIntake() {
+        intake1.setPower(.75);
+        intake2.setPower(.75);
+        intake3.setPower(.75);
+        intake4.setPower(.75);
+    }
+    public void clawEject() {
+        intake1.setPower(-.75);
+        intake2.setPower(-.75);
+        intake3.setPower(-.75);
+        intake4.setPower(-.75);
+    }
+    public void clawStop() {
+        intake1.setPower(0);
+        intake2.setPower(0);
+        intake3.setPower(0);
+        intake4.setPower(0);
     }
 
 
@@ -113,7 +149,7 @@ public class ServoManagementV2 {
     }
 
     public void  relicRelease() {
-        relicGrab.setPower(-0.25);
+        relicGrab.setPower(-.5);
     }
 
     public void rotateUp() {

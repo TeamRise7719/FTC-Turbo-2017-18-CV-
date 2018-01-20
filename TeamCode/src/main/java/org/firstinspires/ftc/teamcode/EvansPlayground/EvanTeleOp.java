@@ -74,6 +74,13 @@ public class EvanTeleOp extends OpMode {
         } else if (gamepad2.right_trigger > 0.1) {
             srvo.slightClaw();
         }
+        if (gamepad2.right_stick_y < -.5) {
+            srvo.clawIntake();
+        } else if (gamepad2.right_stick_y > .5) {
+            srvo.clawEject();
+        } else {
+            srvo.clawStop();
+        }
 
         //----------------------------------------------=+(Glyph Claw)+=----------------------------------------------\\
 
