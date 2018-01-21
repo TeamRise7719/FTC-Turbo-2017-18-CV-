@@ -48,7 +48,7 @@ public class EvanTeleOp extends OpMode {
 
 
         //----------------------------------------------=+(Glyph Claw)+=----------------------------------------------\\
-        if (gamepad2.left_bumper) {
+        if ((gamepad2.left_bumper)&&(!gamepad2.x)) {
             if(robot.glyphRotated){
                 srvo.toggleClaw1();
                 srvo.enableClaw1 = false;
@@ -67,7 +67,7 @@ public class EvanTeleOp extends OpMode {
             }
         }
 
-        if (gamepad2.right_bumper) {
+        if ((gamepad2.right_bumper)&&(!gamepad2.x)) {
             if(robot.glyphRotated){
                 srvo.toggleClaw2();
                 srvo.enableClaw2 = false;
