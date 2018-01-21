@@ -58,11 +58,10 @@ public class SeansEncLibrary {
         ultrasonicFront = hardwareMap.get(I2CXL.class, "ultsonFront");
         ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
 
-        left_back_drive = hardwareMap.dcMotor.get("1");
-        left_front_drive = hardwareMap.dcMotor.get("2");
-
-        right_back_drive = hardwareMap.dcMotor.get("3");
-        right_front_drive = hardwareMap.dcMotor.get("4");
+        left_back_drive = hardwareMap.dcMotor.get("driveBL");
+        left_front_drive = hardwareMap.dcMotor.get("driveFL");
+        right_back_drive = hardwareMap.dcMotor.get("driveBR");
+        right_front_drive = hardwareMap.dcMotor.get("driveFR");
 
         liftMotorL = hardwareMap.dcMotor.get("liftL");
         liftMotorL.setDirection(DcMotor.Direction.FORWARD);

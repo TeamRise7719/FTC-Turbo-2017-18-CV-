@@ -16,15 +16,16 @@ public class EncoderTest extends OpMode {
     DcMotor right_front_drive;
 
     public void init(){
-        left_back_drive = hardwareMap.dcMotor.get("1");
-        left_front_drive = hardwareMap.dcMotor.get("2");
+        left_back_drive = hardwareMap.dcMotor.get("driveBL");
+        left_front_drive = hardwareMap.dcMotor.get("driveFL");
+        right_back_drive = hardwareMap.dcMotor.get("driveBR");
+        right_front_drive = hardwareMap.dcMotor.get("driveFR");
+
         left_back_drive.setDirection(DcMotor.Direction.REVERSE);
         left_front_drive.setDirection(DcMotor.Direction.REVERSE);
         left_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         left_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);;
 
-        right_back_drive = hardwareMap.dcMotor.get("3");
-        right_front_drive = hardwareMap.dcMotor.get("4");
         right_back_drive.setDirection(DcMotor.Direction.FORWARD);
         right_front_drive.setDirection(DcMotor.Direction.FORWARD);
         right_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);

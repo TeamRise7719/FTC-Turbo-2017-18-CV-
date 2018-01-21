@@ -64,15 +64,15 @@ public class FestusDrivetrain {
 
 
 
-        lr = hardwareMap.dcMotor.get("1");
-        lf = hardwareMap.dcMotor.get("2");
+        lr = hardwareMap.dcMotor.get("driveBL");
+        lf = hardwareMap.dcMotor.get("driveFL");
         lr.setDirection(DcMotor.Direction.FORWARD);
         lf.setDirection(DcMotor.Direction.FORWARD);
         lr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        rr = hardwareMap.dcMotor.get("3");
-        rf = hardwareMap.dcMotor.get("4");
+        rr = hardwareMap.dcMotor.get("driveBR");
+        rf = hardwareMap.dcMotor.get("driveFR");
         rr.setDirection(DcMotor.Direction.REVERSE);
         rf.setDirection(DcMotor.Direction.REVERSE);
         rr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

@@ -35,12 +35,15 @@ public class SyncPID extends LinearOpMode {
     }
 
     public void runOpMode() throws InterruptedException {
-        left_back_drive = hardwareMap.dcMotor.get("1");
+        left_back_drive = hardwareMap.dcMotor.get("driveBL");
+        left_front_drive = hardwareMap.dcMotor.get("driveFL");
+        right_back_drive = hardwareMap.dcMotor.get("driveBR");
+        right_front_drive = hardwareMap.dcMotor.get("driveFR");
+
         left_back_PID = new SynchronousPID(p,i,d);
         left_back_PID.setContinuous(true);
         left_back_PID.setInputRange(0.1,0.8);
 
-        left_front_drive = hardwareMap.dcMotor.get("2");
         left_front_PID = new SynchronousPID(p,i,d);
         left_front_PID.setContinuous(true);
         left_front_PID.setInputRange(0.1,0.8);
@@ -50,12 +53,10 @@ public class SyncPID extends LinearOpMode {
         left_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         left_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);;
 
-        right_back_drive = hardwareMap.dcMotor.get("3");
         right_back_PID = new SynchronousPID(p,i,d);
         right_back_PID.setContinuous(true);
         right_back_PID.setInputRange(0.1,0.8);
 
-        right_front_drive = hardwareMap.dcMotor.get("4");
         right_front_PID = new SynchronousPID(p,i,d);
         right_front_PID.setContinuous(true);
         right_front_PID.setInputRange(0.1,0.8);
