@@ -126,7 +126,7 @@ public class EvanTeleOp extends OpMode {
             robot.stopLift();
         }
 
-        if(gamepad2.x){
+        if((gamepad2.x)&&(!gamepad2.left_bumper)&&(!gamepad2.right_bumper)){
             robot.rotateGlyph();
             robot.enableRotation = false;
         }
