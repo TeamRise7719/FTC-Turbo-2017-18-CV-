@@ -8,7 +8,6 @@ public class ServoManagementV2 {
     CRServo glyph1;
     CRServo glyph2;
     CRServo glyph3, glyph4;
-    Math math;
     CRServo jewelHinge;
     CRServo relicGrab;
     CRServo relicRot;
@@ -18,10 +17,12 @@ public class ServoManagementV2 {
     CRServo intake3;
     CRServo intake4;
 
+    public boolean clawOpen1 = true;
+    public boolean enableClaw1 = true;
 
+    public boolean clawOpen2 = true;
+    public boolean enableClaw2 = true;
 
-
-    int clawOpen = 0;
     boolean jewelUp = true;
 
     public ServoManagementV2(HardwareMap hardwareMap) {
@@ -70,8 +71,6 @@ public class ServoManagementV2 {
         jewelKnock.setPower(0);
 
         relicRot.setPower(.75);
-
-        clawOpen = 0;
         jewelUp = true;
     }
 
@@ -98,12 +97,42 @@ public class ServoManagementV2 {
         jewelKnock.setPower(power);
     }
 
+    public void toggleClaw1() {
+        if ((clawOpen1)&&(enableClaw1)) {
+            glyph1.setPower(-.3);
+            glyph2.setPower(-.3);
+            clawOpen1 = false;
+        }
+        else if ((!clawOpen1)&&(enableClaw1)) {
+            glyph1.setPower(0.15);
+            glyph2.setPower(0.15);
+            clawOpen1 = true;
+        }
+        enableClaw1 = false;
+    }
+
+    public void toggleClaw2() {
+        if ((clawOpen2)&&(enableClaw2)) {
+            glyph3.setPower(-.3);
+            glyph4.setPower(-.3);
+            clawOpen2 = false;
+        }
+        else if ((!clawOpen2)&&(enableClaw2)) {
+            glyph3.setPower(0.15);
+            glyph4.setPower(0.15);
+            clawOpen2 = true;
+        }
+        enableClaw2 = false;
+    }
+
     //Close Claw
     public void closeClaw() {
             glyph1.setPower(-.3);
             glyph2.setPower(-.3);
             glyph3.setPower(-.3);
             glyph4.setPower(-.3);
+            clawOpen1 = false;
+            clawOpen2 = false;
     }
 
     public void slightClaw() {
@@ -111,6 +140,8 @@ public class ServoManagementV2 {
             glyph2.setPower(0);
             glyph3.setPower(0);
             glyph4.setPower(0);
+            clawOpen1 = true;
+            clawOpen2 = true;
     }
 
     //Open Claw
@@ -119,7 +150,10 @@ public class ServoManagementV2 {
             glyph2.setPower(0.15);
             glyph3.setPower(.15);
             glyph4.setPower(.15);
+            clawOpen1 = true;
+            clawOpen2 = true;
     }
+
     public void clawIntake() {
         intake1.setPower(.75);
         intake2.setPower(.75);

@@ -120,8 +120,6 @@ public class FieldOriented_CV_Test extends OpMode {
 
 
         telemetry.addData("plz", "blease");
-//        telemetry.addData("srvo",srvo.getRotate());
-
 
         //----------------------------------------------=+(Glyph Lift)+=----------------------------------------------\\
 
@@ -132,32 +130,6 @@ public class FieldOriented_CV_Test extends OpMode {
         } else {
             robot.stopLift();
         }
-
-        telemetry.addData("encoders", robot.liftMotor.getCurrentPosition());
-        telemetry.update();
-
-
-        //This is a very useful function, it just needs to be massively recalibrated to work with the current lift
-
-//        if (robot.liftMotor.getCurrentPosition() < -100 || robot.liftMotor.getCurrentPosition() > 100) {
-//
-//            if (gamepad2.left_bumper) {
-//
-//                while (robot.liftMotor.getCurrentPosition() < -100 || robot.liftMotor.getCurrentPosition() > 100) {
-//
-//                    if (robot.liftMotor.getCurrentPosition() < -100){
-//                        robot.raiseLift(.8);
-//                    }
-//
-//                    else if (robot.liftMotor.getCurrentPosition() > 100) {
-//                        robot.lowerLift(.8);
-//
-//                    }
-//                }
-//            }
-//        }
-        //----------------------------------------------=+(Glyph Lift)+=----------------------------------------------\\
-
     }
 
     @Override

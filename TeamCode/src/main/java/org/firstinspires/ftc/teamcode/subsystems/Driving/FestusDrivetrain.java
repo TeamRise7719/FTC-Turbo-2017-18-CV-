@@ -23,12 +23,15 @@ public class FestusDrivetrain {
     private final HardwareMap hardwareMap;
     private final Telemetry telemetry;
 
+    public boolean glyphRotated = false;
+    public boolean enableRotation = true;
+
     public boolean arcadeMode = true;
-    private int gyroCalibratedCount = 0;
 
     private final DcMotor lf, lr, rf, rr;
-    public DcMotor liftMotor;
-    public DcMotor winchMotor;
+    private DcMotor liftMotorL, liftMotorR;
+    private DcMotor winchMotor;
+    private DcMotor glyphRotate;
 
 
     private final BNO055IMU imu;
@@ -43,13 +46,23 @@ public class FestusDrivetrain {
         telemetry = _telemetry;
 
         //configuring the components
-        liftMotor = hardwareMap.dcMotor.get("lift");
-        liftMotor.setDirection(DcMotor.Direction.REVERSE);
-        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftMotorL = hardwareMap.dcMotor.get("liftL");
+        liftMotorL.setDirection(DcMotor.Direction.FORWARD);
+        liftMotorL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        liftMotorR = hardwareMap.dcMotor.get("liftR");
+        liftMotorR.setDirection(DcMotor.Direction.REVERSE);
+        liftMotorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         winchMotor = hardwareMap.dcMotor.get("winch");
-        liftMotor.setDirection(DcMotor.Direction.REVERSE);
         winchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        glyphRotate = hardwareMap.dcMotor.get("glyphRotate");
+        glyphRotate.setDirection(DcMotor.Direction.FORWARD);
+        glyphRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        glyphRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
 
         lr = hardwareMap.dcMotor.get("1");
         lf = hardwareMap.dcMotor.get("2");
@@ -91,10 +104,6 @@ public class FestusDrivetrain {
         setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER, lf, lr, rf, rr);
     }
 
-    public void runWithoutEncoders() {
-        setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER, lf, lr, rf, rr);
-    }
-
     /**
      * @return true if the gyro is fully calibrated, false otherwise
      */
@@ -110,7 +119,7 @@ public class FestusDrivetrain {
      * expensive.
      */
     public void loop() {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.RADIANS);
         gravity = imu.getGravity();
     }
 
@@ -176,24 +185,38 @@ public class FestusDrivetrain {
     }
 
     public void raiseLift(double power){
-        liftMotor.setPower(-power);
+        liftMotorL.setPower(-power);
+        liftMotorR.setPower(-power);
+
     }
 
     public void stopLift(){
-        liftMotor.setPower(0);
+        liftMotorL.setPower(0);
+        liftMotorR.setPower(0);
+
     }
 
     public void lowerLift(double power){
-        liftMotor.setPower(power);
+        liftMotorL.setPower(power);
+        liftMotorR.setPower(power);
     }
 
-    public void extendWinch(double power) { winchMotor.setPower(power);}
+    public void rotateGlyph() {
+        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if ((glyphRotated)&&(enableRotation)) {
+            glyphRotate.setTargetPosition(0);
+            glyphRotate.setPower(.25);
+            glyphRotated = false;
+        }
+        else if ((!glyphRotated)&&(enableRotation)) {
+            glyphRotate.setTargetPosition(560);
+            glyphRotate.setPower(-.25);
+            glyphRotated = true;
+        }
+        enableRotation = false;
+    }
 
     public void winch(double power) { winchMotor.setPower(power);}
-
-    public void retractWinch(double power) { winchMotor.setPower(-power);}
-
-    public void stopWinch() { winchMotor.setPower(0);}
 
     public double getError(double targetAngle) {
 
@@ -298,60 +321,5 @@ public class FestusDrivetrain {
 
     }
 
-
-
-
-    //THIS IS TOTALLY AN EXPERIMENT ITS 12:30 AND THAT MEANS ALL OF THIS IS PROBABLY GARBAGE
-
-    //The goal of this function is to rotate the robot to a certain heading while the indicated direction is pressed on the D-pad during TeleOp
-//    public void rotate(Gamepad gamepad1, Telemetry telemetry){
-//        loop();
-//        telemetry.update();
-//
-//        final double currentHeading = getHeadingDegrees();
-//        double tolerance = 3;
-//
-//        if (gamepad1.dpad_up){
-//            double targetHeading = 0;
-//            double difference = targetHeading - currentHeading;
-//            while (gamepad1.dpad_up && Math.abs(difference) > tolerance){
-//                telemetry.update();
-//                lf.setPower(-0.6);
-//                lr.setPower(-0.6);
-//                rr.setPower(0.6);
-//                rf.setPower(0.6);
-//            }
-//        } else if (gamepad1.dpad_left){
-//            double targetHeading = 90;
-//            double difference = targetHeading - currentHeading;
-//            while (gamepad1.dpad_left && Math.abs(difference) > tolerance){
-//                telemetry.update();
-//                lf.setPower(-0.6);
-//                lr.setPower(-0.6);
-//                rr.setPower(0.6);
-//                rf.setPower(0.6);
-//            }
-//        } else if (gamepad1.dpad_down){
-//            double targetHeading = 180;
-//            double difference = targetHeading - currentHeading;
-//            while (gamepad1.dpad_down && Math.abs(difference) > tolerance){
-//                telemetry.update();
-//                lf.setPower(-0.6);
-//                lr.setPower(-0.6);
-//                rr.setPower(0.6);
-//                rf.setPower(0.6);
-//            }
-//        } else if (gamepad1.dpad_right){
-//            double targetHeading = 270;
-//            double difference = targetHeading - currentHeading;
-//            while (gamepad1.dpad_right && Math.abs(difference) > tolerance) {
-//                telemetry.update();
-//                lf.setPower(-0.6);
-//                lr.setPower(-0.6);
-//                rr.setPower(0.6);
-//                rf.setPower(0.6);
-//            }
-//        }
-//    }
 
 }

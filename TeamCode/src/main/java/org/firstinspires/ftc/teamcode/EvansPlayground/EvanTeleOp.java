@@ -12,50 +12,31 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 @TeleOp(name = "EvanTeleOp", group = "Festus")
 public class EvanTeleOp extends OpMode {
 
-
     private FestusDrivetrain robot;
-
-
     ServoManagementV2 srvo;
-
-
 
     @Override
     public void init() {
         //Initialize robot
         robot = new FestusDrivetrain(hardwareMap, telemetry);
-
-
-
         robot.runUsingEncoders();
-
 
         //Initialize Servos
         srvo = new ServoManagementV2(hardwareMap);
         srvo.init();
-
-//        telemetry.addData("Gyro Ready?", robot.isGyroCalibrated() ? "YES" : "no.");
-//        telemetry.addData("Arcade Mode (a)", robot.arcadeMode ? "YES" : "no.");
-//        telemetry.update();
     }
 
     @Override
     public void loop() {
         srvo.knockJewel(0);
 
-
         //----------------------------------------------=+(Drivetrain)+=----------------------------------------------\\
         robot.arcadeMode = true;
         robot.drive(gamepad1, telemetry);
 
-//        //THIS MAY TOTALLY NOT WORK AT ALL
-//        robot.rotate(gamepad1, telemetry);
-
         if (gamepad1.x) {
             robot.resetHeading();
         }
-
-
 
         //----------------------------------------------=+(Drivetrain)+=----------------------------------------------\\
 
@@ -67,13 +48,44 @@ public class EvanTeleOp extends OpMode {
 
 
         //----------------------------------------------=+(Glyph Claw)+=----------------------------------------------\\
-        if (gamepad2.b) {
-            srvo.openClaw();
-        } else if (gamepad2.x) {
-            srvo.closeClaw();
-        } else if (gamepad2.right_trigger > 0.1) {
-            srvo.slightClaw();
+        if (gamepad2.left_bumper) {
+            if(robot.glyphRotated){
+                srvo.toggleClaw1();
+                srvo.enableClaw1 = false;
+            }
+            else {
+                srvo.toggleClaw2();
+                srvo.enableClaw2 = false;
+            }
         }
+        else if (!gamepad2.left_bumper) {
+            if(robot.glyphRotated){
+                srvo.enableClaw1 = true;
+            }
+            else {
+                srvo.enableClaw2 = true;
+            }
+        }
+
+        if (gamepad2.right_bumper) {
+            if(robot.glyphRotated){
+                srvo.toggleClaw2();
+                srvo.enableClaw2 = false;
+            }
+            else {
+                srvo.toggleClaw1();
+                srvo.enableClaw1 = false;
+            }
+        }
+        else if (!gamepad2.right_bumper) {
+            if(robot.glyphRotated){
+                srvo.enableClaw2 = true;
+            }
+            else {
+                srvo.enableClaw1 = true;
+            }
+        }
+
         if (gamepad2.right_stick_y < -.5) {
             srvo.clawIntake();
         } else if (gamepad2.right_stick_y > .5) {
@@ -86,29 +98,23 @@ public class EvanTeleOp extends OpMode {
 
 
         //----------------------------------------------=+(Relic)+=----------------------------------------------\\
-        if (gamepad2.right_bumper) {
+        if (gamepad1.right_bumper) {
             srvo.openRelic();
-        } else if (gamepad2.left_bumper) {
+        } else if (gamepad1.left_bumper) {
             srvo.closeRelic();
         }
+        if (gamepad1.left_trigger > 0.1) {
+            srvo.relicRelease();
+        }
+
         if (gamepad2.dpad_up) {
             srvo.rotateUp();
         } else if (gamepad2.dpad_down) {
             srvo.rotateDown();
         }
 
-        if (gamepad2.left_trigger > 0.1) {
-            srvo.relicRelease();
-        }
-
-
         robot.winch(gamepad2.left_stick_x);
         //----------------------------------------------=+(Relic)+=----------------------------------------------\\
-
-
-
-//        telemetry.addData("srvo",srvo.getRotate());
-
 
         //----------------------------------------------=+(Glyph Lift)+=----------------------------------------------\\
 
@@ -120,29 +126,14 @@ public class EvanTeleOp extends OpMode {
             robot.stopLift();
         }
 
+        if(gamepad2.x){
+            robot.rotateGlyph();
+            robot.enableRotation = false;
+        }
+        else if (!gamepad2.x){
+            robot.enableRotation = true;
+        }
 
-
-        //This is a very useful function, it just needs to be massively recalibrated to work with the current lift
-
-        //!!!!Possibly deprecated because of new lift design, least priority!!!!
-
-//        if (robot.liftMotor.getCurrentPosition() < -100 || robot.liftMotor.getCurrentPosition() > 100) {
-//
-//            if (gamepad2.left_bumper) {
-//
-//                while (robot.liftMotor.getCurrentPosition() < -100 || robot.liftMotor.getCurrentPosition() > 100) {
-//
-//                    if (robot.liftMotor.getCurrentPosition() < -100){
-//                        robot.raiseLift(.8);
-//                    }
-//
-//                    else if (robot.liftMotor.getCurrentPosition() > 100) {
-//                        robot.lowerLift(.8);
-//
-//                    }
-//                }
-//            }
-//        }
         //----------------------------------------------=+(Glyph Lift)+=----------------------------------------------\\
 
     }
