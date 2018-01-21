@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Transitioning.AutoTransitioner;
-import org.firstinspires.ftc.teamcode.subsystems.Driving.PID_Library;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.SeansEncLibrary;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 
@@ -21,11 +21,10 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
     I2CXL ultrasonicBack;
-
-
+    
     RobotVision vMod;
     ServoManagementV2 srvo;
-    PID_Library enc;
+    SeansEncLibrary enc;
 
     ElapsedTime etime = new ElapsedTime();
 
@@ -49,7 +48,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
         vMod = new RobotVision(hardwareMap, telemetry);
         vMod.init();
 
-        enc = new PID_Library(hardwareMap, telemetry,this);
+        enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
 
         liftMotor = hardwareMap.dcMotor.get("lift");
@@ -81,9 +80,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             waitFor(1000);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.1);
-            waitFor(1100);
-            liftMotor.setPower(0);
+            enc.moveLiftTime(-0.1,1.1);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
@@ -220,11 +217,10 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
-            liftMotor.setPower(0.1);
 
             //NEW CODE TO GET SECOND GLYPH //
             /*
-            //Slight Claw
+            enc.moveLiftTime(0.1,1.1);
             srvo.slightClaw();
             waitFor(1000);
             liftMotor.setPower(0);
@@ -236,9 +232,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //Close and Lift
             srvo.closeClaw();
             waitFor(500);
-            liftMotor.setPower(-0.8);
-            waitFor(1500);
-            liftMotor.setPower(0);
+            enc.moveLiftTime(-0.8,1.5);
 
             //Turn Around
             enc.gyroTurn(enc.TURN_SPEED, -90);

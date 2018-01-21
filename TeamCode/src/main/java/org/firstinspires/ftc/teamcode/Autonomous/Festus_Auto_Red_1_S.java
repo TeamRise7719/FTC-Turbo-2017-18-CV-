@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Transitioning.AutoTransitioner;
-import org.firstinspires.ftc.teamcode.subsystems.Driving.PID_Library;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.SeansEncLibrary;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 
@@ -18,14 +18,12 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
  */
 @Autonomous(name = "Festus_Auto_Red_1_S", group = "Festus")
 public class Festus_Auto_Red_1_S extends LinearOpMode {
-    DcMotor liftMotor;
     ColorSensor color;
     I2CXL ultrasonicBack;
 
-
     RobotVision vMod;
     ServoManagementV2 srvo;
-    PID_Library enc;
+    SeansEncLibrary enc;
 
     ElapsedTime etime = new ElapsedTime();
 
@@ -49,11 +47,8 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
         vMod = new RobotVision(hardwareMap, telemetry);
         vMod.init();
 
-        enc = new PID_Library(hardwareMap, telemetry,this);
+        enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
-
-        liftMotor = hardwareMap.dcMotor.get("lift");
-        liftMotor.setDirection(DcMotor.Direction.REVERSE);
 
         color = hardwareMap.colorSensor.get("color");
         color.enableLed(true);
@@ -61,8 +56,6 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
         ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
         ultrasonicBack.initialize();
 
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
 
         //-------------------------------------=+(Initialization Config)+=------------------------------------\\
@@ -82,9 +75,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             waitFor(800);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.1);
-            waitFor(1000);
-            liftMotor.setPower(0);
+            enc.moveLiftTime(-0.1,1.1);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
@@ -219,15 +210,12 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
             //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
-            liftMotor.setPower(0.05);
-
+            enc.moveLiftTime(0.05,1);
 
             //NEW CODE TO GET SECOND GLYPH //
 
             //Slight Claw
             srvo.slightClaw();
-            waitFor(1000);
-            liftMotor.setPower(0);
 
             //Drive to Glyph
             enc.gyroDrive(enc.DRIVE_SPEED, 20, 90,false);
@@ -236,9 +224,8 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             //Close and Lift
             srvo.closeClaw();
             waitFor(500);
-            liftMotor.setPower(-1);
-            waitFor(1000);
-            liftMotor.setPower(0);
+            enc.moveLiftTime(-1,1);
+
 
             //Turn Around
             enc.gyroTurn(enc.TURN_SPEED, -90);

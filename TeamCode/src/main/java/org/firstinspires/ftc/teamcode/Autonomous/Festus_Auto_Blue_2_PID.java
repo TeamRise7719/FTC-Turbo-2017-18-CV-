@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Transitioning.AutoTransitioner;
-import org.firstinspires.ftc.teamcode.subsystems.Driving.PID_Library;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.SeansEncLibrary;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.I2CXL;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
@@ -19,14 +19,12 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 
 @Autonomous(name = "Festus_Auto_Blue_2_PID", group = "Festus")
 public class Festus_Auto_Blue_2_PID extends LinearOpMode {
-    DcMotor liftMotor;
     ColorSensor color;
     I2CXL ultrasonicBack;
 
-
     RobotVision vMod;
     ServoManagementV2 srvo;
-    PID_Library enc;
+    SeansEncLibrary enc;
 
     ElapsedTime etime = new ElapsedTime();
 
@@ -49,20 +47,14 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
         vMod = new RobotVision(hardwareMap, telemetry);
         vMod.init();
 
-        enc = new PID_Library(hardwareMap, telemetry,this);
+        enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
 
         ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
         ultrasonicBack.initialize();
 
-        liftMotor = hardwareMap.dcMotor.get("lift");
-        liftMotor.setDirection(DcMotor.Direction.REVERSE);
-
         color = hardwareMap.colorSensor.get("color");
         color.enableLed(true);
-
-        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
 
 
@@ -82,9 +74,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             waitFor(1000);
 
             //Step 2: Lift Cube
-            liftMotor.setPower(-0.1);
-            waitFor(1000);
-            liftMotor.setPower(0);
+            enc.moveLiftTime(-0.1,1);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
