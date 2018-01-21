@@ -119,7 +119,7 @@ public class FestusDrivetrain {
      * expensive.
      */
     public void loop() {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.RADIANS);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         gravity = imu.getGravity();
     }
 

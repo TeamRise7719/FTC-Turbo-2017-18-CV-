@@ -37,7 +37,7 @@ public class GyroTest extends LinearOpMode
 
         while (opModeIsActive())
         {
-            angles  = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+            angles  = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             gravity = imu.getGravity();
             sendTelemetry();
         }
