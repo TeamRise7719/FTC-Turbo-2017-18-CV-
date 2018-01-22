@@ -60,7 +60,7 @@ public class FestusDrivetrain {
         glyphRotate = hardwareMap.dcMotor.get("glyphRotate");
         glyphRotate.setDirection(DcMotor.Direction.FORWARD);
         glyphRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        glyphRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //glyphRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
