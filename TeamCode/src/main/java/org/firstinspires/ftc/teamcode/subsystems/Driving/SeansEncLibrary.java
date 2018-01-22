@@ -77,6 +77,8 @@ public class SeansEncLibrary {
         glyphRotate = hardwareMap.dcMotor.get("glyphRotate");
         glyphRotate.setDirection(DcMotor.Direction.FORWARD);
         glyphRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         telemetry = tel;
         linearOpMode = opMode;
     }
