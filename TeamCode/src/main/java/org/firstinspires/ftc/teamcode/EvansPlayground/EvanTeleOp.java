@@ -125,11 +125,11 @@ public class EvanTeleOp extends OpMode {
         //----------------------------------------------=+(Glyph Lift)+=----------------------------------------------\\
 
         if (gamepad2.y) {
-            robot.raiseLift(1);
+            robot.setLiftPower(-1);
         } else if (gamepad2.a) {
-            robot.lowerLift(1);
+            robot.setLiftPower(1);
         } else {
-            robot.stopLift();
+            robot.setLiftPower(0);
         }
 
         if((gamepad2.x)&&(!gamepad2.left_bumper)&&(!gamepad2.right_bumper)){

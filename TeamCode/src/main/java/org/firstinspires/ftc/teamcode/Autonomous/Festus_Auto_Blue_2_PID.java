@@ -49,6 +49,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
 
         enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
+        enc.resetGlyphRotateMotor();
 
         ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
         ultrasonicBack.initialize();

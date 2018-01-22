@@ -49,6 +49,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
         enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
+        enc.resetGlyphRotateMotor();
 
         color = hardwareMap.colorSensor.get("color");
         color.enableLed(true);

@@ -18,7 +18,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
  */
 @Autonomous(name = "Festus_Auto_Blue_1_S", group = "Festus")
 public class Festus_Auto_Blue_1_S extends LinearOpMode {
-    DcMotor liftMotor;
     ColorSensor color;
     I2CXL ultrasonicBack;
     
@@ -50,9 +49,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
         enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
-
-        liftMotor = hardwareMap.dcMotor.get("lift");
-        liftMotor.setDirection(DcMotor.Direction.REVERSE);
+        enc.resetGlyphRotateMotor();
 
         color = hardwareMap.colorSensor.get("color");
         color.enableLed(true);
@@ -60,8 +57,6 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
         ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
         ultrasonicBack.initialize();
 
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
 
         //-------------------------------------=+(Initialization Config)+=------------------------------------\\

@@ -60,9 +60,7 @@ public class FestusDrivetrain {
         glyphRotate = hardwareMap.dcMotor.get("glyphRotate");
         glyphRotate.setDirection(DcMotor.Direction.FORWARD);
         glyphRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //glyphRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
+        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         lr = hardwareMap.dcMotor.get("driveBL");
         lf = hardwareMap.dcMotor.get("driveFL");
@@ -104,11 +102,9 @@ public class FestusDrivetrain {
         setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER, lf, lr, rf, rr);
     }
 
-    /**
-     * @return true if the gyro is fully calibrated, false otherwise
-     */
-    public boolean isGyroCalibrated() {
-        return imu.isGyroCalibrated();
+    public void resetGlyphRotateMotor(){
+        glyphRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     /**
@@ -136,11 +132,6 @@ public class FestusDrivetrain {
     public double getHeading() {
         return (getRawHeading() - headingOffset) % (2.0 * Math.PI);
     }
-
-    /**
-     * @return the robot's current heading in degrees
-     */
-    public double getHeadingDegrees() { return Math.toDegrees(getHeading()); }
 
     /**
      * Set the current heading to zero.
@@ -184,25 +175,12 @@ public class FestusDrivetrain {
         rr.setPower(_rr / scale);
     }
 
-    public void raiseLift(double power){
-        liftMotorL.setPower(-power);
-        liftMotorR.setPower(-power);
-
-    }
-
-    public void stopLift(){
-        liftMotorL.setPower(0);
-        liftMotorR.setPower(0);
-
-    }
-
-    public void lowerLift(double power){
+    public void setLiftPower(double power){
         liftMotorL.setPower(power);
         liftMotorR.setPower(power);
     }
 
     public void rotateGlyph() {
-        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if ((glyphRotated)&&(enableRotation)) {
             glyphRotate.setTargetPosition(0);
             glyphRotate.setPower(.25);
@@ -218,16 +196,12 @@ public class FestusDrivetrain {
 
     public void winch(double power) { winchMotor.setPower(power);}
 
-
-
-
     public void drive(Gamepad gamepad1, Telemetry telemetry) {
         loop();
         telemetry.update();
 
         final double x = -gamepad1.left_stick_x;
         final double y = gamepad1.left_stick_y;
-
 
         final double rotation = -(gamepad1.right_stick_x);
         final double direction = Math.atan2(x, y) + (arcadeMode ? getHeading() : 0.0);
@@ -238,17 +212,11 @@ public class FestusDrivetrain {
         final double lr = speed * Math.cos(direction + Math.PI / 4.0) + rotation;
         final double rr = speed * Math.sin(direction + Math.PI / 4.0) - rotation;
 
-
         if (gamepad1.right_trigger > 0.1){
             setMotors(lf / 2, lr / 2, rf / 2, rr / 2);
         } else {
             setMotors(lf, lr, rf, rr);
         }
 
-
-
-
     }
-
-
 }
