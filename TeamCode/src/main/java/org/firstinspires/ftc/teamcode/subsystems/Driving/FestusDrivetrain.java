@@ -218,77 +218,8 @@ public class FestusDrivetrain {
 
     public void winch(double power) { winchMotor.setPower(power);}
 
-    public double getError(double targetAngle) {
 
-        double robotError;
 
-        // calculate error in -179 to +180 range  (
-        //robotError = targetAngle - gyro.getIntegratedZValue();
-        angles = imu.getAngularOrientation();
-        robotError = targetAngle - angles.firstAngle;
-
-        while (robotError > 180)  robotError -= 360;
-        while (robotError <= -180) robotError += 360;
-        return robotError;
-    }
-
-    public double getSteerTeleOp(double error, double PCoeff) {
-        return Range.clip(error * PCoeff, -1, 1);
-    }
-
-    boolean onHeadingTeleOp(double speed, double angle, double PCoeff) {
-        double   error ;
-        double   steer ;
-        boolean  onTarget = false ;
-        double leftSpeed;
-        double rightSpeed;
-
-        // determine turn power based on +/- error
-        error = getError(angle);
-
-        if (Math.abs(error) <= 1) {
-            steer = 0.0;
-            leftSpeed  = 0.0;
-            rightSpeed = 0.0;
-            onTarget = true;
-        }
-        else {
-            steer = getSteerTeleOp(error, PCoeff);
-            rightSpeed  = -(speed * steer);
-            leftSpeed   = -rightSpeed;
-        }
-
-        // Send desired speeds to motors.
-        lr.setPower(-leftSpeed);
-        lf.setPower(-leftSpeed);
-        rr.setPower(-rightSpeed);
-        rf.setPower(-rightSpeed);
-
-        return onTarget;
-    }
-
-    public void gyroTurnTeleop (Gamepad gamepad1,  double speed) {
-        boolean doneTurning = false;
-
-        double angle;
-
-        // keep looping while we are still active, and not on heading.
-        while (!doneTurning) {
-            if (gamepad1.dpad_up) {
-                angle = 0;
-            } else if (gamepad1.dpad_down) {
-                angle = 180;
-            } else if (gamepad1.dpad_left) {
-                angle = 90;
-            } else if (gamepad1.dpad_right) {
-                angle = -90;
-            } else {
-                break;
-            }
-            // Update telemetry & Allow time for other processes to run.
-            doneTurning = onHeadingTeleOp(speed, angle, 0.06);
-        }
-    }
 
     public void drive(Gamepad gamepad1, Telemetry telemetry) {
         loop();
@@ -315,8 +246,6 @@ public class FestusDrivetrain {
         }
 
 
-
-        gyroTurnTeleop(gamepad1,0.9);
 
 
     }

@@ -23,6 +23,12 @@ public class EvanTeleOp extends OpMode {
 
         //Initialize Servos
         srvo = new ServoManagementV2(hardwareMap);
+
+    }
+
+    @Override
+    public void start() {
+        super.start();
         srvo.init();
     }
 
@@ -136,5 +142,11 @@ public class EvanTeleOp extends OpMode {
 
         //----------------------------------------------=+(Glyph Lift)+=----------------------------------------------\\
 
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        srvo.clawStop();
     }
 }
