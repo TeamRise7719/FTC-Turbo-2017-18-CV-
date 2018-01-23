@@ -26,7 +26,7 @@ public class FestusDrivetrain {
     public boolean glyphRotated = false;
     public boolean enableRotation = true;
 
-    public boolean arcadeMode = true;
+    public boolean arcadeMode = false;
 
     private final DcMotor lf, lr, rf, rr;
     private DcMotor liftMotorL, liftMotorR;

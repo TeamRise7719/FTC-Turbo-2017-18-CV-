@@ -43,10 +43,10 @@ public class EncoderTest extends OpMode {
 
 
     public void loop(){
-        telemetry.addData("encoder 1", left_back_drive.getCurrentPosition());
-        telemetry.addData("encoder 2", left_front_drive.getCurrentPosition());
-        telemetry.addData("encoder 3", right_back_drive.getCurrentPosition());
-        telemetry.addData("encoder 4", right_front_drive.getCurrentPosition());
+        telemetry.addData("encoder LB", left_back_drive.getCurrentPosition());
+        telemetry.addData("encoder LF", left_front_drive.getCurrentPosition());
+        telemetry.addData("encoder RB", right_back_drive.getCurrentPosition());
+        telemetry.addData("encoder RF", right_front_drive.getCurrentPosition());
         telemetry.update();
     }
 

@@ -148,8 +148,8 @@ public class ServoManagementV2 {
     public void openClaw() {
             clawTR.setPower(0.15);
             clawBR.setPower(0.15);
-            clawTL.setPower(.15);
-            clawBL.setPower(.15);
+            clawTL.setPower(0.15);
+            clawBL.setPower(0.15);
             clawOpen1 = true;
             clawOpen2 = true;
     }
