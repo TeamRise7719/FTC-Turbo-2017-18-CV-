@@ -62,14 +62,10 @@ public class ServoManagementV2 {
 
     //Start with Jewel Up and Claw Open
     public void init() {
-        clawTR.setPower(0.5);
-        clawBR.setPower(0.5);
-        clawTL.setPower(0.5);
-        clawBL.setPower(0.5);
+        openClaw();
 
         jewelHinge.setPower(0.6);
         jewelKnock.setPower(0);
-
         relicRot.setPower(.75);
         jewelUp = true;
     }

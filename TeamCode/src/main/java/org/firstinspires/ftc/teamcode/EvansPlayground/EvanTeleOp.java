@@ -15,6 +15,8 @@ public class EvanTeleOp extends OpMode {
     private FestusDrivetrain robot;
     ServoManagementV2 srvo;
 
+    private boolean isReady = false;
+
     @Override
     public void init() {
         //Initialize robot
@@ -23,13 +25,28 @@ public class EvanTeleOp extends OpMode {
 
         //Initialize Servos
         srvo = new ServoManagementV2(hardwareMap);
+        srvo.init();
 
+        isReady = true;
+    }
+
+    @Override
+    public void init_loop() {
+        if(isReady==true) {
+            telemetry.addData(">", "Press X to Reset Glyph Encoders");
+            telemetry.addData("Glyph Reset?", robot.glyphReset);
+            telemetry.addData(">", "Robot Ready!");
+            telemetry.update();
+
+            if (gamepad1.x) {
+                robot.resetGlyphRotateMotor();
+            }
+        }
     }
 
     @Override
     public void start() {
         super.start();
-        srvo.init();
     }
 
     @Override

@@ -25,6 +25,7 @@ public class FestusDrivetrain {
 
     public boolean glyphRotated = false;
     public boolean enableRotation = true;
+    public boolean glyphReset = false;
 
     public boolean arcadeMode = false;
 
@@ -105,6 +106,7 @@ public class FestusDrivetrain {
     public void resetGlyphRotateMotor(){
         glyphRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        glyphReset = true;
     }
 
     /**
