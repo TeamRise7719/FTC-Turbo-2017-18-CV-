@@ -24,7 +24,6 @@ public class FestusDrivetrain {
     private final Telemetry telemetry;
 
     public boolean glyphRotated = false;
-    public boolean enableRotation = true;
     public boolean glyphReset = false;
 
     public boolean arcadeMode = false;
@@ -183,17 +182,16 @@ public class FestusDrivetrain {
     }
 
     public void rotateGlyph() {
-        if ((glyphRotated)&&(enableRotation)) {
+        if (glyphRotated) {
             glyphRotate.setTargetPosition(0);
             glyphRotate.setPower(.25);
             glyphRotated = false;
         }
-        else if ((!glyphRotated)&&(enableRotation)) {
+        else if (!glyphRotated) {
             glyphRotate.setTargetPosition(560);
             glyphRotate.setPower(-.25);
             glyphRotated = true;
         }
-        enableRotation = false;
     }
 
     public void winch(double power) { winchMotor.setPower(power);}
