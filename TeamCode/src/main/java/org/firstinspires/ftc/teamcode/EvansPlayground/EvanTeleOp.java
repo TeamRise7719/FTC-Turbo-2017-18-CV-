@@ -193,5 +193,7 @@ public class EvanTeleOp extends OpMode {
     @Override
     public void stop() {
         super.stop();
+        srvo.clawStop1();
+        srvo.clawStop2();
     }
 }

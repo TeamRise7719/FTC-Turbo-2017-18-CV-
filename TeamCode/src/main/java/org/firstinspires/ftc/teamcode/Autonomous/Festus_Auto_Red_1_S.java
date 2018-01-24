@@ -247,6 +247,8 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             //End While Loop
             break;
         }
+        srvo.clawStop1();
+        srvo.clawStop2();
         AutoTransitioner.transitionOnStop(this, "EvanTeleOp");
     }
 }

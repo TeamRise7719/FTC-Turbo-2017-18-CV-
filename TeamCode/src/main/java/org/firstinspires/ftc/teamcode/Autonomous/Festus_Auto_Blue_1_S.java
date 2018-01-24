@@ -249,6 +249,8 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             break;
         }
         //Switch Autonomous to TeleOp
+        srvo.clawStop1();
+        srvo.clawStop2();
         AutoTransitioner.transitionOnStop(this, "EvanTeleOp");
     }
 }
