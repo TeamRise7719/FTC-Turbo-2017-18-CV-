@@ -22,7 +22,7 @@ public class SeansEncLibrary {
     DcMotor right_back_drive;
     DcMotor right_front_drive;
     DcMotor liftMotorL, liftMotorR;
-    DcMotor glyphRotate;
+    public DcMotor glyphRotate;
 
     BNO055IMU gyro;
     Orientation gyro_angle;
@@ -56,7 +56,7 @@ public class SeansEncLibrary {
     private static final double     ULTRA_COEFF           = 0.06;     // Larger is more responsive, but also less stable
 
     public SeansEncLibrary(HardwareMap hardwareMap, Telemetry tel, LinearOpMode opMode) {
-        gyro = hardwareMap.get(BNO055IMU.class, "imu");
+        gyro = hardwareMap.get(BNO055IMU.class, "imuINT");
 
         ultrasonicFront = hardwareMap.get(I2CXL.class, "ultsonFront");
         ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
@@ -96,6 +96,7 @@ public class SeansEncLibrary {
         right_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
+
         BNO055IMU.Parameters param = new BNO055IMU.Parameters();
         param.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         param.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -103,7 +104,6 @@ public class SeansEncLibrary {
 
         gyro.initialize(param);
         gyro_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         left_back_drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -145,17 +145,15 @@ public class SeansEncLibrary {
         liftMotorR.setPower(0);
     }
 
-    public void rotateGlyph() {
-        if ((glyphRotated)) {
+    public void rotateGlyphDown() {
             glyphRotate.setTargetPosition(0);
             glyphRotate.setPower(.25);
             glyphRotated = false;
-        }
-        else if ((!glyphRotated)) {
+    }
+    public void rotateGlyphUp() {
             glyphRotate.setTargetPosition(560);
             glyphRotate.setPower(-.25);
             glyphRotated = true;
-        }
     }
 
         /**
@@ -642,7 +640,7 @@ public class SeansEncLibrary {
 
         // calculate error in -179 to +180 range  (
         //robotError = targetAngle - gyro.getIntegratedZValue();
-        gyro_angle = gyro.getAngularOrientation();
+        gyro_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         robotError = targetAngle - gyro_angle.firstAngle;
 
         while (robotError > 180)  robotError -= 360;

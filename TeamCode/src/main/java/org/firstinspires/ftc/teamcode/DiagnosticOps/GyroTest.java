@@ -29,7 +29,7 @@ public class GyroTest extends LinearOpMode
         parameters.useExternalCrystal   = true;
         parameters.mode                 = BNO055IMU.SensorMode.IMU;
         parameters.loggingTag           = "IMU";
-        imu                             = hardwareMap.get(BNO055IMU.class, "imu");
+        imu                             = hardwareMap.get(BNO055IMU.class, "imuINT");
 
         imu.initialize(parameters);
         telemetry.setMsTransmissionInterval(100);
@@ -38,6 +38,7 @@ public class GyroTest extends LinearOpMode
         while (opModeIsActive())
         {
             angles  = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            angles = imu.getAngularOrientation();
             gravity = imu.getGravity();
             sendTelemetry();
         }

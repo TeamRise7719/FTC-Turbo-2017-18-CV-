@@ -55,6 +55,7 @@ public class EvanTeleOp extends OpMode {
 
     @Override
     public void loop() {
+
         srvo.knockJewel(0);
 
         //----------------------------------------------=+(Drivetrain)+=----------------------------------------------\\
@@ -149,7 +150,7 @@ public class EvanTeleOp extends OpMode {
         } else if (gamepad1.left_bumper) {
             srvo.closeRelic();
         }
-        if (gamepad1.left_trigger > 0.1) {
+        if (gamepad1.b) {
             srvo.relicRelease();
         }
 
@@ -159,10 +160,10 @@ public class EvanTeleOp extends OpMode {
             srvo.rotateDown();
         }
 
-        if((gamepad1.left_trigger>0.5)&&(Math.abs(gamepad1.right_trigger)<0.5)) {
+        if((gamepad1.left_trigger>0.1)&&(Math.abs(gamepad1.right_trigger)<0.1)) {
             robot.winch(-gamepad1.left_trigger);
         }
-        else if((gamepad1.right_trigger>0.5)&&(Math.abs(gamepad1.left_trigger)<0.5)) {
+        else if((gamepad1.right_trigger>0.1)&&(Math.abs(gamepad1.left_trigger)<0.1)) {
             robot.winch(gamepad1.right_trigger);
         }
         else{

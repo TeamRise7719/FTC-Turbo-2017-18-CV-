@@ -26,8 +26,6 @@ public class FestusDrivetrain {
     public boolean glyphRotated = false;
     public boolean glyphReset = false;
 
-    public boolean arcadeMode = false;
-
     private final DcMotor lf, lr, rf, rr;
     private DcMotor liftMotorL, liftMotorR;
     private DcMotor winchMotor;
@@ -38,8 +36,6 @@ public class FestusDrivetrain {
 
     private double headingOffset = 0.0;
     private Orientation angles;
-    private Acceleration gravity;
-
 
     public FestusDrivetrain(final HardwareMap _hardwareMap, final Telemetry _telemetry) {
         hardwareMap = _hardwareMap;
@@ -77,18 +73,16 @@ public class FestusDrivetrain {
         rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        parameters.angleUnit            = BNO055IMU.AngleUnit.RADIANS;
+        parameters.accelUnit            = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled       = true;
+        parameters.useExternalCrystal   = true;
+        parameters.mode                 = BNO055IMU.SensorMode.IMU;
+        parameters.loggingTag           = "IMU";
+        imu                             = hardwareMap.get(BNO055IMU.class, "imuINT");
 
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
 
     }
 
@@ -117,7 +111,6 @@ public class FestusDrivetrain {
      */
     public void loop() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        gravity = imu.getGravity();
     }
 
     /**
@@ -198,13 +191,18 @@ public class FestusDrivetrain {
 
     public void drive(Gamepad gamepad1, Telemetry telemetry) {
         loop();
+
+        telemetry.addData("RAW Gyro: ",getRawHeading());
+        telemetry.addData("Heading: ",getHeading());
+        telemetry.addData("Offset: ",headingOffset);
+
         telemetry.update();
 
         final double x = -gamepad1.left_stick_x;
         final double y = gamepad1.left_stick_y;
 
         final double rotation = -(gamepad1.right_stick_x);
-        final double direction = Math.atan2(x, y) + (arcadeMode ? getHeading() : 0.0);
+        final double direction = Math.atan2(x, y) + getHeading();
         final double speed = Math.min(1.0, Math.sqrt(x * x + y * y));
 
         final double lf = speed * Math.sin(direction + Math.PI / 4.0) + rotation;

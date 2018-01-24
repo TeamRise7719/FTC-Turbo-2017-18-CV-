@@ -60,16 +60,38 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
         //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
 
         //-------------------------------------=+(Initialization Config)+=------------------------------------\\
-        //srvo.rotateRelic(0.5);
         srvo.raiseJewel();
-        telemetry.addData(">", "Robot Ready!");
-        telemetry.update();
-        waitForStart();
+        enc.rotateGlyphDown();
+
+        while (!isStarted()){
+            vMod.getVuMark();
+            telemetry.addData(">", "Robot Ready!");
+            if (vMod.vuMark == RelicRecoveryVuMark.LEFT) {
+                telemetry.addData("VuMark Status - ", "Left");
+                position = 2;
+            } else if (vMod.vuMark == RelicRecoveryVuMark.CENTER) {
+                telemetry.addData("VuMark Status - ", "Center");
+                position = 1;
+            } else if (vMod.vuMark == RelicRecoveryVuMark.RIGHT) {
+                telemetry.addData("VuMark Status - ", "Right");
+                position = 0;
+            }
+            if (vMod.vuMark == RelicRecoveryVuMark.UNKNOWN) {
+                position = 1;
+            }
+            //Display Position
+            telemetry.addData("Position:", position);
+            telemetry.update();
+            idle();
+        }
+
         //-------------------------------------=+(Initialization Config)+=------------------------------------\\
 
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
         while (opModeIsActive()) {
             //-----------------------------------------=+(Autonomous)+=-------------------------------------------\\
+
+            vMod.closeCamera();
 
             //Step 1: Close The Claw
             srvo.closeClaw();
@@ -80,16 +102,16 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
-            waitFor(500);
+            waitFor(1500);
 
             //Reset time for Jewel method
             etime.reset();
-            while ((etime.time() < 1)&&(opModeIsActive())) {
+            while ((etime.time() < 5)&&(opModeIsActive())) {
                 //Step 4: Jewel Knock Method
                 if (color.red() > color.blue()) {//if red
                     //Knock off Blue
                     srvo.knockJewel(0.5);
-                    waitFor(500);
+                    waitFor(1000);
                     srvo.knockJewel(0);
 
                     //Bring up Arm
@@ -99,7 +121,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
                 } else if (color.red() < color.blue()) {//if blue
                     //Knock off Blue
                     srvo.knockJewel(-0.5);
-                    waitFor(500);
+                    waitFor(1000);
                     srvo.knockJewel(0);
                     //Bring up Arm
                     srvo.raiseJewel();
@@ -113,42 +135,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             }
             //Bring up Arm
             srvo.raiseJewel();
-            //waitFor(500);
-
-            //Step 6: Vision method
-            //Get Position from Vision
-            // 0 LEFT
-            // 1 CENTER
-            // 2 RIGHT
-
-            //Reset time for Vision method
-            etime.reset();
-            while ((etime.time() < 2)&&(opModeIsActive())) {
-                vMod.getVuMark();
-                if (vMod.vuMark == RelicRecoveryVuMark.LEFT) {
-                    telemetry.addData("VuMark Status - ", "Left");
-                    position = 2;
-                    break;
-                } else if (vMod.vuMark == RelicRecoveryVuMark.CENTER) {
-                    telemetry.addData("VuMark Status - ", "Center");
-                    position = 1;
-                    break;
-                } else if (vMod.vuMark == RelicRecoveryVuMark.RIGHT) {
-                    telemetry.addData("VuMark Status - ", "Right");
-                    position = 0;
-                    break;
-                }
-                telemetry.update();
-                idle();
-            }
-            //If 2 Second timeout failed use 1 (CENTER)
-            if (vMod.vuMark == RelicRecoveryVuMark.UNKNOWN) {
-                position = 1;
-            }
-            //Display Position
-            telemetry.addData("Position:", position);
-            telemetry.update();
-            waitFor(2000);
+            waitFor(500);
 
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW, 24, 0,false);
             waitFor(500);
@@ -172,7 +159,8 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
                 distance = (centerPosition + offset) - (ultrasonicBack.getDistance() / 2.54);
 
-                if (distance > 13) {
+                if ((distance > 21)&&(distance < 0))
+                {
                     distance = 11.8;
                 }
             }
@@ -201,39 +189,42 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             waitFor(500);
             enc.gyroHold(enc.TURN_SPEED, -90, 1.5);
 
-            //Step 9: Open Claw
-            srvo.openClaw();
-
-            //Step 10: Push Glyph into Column
+            //Step 9: Push Glyph into Column
             waitFor(500);
             enc.gyroDrive(enc.DRIVE_SPEED, 8, -90,false);
-            enc.gyroDrive(enc.DRIVE_SPEED, -6, -90,false);
+            waitFor(500);
+            srvo.openClaw();
+            waitFor(500);
+            enc.gyroDrive(enc.DRIVE_SPEED, -11, -90,false);
+            waitFor(500);
 
-            //Step 11: Turn around towards field
+            //Step 10: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
-            enc.moveLiftTime(0.05,1);
 
             //NEW CODE TO GET SECOND GLYPH //
 
+            enc.moveLiftTime(0.1,1.1);
+
             //Slight Claw
             srvo.slightClaw();
+            srvo.clawIntake2();
 
             //Drive to Glyph
-            enc.gyroDrive(enc.DRIVE_SPEED, 20, 90,false);
+            enc.gyroDrive(enc.DRIVE_SPEED, 15, 90,false);
             waitFor(500);
 
             //Close and Lift
             srvo.closeClaw();
             waitFor(500);
             enc.moveLiftTime(-1,1);
-
+            srvo.clawStop2();
 
             //Turn Around
             enc.gyroTurn(enc.TURN_SPEED, -90);
             waitFor(500);
 
             //Drive to Column
-            enc.gyroDrive(enc.DRIVE_SPEED, 22, -90,false);
+            enc.gyroDrive(enc.DRIVE_SPEED, 26, -90,false);
             waitFor(500);
 
             //Back Off

@@ -92,13 +92,13 @@ public class ServoManagementV2 {
 
     public void toggleClaw1() {
         if (clawOpen1) {
-            clawTR.setPower(-.3);
-            clawTL.setPower(-.3);
+            clawTR.setPower(-.35);
+            clawTL.setPower(-.35);
             clawOpen1 = false;
         }
         else if (!clawOpen1) {
-            clawTR.setPower(0.15);
-            clawTL.setPower(0.15);
+            clawTR.setPower(0.25);
+            clawTL.setPower(0.25);
             clawOpen1 = true;
         }
     }
@@ -110,17 +110,17 @@ public class ServoManagementV2 {
             clawOpen2 = false;
         }
         else if (!clawOpen2) {
-            clawBR.setPower(0.15);
-            clawBL.setPower(0.15);
+            clawBR.setPower(0.25);
+            clawBL.setPower(0.25);
             clawOpen2 = true;
         }
     }
 
     //Close Claw
     public void closeClaw() {
-            clawTR.setPower(-.3);
+            clawTR.setPower(-.35);
             clawBR.setPower(-.3);
-            clawTL.setPower(-.3);
+            clawTL.setPower(-.35);
             clawBL.setPower(-.3);
             clawOpen1 = false;
             clawOpen2 = false;
