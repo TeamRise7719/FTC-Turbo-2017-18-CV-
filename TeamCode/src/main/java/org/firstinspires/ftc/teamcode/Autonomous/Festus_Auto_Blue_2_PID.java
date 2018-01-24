@@ -162,7 +162,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             //Step 9: Drive to Appropriate Column
             double distance;
 
-            if(ultrasonicBack.getDistance()<1) {
+            if(ultrasonicBack.getDistance()>1) {
                 double centerPosition = 26;
                 double offset = 0;
                 if (position == 0) { //Right

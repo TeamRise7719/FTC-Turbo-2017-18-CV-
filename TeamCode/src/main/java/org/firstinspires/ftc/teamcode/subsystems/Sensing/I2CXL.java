@@ -91,7 +91,7 @@ public class I2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch>
             if((curTime - lastPingTime) > 80){
                 int potentialDistance = TypeConversion.byteArrayToShort(deviceClient.read(0x01, 2));
 
-                if(potentialDistance!=0){
+                if(potentialDistance>1){
                     error = false;
                     lastDistance = potentialDistance;
                 }

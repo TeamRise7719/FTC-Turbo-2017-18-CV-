@@ -19,7 +19,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 @Autonomous(name = "Festus_Auto_Blue_1_S", group = "Festus")
 public class Festus_Auto_Blue_1_S extends LinearOpMode {
     ColorSensor color;
-    I2CXL ultrasonicBack;
     I2CXL ultrasonicFront;
 
     RobotVision vMod;
@@ -186,7 +185,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //Step 7: Drive to Appropriate Column
             double distance;
 
-            if(ultrasonicFront.getDistance()<1) {
+            if(ultrasonicFront.getDistance()>1) {
                 double centerPosition = 50.5;
                 double offset = 0;
 
