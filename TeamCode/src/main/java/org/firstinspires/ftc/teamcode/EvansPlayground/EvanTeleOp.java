@@ -160,10 +160,10 @@ public class EvanTeleOp extends OpMode {
         }
 
         if((gamepad1.left_trigger>0.5)&&(Math.abs(gamepad1.right_trigger)<0.5)) {
-            robot.winch(-gamepad2.left_trigger);
+            robot.winch(-gamepad1.left_trigger);
         }
         else if((gamepad1.right_trigger>0.5)&&(Math.abs(gamepad1.left_trigger)<0.5)) {
-            robot.winch(gamepad2.right_trigger);
+            robot.winch(gamepad1.right_trigger);
         }
         else{
             robot.winch(0);
