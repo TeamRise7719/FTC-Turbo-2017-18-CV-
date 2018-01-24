@@ -102,7 +102,7 @@ public class EvanTeleOp extends OpMode {
             else {
                 srvo.clawIntake2();
             }
-        } else if ((-gamepad2.left_stick_y > .5)&&(!gamepad2.x)) {
+        } else if ((gamepad2.left_stick_y > .5)&&(!gamepad2.x)) {
             if(robot.glyphRotated){
                 srvo.clawEject1();
             }
