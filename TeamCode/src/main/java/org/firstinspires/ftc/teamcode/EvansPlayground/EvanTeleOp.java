@@ -15,13 +15,10 @@ public class EvanTeleOp extends OpMode {
     private FestusDrivetrain robot;
     ServoManagementV2 srvo;
 
-<<<<<<< HEAD
     boolean left_bumperState= false;
     boolean right_bumperState= false;
-=======
     private boolean isReady = false;
-
->>>>>>> origin/master
+    
     @Override
     public void init() {
         //Initialize robot
@@ -197,6 +194,5 @@ public class EvanTeleOp extends OpMode {
     @Override
     public void stop() {
         super.stop();
-        srvo.clawStop();
     }
 }
