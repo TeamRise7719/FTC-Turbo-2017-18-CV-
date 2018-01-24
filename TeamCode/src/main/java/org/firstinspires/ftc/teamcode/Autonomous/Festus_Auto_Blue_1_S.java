@@ -21,7 +21,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
     DcMotor liftMotor;
     ColorSensor color;
     I2CXL ultrasonicBack;
-    
+
     RobotVision vMod;
     ServoManagementV2 srvo;
     SeansEncLibrary enc;

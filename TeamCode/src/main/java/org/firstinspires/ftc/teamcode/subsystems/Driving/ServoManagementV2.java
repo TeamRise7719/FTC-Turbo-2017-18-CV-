@@ -18,10 +18,7 @@ public class ServoManagementV2 {
     CRServo intakeBL;
 
     public boolean clawOpen1 = true;
-    public boolean enableClaw1 = true;
-
     public boolean clawOpen2 = true;
-    public boolean enableClaw2 = true;
 
     boolean jewelUp = true;
 
@@ -98,31 +95,29 @@ public class ServoManagementV2 {
     }
 
     public void toggleClaw1() {
-        if ((clawOpen1)&&(enableClaw1)) {
+        if (clawOpen1) {
             clawTR.setPower(-.3);
             clawTL.setPower(-.3);
             clawOpen1 = false;
         }
-        else if ((!clawOpen1)&&(enableClaw1)) {
+        else if (!clawOpen1) {
             clawTR.setPower(0.15);
             clawTL.setPower(0.15);
             clawOpen1 = true;
         }
-        enableClaw1 = false;
     }
 
     public void toggleClaw2() {
-        if ((clawOpen2)&&(enableClaw2)) {
+        if (clawOpen2) {
             clawBR.setPower(-.3);
             clawBL.setPower(-.3);
             clawOpen2 = false;
         }
-        else if ((!clawOpen2)&&(enableClaw2)) {
+        else if (!clawOpen2) {
             clawBR.setPower(0.15);
             clawBL.setPower(0.15);
             clawOpen2 = true;
         }
-        enableClaw2 = false;
     }
 
     //Close Claw
@@ -154,25 +149,30 @@ public class ServoManagementV2 {
             clawOpen2 = true;
     }
 
-    public void clawIntake() {
+    public void clawIntake1() {
         intakeTR.setPower(.75);
-        intakeBR.setPower(.75);
         intakeTL.setPower(.75);
+    }
+    public void clawIntake2() {
+        intakeBR.setPower(.75);
         intakeBL.setPower(.75);
     }
-    public void clawEject() {
+    public void clawEject1() {
         intakeTR.setPower(-.75);
-        intakeBR.setPower(-.75);
         intakeTL.setPower(-.75);
+    }
+    public void clawEject2() {
+        intakeBR.setPower(-.75);
         intakeBL.setPower(-.75);
     }
-    public void clawStop() {
+    public void clawStop1() {
         intakeTR.setPower(0);
-        intakeBR.setPower(0);
         intakeTL.setPower(0);
+    }
+    public void clawStop2() {
+        intakeBR.setPower(0);
         intakeBL.setPower(0);
     }
-
 
     public void openRelic() {
         relicGrab.setPower(-.75);
