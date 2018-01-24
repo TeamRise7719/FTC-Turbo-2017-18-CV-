@@ -18,7 +18,7 @@ public class EvanTeleOp extends OpMode {
     boolean left_bumperState= false;
     boolean right_bumperState= false;
     private boolean isReady = false;
-    
+
     @Override
     public void init() {
         //Initialize robot
@@ -56,7 +56,6 @@ public class EvanTeleOp extends OpMode {
         srvo.knockJewel(0);
 
         //----------------------------------------------=+(Drivetrain)+=----------------------------------------------\\
-        robot.arcadeMode = true;
         robot.drive(gamepad1, telemetry);
 
         if (gamepad1.x) {
@@ -81,7 +80,7 @@ public class EvanTeleOp extends OpMode {
                 srvo.toggleClaw2();
             }
         }
-        right_bumperState = gamepad2.left_bumper;
+        left_bumperState = gamepad2.left_bumper;
 
         if ((gamepad2.right_bumper)&&(!right_bumperState)) {
             if(robot.glyphRotated){

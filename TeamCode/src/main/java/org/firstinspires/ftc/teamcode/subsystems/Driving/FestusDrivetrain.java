@@ -214,7 +214,7 @@ public class FestusDrivetrain {
         final double lr = speed * Math.cos(direction + Math.PI / 4.0) + rotation;
         final double rr = speed * Math.sin(direction + Math.PI / 4.0) - rotation;
 
-        if (gamepad1.right_trigger > 0.1){
+        if (gamepad1.a){
             setMotors(lf / 2, lr / 2, rf / 2, rr / 2);
         } else {
             setMotors(lf, lr, rf, rr);
