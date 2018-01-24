@@ -80,33 +80,33 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
-            waitFor(2700);
+            waitFor(500);
 
             //Reset time for Jewel method
             etime.reset();
-            while ((etime.time() < 2)&&(opModeIsActive())) {
+            while ((etime.time() < 1)&&(opModeIsActive())) {
                 //Step 4: Jewel Knock Method
                 if (color.red() > color.blue()) {//if red
                     //Knock off Blue
                     srvo.knockJewel(0.5);
-                    waitFor(1500);
+                    waitFor(500);
                     srvo.knockJewel(0);
 
 
                     //Bring up Arm
                     srvo.raiseJewel();
-                    waitFor(1500);
+                    waitFor(500);
                     break;
                 } else if (color.red() < color.blue()) {//if blue
                     //Knock off Blue
                     srvo.knockJewel(-0.5);
-                    waitFor(1500);
+                    waitFor(500);
                     srvo.knockJewel(0);
 
 
                     //Bring up Arm
                     srvo.raiseJewel();
-                    waitFor(1500);
+                    waitFor(500);
                     break;
                 }
                 telemetry.addData("RED",color.red());
@@ -116,7 +116,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             }
             //Bring up Arm
             srvo.raiseJewel();
-            waitFor(1500);
+            //waitFor(500);
 
             //Step 6: Vision method
             //Get Position from Vision

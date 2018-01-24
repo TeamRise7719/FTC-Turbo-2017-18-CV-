@@ -184,12 +184,12 @@ public class FestusDrivetrain {
     public void rotateGlyph() {
         if (glyphRotated) {
             glyphRotate.setTargetPosition(0);
-            glyphRotate.setPower(.25);
+            glyphRotate.setPower(.5);
             glyphRotated = false;
         }
         else if (!glyphRotated) {
             glyphRotate.setTargetPosition(560);
-            glyphRotate.setPower(-.25);
+            glyphRotate.setPower(-.5);
             glyphRotated = true;
         }
     }
