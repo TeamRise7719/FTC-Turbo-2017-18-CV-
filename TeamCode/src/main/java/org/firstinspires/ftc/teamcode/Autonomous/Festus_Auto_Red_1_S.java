@@ -49,6 +49,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
         enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
+        enc.resetGlyphRotateMotor();
 
         color = hardwareMap.colorSensor.get("color");
         color.enableLed(true);
@@ -75,7 +76,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             waitFor(800);
 
             //Step 2: Lift Cube
-            enc.moveLiftTime(-0.1,1.1);
+            enc.moveLiftTime(-0.25,1.1);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
@@ -159,7 +160,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             //Step 7: Drive to Appropriate Column
             double distance;
 
-            if(ultrasonicBack.getDistance()!=0) {
+            if(ultrasonicBack.getDistance()<1) {
                 double centerPosition = 50.5;
                 double offset = 0;
 

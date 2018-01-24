@@ -15,8 +15,8 @@ public class EvanTeleOp extends OpMode {
     private FestusDrivetrain robot;
     ServoManagementV2 srvo;
 
-    boolean left_bumperState= false;
-    boolean right_bumperState= false;
+    private boolean isReady = false;
+
     @Override
     public void init() {
         //Initialize robot
@@ -26,6 +26,27 @@ public class EvanTeleOp extends OpMode {
         //Initialize Servos
         srvo = new ServoManagementV2(hardwareMap);
         srvo.init();
+
+        isReady = true;
+    }
+
+    @Override
+    public void init_loop() {
+        if(isReady==true) {
+            telemetry.addData(">", "Press X to Reset Glyph Encoders");
+            telemetry.addData("Glyph Reset?", robot.glyphReset);
+            telemetry.addData(">", "Robot Ready!");
+            telemetry.update();
+
+            if (gamepad1.x) {
+                robot.resetGlyphRotateMotor();
+            }
+        }
+    }
+
+    @Override
+    public void start() {
+        super.start();
     }
 
     @Override
@@ -50,72 +71,52 @@ public class EvanTeleOp extends OpMode {
 
 
         //----------------------------------------------=+(Glyph Claw)+=----------------------------------------------\\
-        if ((gamepad2.left_bumper)&&(!left_bumperState)) {
+        if ((gamepad2.left_bumper)&&(!gamepad2.x)) {
             if(robot.glyphRotated){
                 srvo.toggleClaw1();
+                srvo.enableClaw1 = false;
             }
             else {
                 srvo.toggleClaw2();
+                srvo.enableClaw2 = false;
             }
         }
-        right_bumperState = gamepad2.left_bumper;
+        else if (!gamepad2.left_bumper) {
+            if(robot.glyphRotated){
+                srvo.enableClaw1 = true;
+            }
+            else {
+                srvo.enableClaw2 = true;
+            }
+        }
 
-        if ((gamepad2.right_bumper)&&(!right_bumperState)) {
+        if ((gamepad2.right_bumper)&&(!gamepad2.x)) {
             if(robot.glyphRotated){
                 srvo.toggleClaw2();
+                srvo.enableClaw2 = false;
             }
             else {
                 srvo.toggleClaw1();
+                srvo.enableClaw1 = false;
             }
         }
-        right_bumperState = gamepad2.right_bumper;
-
-
-        if (gamepad2.left_stick_y < -.5) {
+        else if (!gamepad2.right_bumper) {
             if(robot.glyphRotated){
-                srvo.clawIntake1();
+                srvo.enableClaw2 = true;
             }
             else {
-                srvo.clawIntake2();
-            }
-        } else if (gamepad2.left_stick_y > .5) {
-            if(robot.glyphRotated){
-                srvo.clawEject1();
-            }
-            else {
-                srvo.clawEject2();
-            }
-        } else {
-            if(robot.glyphRotated){
-                srvo.clawStop1();
-            }
-            else {
-                srvo.clawStop2();
+                srvo.enableClaw1 = true;
             }
         }
 
         if (gamepad2.right_stick_y < -.5) {
-            if(robot.glyphRotated){
-                srvo.clawIntake2();
-            }
-            else {
-                srvo.clawIntake1();
-            }
+            srvo.clawIntake();
         } else if (gamepad2.right_stick_y > .5) {
-            if(robot.glyphRotated){
-                srvo.clawEject2();
-            }
-            else {
-                srvo.clawEject1();
-            }
+            srvo.clawEject();
         } else {
-            if(robot.glyphRotated){
-                srvo.clawStop2();
-            }
-            else {
-                srvo.clawStop1();
-            }
+            srvo.clawStop();
         }
+
         //----------------------------------------------=+(Glyph Claw)+=----------------------------------------------\\
 
 
@@ -135,25 +136,17 @@ public class EvanTeleOp extends OpMode {
             srvo.rotateDown();
         }
 
-        if((gamepad1.left_trigger>0.5)&&(Math.abs(gamepad1.right_trigger)<0.5)) {
-            robot.winch(-gamepad2.left_trigger);
-        }
-        else if((gamepad1.right_trigger>0.5)&&(Math.abs(gamepad1.left_trigger)<0.5)) {
-            robot.winch(gamepad2.right_trigger);
-        }
-        else{
-            robot.winch(0);
-        }
+        robot.winch(gamepad2.left_stick_x);
         //----------------------------------------------=+(Relic)+=----------------------------------------------\\
 
         //----------------------------------------------=+(Glyph Lift)+=----------------------------------------------\\
 
         if (gamepad2.y) {
-            robot.raiseLift(1);
+            robot.setLiftPower(-1);
         } else if (gamepad2.a) {
-            robot.lowerLift(1);
+            robot.setLiftPower(1);
         } else {
-            robot.stopLift();
+            robot.setLiftPower(0);
         }
 
         if((gamepad2.x)&&(!gamepad2.left_bumper)&&(!gamepad2.right_bumper)){
@@ -166,5 +159,11 @@ public class EvanTeleOp extends OpMode {
 
         //----------------------------------------------=+(Glyph Lift)+=----------------------------------------------\\
 
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        srvo.clawStop();
     }
 }

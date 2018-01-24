@@ -22,6 +22,7 @@ public class SeansEncLibrary {
     DcMotor right_back_drive;
     DcMotor right_front_drive;
     DcMotor liftMotorL, liftMotorR;
+    DcMotor glyphRotate;
 
     BNO055IMU gyro;
     Orientation gyro_angle;
@@ -31,6 +32,8 @@ public class SeansEncLibrary {
 
     I2CXL ultrasonicFront;
     I2CXL ultrasonicBack;
+
+    public boolean glyphRotated = false;
 
     private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;
     private static final double     DRIVE_GEAR_REDUCTION    = 0.6666;     // This is < 1.0 if geared UP
@@ -71,6 +74,11 @@ public class SeansEncLibrary {
         liftMotorR.setDirection(DcMotor.Direction.REVERSE);
         liftMotorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        glyphRotate = hardwareMap.dcMotor.get("glyphRotate");
+        glyphRotate.setDirection(DcMotor.Direction.FORWARD);
+        glyphRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         telemetry = tel;
         linearOpMode = opMode;
     }
@@ -86,6 +94,7 @@ public class SeansEncLibrary {
         right_front_drive.setDirection(DcMotor.Direction.FORWARD);
         right_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
         BNO055IMU.Parameters param = new BNO055IMU.Parameters();
         param.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -112,16 +121,17 @@ public class SeansEncLibrary {
 
     }
 
+    public void resetGlyphRotateMotor(){
+        glyphRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
     //Stop All Motors
     public void stop_all_motors(){
         left_back_drive.setPower(0);
         right_back_drive.setPower(0);
         left_front_drive.setPower(0);
         right_front_drive.setPower(0);
-        left_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        left_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        right_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        right_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void moveLiftTime(double power, double time) {
@@ -133,6 +143,19 @@ public class SeansEncLibrary {
         }
         liftMotorL.setPower(0);
         liftMotorR.setPower(0);
+    }
+
+    public void rotateGlyph() {
+        if ((glyphRotated)) {
+            glyphRotate.setTargetPosition(0);
+            glyphRotate.setPower(.25);
+            glyphRotated = false;
+        }
+        else if ((!glyphRotated)) {
+            glyphRotate.setTargetPosition(560);
+            glyphRotate.setPower(-.25);
+            glyphRotated = true;
+        }
     }
 
         /**

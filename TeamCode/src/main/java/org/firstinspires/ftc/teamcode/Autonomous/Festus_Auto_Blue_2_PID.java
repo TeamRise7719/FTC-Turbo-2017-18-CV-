@@ -49,6 +49,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
 
         enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
+        enc.resetGlyphRotateMotor();
 
         ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
         ultrasonicBack.initialize();
@@ -74,7 +75,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             waitFor(1000);
 
             //Step 2: Lift Cube
-            enc.moveLiftTime(-0.1,1);
+            enc.moveLiftTime(-0.25,1);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
@@ -161,7 +162,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             //Step 9: Drive to Appropriate Column
             double distance;
 
-            if(ultrasonicBack.getDistance()!=0) {
+            if(ultrasonicBack.getDistance()<1) {
                 double centerPosition = 26;
                 double offset = 0;
                 if (position == 0) { //Right
