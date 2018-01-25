@@ -126,13 +126,16 @@ public class ServoManagementV2 {
             clawOpen2 = false;
     }
 
-    public void slightClaw() {
-            clawTR.setPower(0);
-            clawBR.setPower(0);
-            clawTL.setPower(0);
-            clawBL.setPower(0);
-            clawOpen1 = true;
-            clawOpen2 = true;
+    public void closeClaw1() {
+        clawTR.setPower(-.35);
+        clawTL.setPower(-.35);
+        clawOpen1 = false;
+    }
+
+    public void closeClaw2() {
+        clawBR.setPower(-.3);
+        clawBL.setPower(-.3);
+        clawOpen2 = false;
     }
 
     //Open Claw
@@ -143,6 +146,39 @@ public class ServoManagementV2 {
             clawBL.setPower(0.15);
             clawOpen1 = true;
             clawOpen2 = true;
+    }
+
+    public void openClaw1() {
+        clawTR.setPower(0.15);
+        clawTL.setPower(0.15);
+        clawOpen1 = true;
+    }
+
+    public void openClaw2() {
+        clawBR.setPower(0.15);
+        clawBL.setPower(0.15);
+        clawOpen2 = true;
+    }
+
+    public void slightClaw() {
+        clawTR.setPower(0);
+        clawBR.setPower(0);
+        clawTL.setPower(0);
+        clawBL.setPower(0);
+        clawOpen1 = true;
+        clawOpen2 = true;
+    }
+
+    public void slightClaw1() {
+        clawTR.setPower(0);
+        clawTL.setPower(0);
+        clawOpen1 = true;
+    }
+
+    public void slightClaw2() {
+        clawBR.setPower(0);
+        clawBL.setPower(0);
+        clawOpen2 = true;
     }
 
     public void clawIntake1() {
@@ -189,10 +225,5 @@ public class ServoManagementV2 {
     public void rotateDown() {
         relicRot.setPower(.75);
     }
-
-    public void getRotate() {
-        relicRot.getPower();
-    }
-
-
+    
 }
