@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.subsystems.Driving.FestusLift;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.I2CXL;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -23,6 +24,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
     RobotVision vMod;
     ServoManagementV2 srvo;
+    FestusLift lift;
     SeansEncLibrary enc;
 
     ElapsedTime etime = new ElapsedTime();
@@ -49,7 +51,10 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
         enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
-        enc.resetGlyphRotateMotor();
+
+        lift = new FestusLift(hardwareMap, telemetry);
+        lift.init();
+        lift.resetGlyphRotateMotor();
 
         color = hardwareMap.colorSensor.get("color");
         color.enableLed(true);
@@ -61,7 +66,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
         //-------------------------------------=+(Initialization Config)+=------------------------------------\\
         srvo.raiseJewel();
-        enc.rotateGlyphDown();
+        lift.rotateGlyphDown();
 
         while (!isStarted()){
             vMod.getVuMark();
@@ -98,7 +103,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             waitFor(250);
 
             //Step 2: Lift Cube
-            enc.moveLiftTime(-0.25,1.25);
+            lift.moveLiftTime(-0.25,1.25,this);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
@@ -207,11 +212,11 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //NEW CODE TO GET SECOND GLYPH //
 
-            enc.moveLiftTime(0.1,1.1);
+            lift.moveLiftTime(0.1,1.1,this);
             srvo.slightClaw();
             srvo.clawIntake2();
             waitFor(1000);
-            enc.moveLiftTime(0.0, 0.1);
+            lift.moveLiftTime(0.0, 0.1,this);
 
             //Drive to Glyph+9*
             enc.gyroDrive(0.8, 21, 90,false);
@@ -221,7 +226,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             srvo.closeClaw();
 
             waitFor(250);
-            enc.moveLiftTime(-0.4,1.1);
+            lift.moveLiftTime(-0.4,1.1,this);
             srvo.clawStop2();
 
             //Turn Around

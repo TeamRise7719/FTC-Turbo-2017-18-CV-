@@ -225,5 +225,5 @@ public class ServoManagementV2 {
     public void rotateDown() {
         relicRot.setPower(.75);
     }
-    
+
 }

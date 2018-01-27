@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.subsystems.Driving.FestusDrivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.FestusLift;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 
 /**
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 public class EvanTeleOp extends OpMode {
 
     private FestusDrivetrain robot;
+    private FestusLift lift;
     ServoManagementV2 srvo;
 
     boolean left_bumperState= false;
@@ -26,6 +28,8 @@ public class EvanTeleOp extends OpMode {
         //Initialize robot
         robot = new FestusDrivetrain(hardwareMap, telemetry);
         robot.runUsingEncoders();
+        lift = new FestusLift(hardwareMap, telemetry);
+        lift.init();
 
         //Initialize Servos
         srvo = new ServoManagementV2(hardwareMap);
@@ -38,12 +42,12 @@ public class EvanTeleOp extends OpMode {
     public void init_loop() {
         if(isReady==true) {
             telemetry.addData(">", "Press X to Reset Glyph Encoders");
-            telemetry.addData("Glyph Reset?", robot.glyphReset);
+            telemetry.addData("Glyph Reset?", lift.glyphReset);
             telemetry.addData(">", "Robot Ready!");
             telemetry.update();
 
             if (gamepad1.x) {
-                robot.resetGlyphRotateMotor();
+                lift.resetGlyphRotateMotor();
             }
         }
     }
@@ -76,7 +80,7 @@ public class EvanTeleOp extends OpMode {
 
         //----------------------------------------------=+(Glyph Claw)+=----------------------------------------------\\
         if ((gamepad2.left_bumper)&&(!left_bumperState)) {
-            if(robot.glyphRotated){
+            if(lift.glyphRotated){
                 srvo.toggleClaw1();
             }
             else {
@@ -86,7 +90,7 @@ public class EvanTeleOp extends OpMode {
         left_bumperState = gamepad2.left_bumper;
 
         if ((gamepad2.right_bumper)&&(!right_bumperState)) {
-            if(robot.glyphRotated){
+            if(lift.glyphRotated){
                 srvo.toggleClaw2();
             }
             else {
@@ -97,21 +101,21 @@ public class EvanTeleOp extends OpMode {
 
 
         if ((gamepad2.left_stick_y < -.5)&&(!gamepad2.x)) {
-            if(robot.glyphRotated){
+            if(lift.glyphRotated){
                 srvo.clawIntake1();
             }
             else {
                 srvo.clawIntake2();
             }
         } else if ((gamepad2.left_stick_y > .5)&&(!gamepad2.x)) {
-            if(robot.glyphRotated){
+            if(lift.glyphRotated){
                 srvo.clawEject1();
             }
             else {
                 srvo.clawEject2();
             }
         } else {
-            if(robot.glyphRotated){
+            if(lift.glyphRotated){
                 srvo.clawStop1();
             }
             else {
@@ -120,21 +124,21 @@ public class EvanTeleOp extends OpMode {
         }
 
         if ((gamepad2.right_stick_y < -.5)&&(!gamepad2.x)) {
-            if(robot.glyphRotated){
+            if(lift.glyphRotated){
                 srvo.clawIntake2();
             }
             else {
                 srvo.clawIntake1();
             }
         } else if ((gamepad2.right_stick_y > .5)&&(!gamepad2.x)) {
-            if(robot.glyphRotated){
+            if(lift.glyphRotated){
                 srvo.clawEject2();
             }
             else {
                 srvo.clawEject1();
             }
         } else {
-            if(robot.glyphRotated){
+            if(lift.glyphRotated){
                 srvo.clawStop2();
             }
             else {
@@ -174,15 +178,15 @@ public class EvanTeleOp extends OpMode {
         //----------------------------------------------=+(Glyph Lift)+=----------------------------------------------\\
 
         if (gamepad2.y) {
-            robot.setLiftPower(-1);
+            lift.setLiftPower(-1);
         } else if (gamepad2.a) {
-            robot.setLiftPower(1);
+            lift.setLiftPower(1);
         } else {
-            robot.setLiftPower(0);
+            lift.setLiftPower(0);
         }
 
         if((gamepad2.x)&&(!gamepad2.left_bumper)&&(!gamepad2.right_bumper)&&(!rotationToggleState)){
-            robot.rotateGlyph();
+            lift.rotateGlyph();
         }
         rotationToggleState = gamepad2.x;
 

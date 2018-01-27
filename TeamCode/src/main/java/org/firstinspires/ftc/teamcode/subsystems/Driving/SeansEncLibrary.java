@@ -21,8 +21,7 @@ public class SeansEncLibrary {
     DcMotor left_front_drive;
     DcMotor right_back_drive;
     DcMotor right_front_drive;
-    DcMotor liftMotorL, liftMotorR;
-    public DcMotor glyphRotate;
+
 
     BNO055IMU gyro;
     Orientation gyro_angle;
@@ -32,8 +31,6 @@ public class SeansEncLibrary {
 
     I2CXL ultrasonicFront;
     I2CXL ultrasonicBack;
-
-    public boolean glyphRotated = false;
 
     private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;
     private static final double     DRIVE_GEAR_REDUCTION    = 0.6666;     // This is < 1.0 if geared UP
@@ -65,19 +62,6 @@ public class SeansEncLibrary {
         left_front_drive = hardwareMap.dcMotor.get("driveFL");
         right_back_drive = hardwareMap.dcMotor.get("driveBR");
         right_front_drive = hardwareMap.dcMotor.get("driveFR");
-
-        liftMotorL = hardwareMap.dcMotor.get("liftL");
-        liftMotorL.setDirection(DcMotor.Direction.FORWARD);
-        liftMotorL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        liftMotorR = hardwareMap.dcMotor.get("liftR");
-        liftMotorR.setDirection(DcMotor.Direction.REVERSE);
-        liftMotorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        glyphRotate = hardwareMap.dcMotor.get("glyphRotate");
-        glyphRotate.setDirection(DcMotor.Direction.FORWARD);
-        glyphRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         telemetry = tel;
         linearOpMode = opMode;
@@ -121,10 +105,6 @@ public class SeansEncLibrary {
 
     }
 
-    public void resetGlyphRotateMotor(){
-        glyphRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
 
     //Stop All Motors
     public void stop_all_motors(){
@@ -132,28 +112,6 @@ public class SeansEncLibrary {
         right_back_drive.setPower(0);
         left_front_drive.setPower(0);
         right_front_drive.setPower(0);
-    }
-
-    public void moveLiftTime(double power, double time) {
-        ElapsedTime etime = new ElapsedTime();
-        etime.reset();
-        while ((etime.time() < time) && (linearOpMode.opModeIsActive())) {
-            liftMotorL.setPower(power);
-            liftMotorR.setPower(power);
-        }
-        liftMotorL.setPower(0);
-        liftMotorR.setPower(0);
-    }
-
-    public void rotateGlyphDown() {
-            glyphRotate.setTargetPosition(0);
-            glyphRotate.setPower(.25);
-            glyphRotated = false;
-    }
-    public void rotateGlyphUp() {
-            glyphRotate.setTargetPosition(560);
-            glyphRotate.setPower(-.25);
-            glyphRotated = true;
     }
 
         /**

@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Transitioning.AutoTransitioner;
+import org.firstinspires.ftc.teamcode.subsystems.Driving.FestusLift;
 import org.firstinspires.ftc.teamcode.subsystems.Driving.SeansEncLibrary;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.I2CXL;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.RobotVision;
@@ -25,6 +26,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
     RobotVision vMod;
     ServoManagementV2 srvo;
     SeansEncLibrary enc;
+    FestusLift lift;
 
     ElapsedTime etime = new ElapsedTime();
 
@@ -49,7 +51,10 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
 
         enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
-        enc.resetGlyphRotateMotor();
+
+        lift = new FestusLift(hardwareMap, telemetry);
+        lift.init();
+        lift.resetGlyphRotateMotor();
 
         ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
         ultrasonicBack.initialize();
@@ -62,7 +67,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
 
         //-------------------------------------=+(Initialization Config)+=------------------------------------\\
         srvo.raiseJewel();
-        enc.rotateGlyphDown();
+        lift.rotateGlyphDown();
 
         while (!isStarted()){
             vMod.getVuMark();
@@ -99,7 +104,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             waitFor(1000);
 
             //Step 2: Lift Cube
-            enc.moveLiftTime(-0.25,1);
+            lift.moveLiftTime(-0.25,1,this);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();

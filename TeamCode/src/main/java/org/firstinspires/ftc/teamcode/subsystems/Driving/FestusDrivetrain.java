@@ -1,15 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems.Driving;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -23,14 +19,8 @@ public class FestusDrivetrain {
     private final HardwareMap hardwareMap;
     private final Telemetry telemetry;
 
-    public boolean glyphRotated = false;
-    public boolean glyphReset = false;
-
     private final DcMotor lf, lr, rf, rr;
-    private DcMotor liftMotorL, liftMotorR;
     private DcMotor winchMotor;
-    private DcMotor glyphRotate;
-
 
     private final BNO055IMU imu;
 
@@ -42,21 +32,8 @@ public class FestusDrivetrain {
         telemetry = _telemetry;
 
         //configuring the components
-        liftMotorL = hardwareMap.dcMotor.get("liftL");
-        liftMotorL.setDirection(DcMotor.Direction.FORWARD);
-        liftMotorL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        liftMotorR = hardwareMap.dcMotor.get("liftR");
-        liftMotorR.setDirection(DcMotor.Direction.REVERSE);
-        liftMotorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         winchMotor = hardwareMap.dcMotor.get("winch");
         winchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        glyphRotate = hardwareMap.dcMotor.get("glyphRotate");
-        glyphRotate.setDirection(DcMotor.Direction.FORWARD);
-        glyphRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         lr = hardwareMap.dcMotor.get("driveBL");
         lf = hardwareMap.dcMotor.get("driveFL");
@@ -94,12 +71,6 @@ public class FestusDrivetrain {
 
     public void runUsingEncoders() {
         setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER, lf, lr, rf, rr);
-    }
-
-    public void resetGlyphRotateMotor(){
-        glyphRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        glyphReset = true;
     }
 
     /**
@@ -167,24 +138,6 @@ public class FestusDrivetrain {
         lr.setPower(_lr / scale);
         rf.setPower(_rf / scale);
         rr.setPower(_rr / scale);
-    }
-
-    public void setLiftPower(double power){
-        liftMotorL.setPower(power);
-        liftMotorR.setPower(power);
-    }
-
-    public void rotateGlyph() {
-        if (glyphRotated) {
-            glyphRotate.setTargetPosition(0);
-            glyphRotate.setPower(.5);
-            glyphRotated = false;
-        }
-        else if (!glyphRotated) {
-            glyphRotate.setTargetPosition(560);
-            glyphRotate.setPower(-.5);
-            glyphRotated = true;
-        }
     }
 
     public void winch(double power) { winchMotor.setPower(power);}

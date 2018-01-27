@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.subsystems.Driving.FestusLift;
 import org.firstinspires.ftc.teamcode.subsystems.Sensing.I2CXL;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -24,6 +25,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
     RobotVision vMod;
     ServoManagementV2 srvo;
     SeansEncLibrary enc;
+    FestusLift lift;
 
     ElapsedTime etime = new ElapsedTime();
 
@@ -49,7 +51,10 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
         enc = new SeansEncLibrary(hardwareMap, telemetry,this);
         enc.init();
-        enc.resetGlyphRotateMotor();
+
+        lift = new FestusLift(hardwareMap, telemetry);
+        lift.init();
+        lift.resetGlyphRotateMotor();
 
         color = hardwareMap.colorSensor.get("color");
         color.enableLed(true);
@@ -61,7 +66,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
         //-------------------------------------=+(Initialization Config)+=------------------------------------\\
         srvo.raiseJewel();
-        enc.rotateGlyphDown();
+        lift.rotateGlyphDown();
 
         while (!isStarted()){
             vMod.getVuMark();
@@ -98,7 +103,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             waitFor(800);
 
             //Step 2: Lift Cube
-            enc.moveLiftTime(-0.25,1.1);
+            lift.moveLiftTime(-0.25,1.1,this);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
@@ -203,7 +208,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
             //NEW CODE TO GET SECOND GLYPH //
 
-            enc.moveLiftTime(0.1,1.1);
+            lift.moveLiftTime(0.1,1.1,this);
 
             //Slight Claw
             srvo.slightClaw();
@@ -216,7 +221,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             //Close and Lift
             srvo.closeClaw();
             waitFor(500);
-            enc.moveLiftTime(-1,1);
+            lift.moveLiftTime(-1,1,this);
             srvo.clawStop2();
 
             //Turn Around
