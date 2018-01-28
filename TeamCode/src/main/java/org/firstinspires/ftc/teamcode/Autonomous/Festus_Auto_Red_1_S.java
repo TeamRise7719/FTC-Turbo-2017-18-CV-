@@ -209,7 +209,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
             //NEW CODE TO GET SECOND GLYPH //
 
-            lift.moveLiftTime(0.1,1.1,this);
+            lift.moveLiftTime(0.4,1.1,this);
 
             //Slight Claw
             srvo.slightClaw();
@@ -230,7 +230,7 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             waitFor(500);
 
             //Drive to Column
-            enc.gyroDrive(enc.DRIVE_SPEED, 26, -90,false);
+            enc.gyroDrive(enc.DRIVE_SPEED, 28, -90,false);
             waitFor(500);
 
             //Back Off

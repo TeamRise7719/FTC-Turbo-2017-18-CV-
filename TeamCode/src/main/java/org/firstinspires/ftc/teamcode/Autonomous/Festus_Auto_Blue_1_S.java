@@ -155,7 +155,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //Step 7: Drive to Appropriate Column
             double distance;
 
-            if(ultrasonicFront.getDistance()/2.54>30) {
+            if(ultrasonicFront.getDistance()/2.54>35) {
                 double centerPosition = 51;
                 double offset = 0;
 
@@ -213,7 +213,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //NEW CODE TO GET SECOND GLYPH //
 
-            lift.moveLiftTime(0.1,1.1,this);
+            lift.moveLiftTime(0.4,1.1,this);
             srvo.slightClaw();
             srvo.clawIntake2();
             waitFor(1000);
@@ -235,7 +235,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             waitFor(250);
 
             //Drive to Column
-            enc.gyroDrive(enc.DRIVE_SPEED, 33, -90,false);
+            enc.gyroDrive(enc.DRIVE_SPEED, 35, -90,false);
             srvo.clawEject2();
             waitFor(250);
 
