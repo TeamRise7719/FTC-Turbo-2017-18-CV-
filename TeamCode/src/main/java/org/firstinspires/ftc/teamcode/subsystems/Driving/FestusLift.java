@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems.Driving;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -17,6 +18,8 @@ public class FestusLift {
     public DcMotor glyphRotate;
 
     Telemetry telemetry;
+
+    private boolean overrideEnable = false;
 
     public boolean glyphRotated = false;
     public boolean glyphReset = false;
@@ -70,20 +73,34 @@ public class FestusLift {
             glyphRotated = false;
         }
         else if (!glyphRotated) {
-            glyphRotate.setTargetPosition(560);
+            glyphRotate.setTargetPosition(576);
             glyphRotate.setPower(-.5);
             glyphRotated = true;
         }
     }
 
+    public void glyphOverride(boolean enable){
+        if(enable){
+            glyphRotate.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            glyphRotate.setPower(-0.3);
+            overrideEnable = true;
+        }
+        else if (overrideEnable){
+            resetGlyphRotateMotor();
+            rotateGlyphDown();
+            overrideEnable = false;
+        }
+
+    }
+
     public void rotateGlyphDown() {
         glyphRotate.setTargetPosition(0);
-        glyphRotate.setPower(.25);
+        glyphRotate.setPower(.5);
         glyphRotated = false;
     }
     public void rotateGlyphUp() {
-        glyphRotate.setTargetPosition(560);
-        glyphRotate.setPower(-.25);
+        glyphRotate.setTargetPosition(576);
+        glyphRotate.setPower(-.5);
         glyphRotated = true;
     }
 }

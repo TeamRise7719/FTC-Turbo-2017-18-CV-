@@ -42,9 +42,9 @@ public class ServoManagementV2 {
         jewelKnock.setDirection(CRServo.Direction.FORWARD);
 
         clawTR.setDirection(CRServo.Direction.REVERSE);
-        clawBR.setDirection(CRServo.Direction.FORWARD);
+        clawBR.setDirection(CRServo.Direction.REVERSE);
         clawTL.setDirection(CRServo.Direction.FORWARD);
-        clawBL.setDirection(CRServo.Direction.REVERSE);
+        clawBL.setDirection(CRServo.Direction.FORWARD);
 
         intakeTR.setDirection(CRServo.Direction.REVERSE);
         intakeBR.setDirection(CRServo.Direction.FORWARD);
@@ -59,7 +59,16 @@ public class ServoManagementV2 {
 
     //Start with Jewel Up and Claw Open
     public void init() {
-        openClaw();
+        clawTR.setPower(0);
+        clawBR.setPower(0);
+        clawTL.setPower(0);
+        clawBL.setPower(0);
+
+        clawOpen1 = true;
+        clawOpen2 = true;
+
+        clawStop1();
+        clawStop2();
 
         jewelHinge.setPower(0.6);
         jewelKnock.setPower(0);
@@ -92,92 +101,93 @@ public class ServoManagementV2 {
 
     public void toggleClaw1() {
         if (clawOpen1) {
-            clawTR.setPower(-.35);
-            clawTL.setPower(-.35);
+            clawTR.setPower(0.77);
+            clawTL.setPower(0.77);
             clawOpen1 = false;
         }
-        else if (!clawOpen1) {
-            clawTR.setPower(0.25);
-            clawTL.setPower(0.25);
+       else if (!clawOpen1) {
+            clawTR.setPower(0.5);
+            clawTL.setPower(0.5);
             clawOpen1 = true;
         }
     }
 
     public void toggleClaw2() {
         if (clawOpen2) {
-            clawBR.setPower(-.3);
-            clawBL.setPower(-.3);
+            clawBR.setPower(0.8);
+            clawBL.setPower(0.8);
             clawOpen2 = false;
         }
         else if (!clawOpen2) {
-            clawBR.setPower(0.25);
-            clawBL.setPower(0.25);
+            clawBR.setPower(0.5);
+            clawBL.setPower(0.5);
             clawOpen2 = true;
         }
     }
 
     //Close Claw
     public void closeClaw() {
-            clawTR.setPower(-.35);
-            clawBR.setPower(-.3);
-            clawTL.setPower(-.35);
-            clawBL.setPower(-.3);
-            clawOpen1 = false;
-            clawOpen2 = false;
+        clawTR.setPower(0.77);
+        clawTL.setPower(0.77);
+        clawBR.setPower(0.8);
+        clawBL.setPower(0.8);
+
+        clawOpen1 = false;
+        clawOpen2 = false;
     }
 
     public void closeClaw1() {
-        clawTR.setPower(-.35);
-        clawTL.setPower(-.35);
+        clawTR.setPower(0.77);
+        clawTL.setPower(0.77);
         clawOpen1 = false;
     }
 
     public void closeClaw2() {
-        clawBR.setPower(-.3);
-        clawBL.setPower(-.3);
+        clawBR.setPower(0.8);
+        clawBL.setPower(0.8);
         clawOpen2 = false;
     }
 
     //Open Claw
     public void openClaw() {
-            clawTR.setPower(0.15);
-            clawBR.setPower(0.15);
-            clawTL.setPower(0.15);
-            clawBL.setPower(0.15);
+            clawTR.setPower(0.5);
+            clawBR.setPower(0.5);
+            clawTL.setPower(0.5);
+            clawBL.setPower(0.5);
             clawOpen1 = true;
             clawOpen2 = true;
     }
 
     public void openClaw1() {
-        clawTR.setPower(0.15);
-        clawTL.setPower(0.15);
+        clawTR.setPower(0.5);
+        clawTL.setPower(0.5);
         clawOpen1 = true;
     }
 
     public void openClaw2() {
-        clawBR.setPower(0.15);
-        clawBL.setPower(0.15);
+        clawBR.setPower(0.5);
+        clawBL.setPower(0.5);
         clawOpen2 = true;
     }
 
     public void slightClaw() {
-        clawTR.setPower(0);
-        clawBR.setPower(0);
-        clawTL.setPower(0);
-        clawBL.setPower(0);
+        clawTR.setPower(0.3);
+        clawBR.setPower(0.3);
+        clawTL.setPower(0.3);
+        clawBL.setPower(0.3);
         clawOpen1 = true;
         clawOpen2 = true;
     }
 
     public void slightClaw1() {
-        clawTR.setPower(0);
-        clawTL.setPower(0);
+        clawTR.setPower(0.3);
+        clawTL.setPower(0.3);
         clawOpen1 = true;
     }
 
     public void slightClaw2() {
-        clawBR.setPower(0);
-        clawBL.setPower(0);
+        clawBR.setPower(0.3);
+        clawBL.setPower(0.3);
         clawOpen2 = true;
     }
 

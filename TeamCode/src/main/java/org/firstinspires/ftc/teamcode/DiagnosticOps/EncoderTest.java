@@ -14,8 +14,10 @@ public class EncoderTest extends OpMode {
     DcMotor left_front_drive;
     DcMotor right_back_drive;
     DcMotor right_front_drive;
-
+    DcMotor glyphRotate;
     public void init(){
+        glyphRotate = hardwareMap.dcMotor.get("glyphRotate");
+
         left_back_drive = hardwareMap.dcMotor.get("driveBL");
         left_front_drive = hardwareMap.dcMotor.get("driveFL");
         right_back_drive = hardwareMap.dcMotor.get("driveBR");
@@ -30,9 +32,19 @@ public class EncoderTest extends OpMode {
         right_front_drive.setDirection(DcMotor.Direction.FORWARD);
         right_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         right_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        glyphRotate.setDirection(DcMotor.Direction.FORWARD);
+        glyphRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);;
+
         setMotorToEnc();
+        resetGlyphRotateMotor();
     }
 
+
+    public void resetGlyphRotateMotor(){
+        glyphRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        glyphRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
 
     private void setMotorToEnc(){
         left_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -47,6 +59,8 @@ public class EncoderTest extends OpMode {
         telemetry.addData("encoder LF", left_front_drive.getCurrentPosition());
         telemetry.addData("encoder RB", right_back_drive.getCurrentPosition());
         telemetry.addData("encoder RF", right_front_drive.getCurrentPosition());
+        telemetry.addData("rotate", glyphRotate.getCurrentPosition());
+
         telemetry.update();
     }
 

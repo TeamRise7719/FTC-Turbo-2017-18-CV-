@@ -190,7 +190,7 @@ public class EvanTeleOp extends OpMode {
         }
         rotationToggleState = gamepad2.x;
 
-
+        lift.glyphOverride(gamepad2.b);
         //----------------------------------------------=+(Glyph Lift)+=----------------------------------------------\\
 
     }
