@@ -171,23 +171,23 @@ public class ServoManagementV2 {
     }
 
     public void slightClaw() {
-        clawTR.setPower(0.3);
-        clawBR.setPower(0.3);
-        clawTL.setPower(0.3);
-        clawBL.setPower(0.3);
+        clawTR.setPower(0.5);
+        clawBR.setPower(0.52);
+        clawTL.setPower(0.5);
+        clawBL.setPower(0.52);
         clawOpen1 = true;
         clawOpen2 = true;
     }
 
     public void slightClaw1() {
-        clawTR.setPower(0.3);
-        clawTL.setPower(0.3);
+        clawTR.setPower(0.5);
+        clawTL.setPower(0.5);
         clawOpen1 = true;
     }
 
     public void slightClaw2() {
-        clawBR.setPower(0.3);
-        clawBL.setPower(0.3);
+        clawBR.setPower(0.52);
+        clawBL.setPower(0.52);
         clawOpen2 = true;
     }
 

@@ -24,8 +24,8 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
     RobotVision vMod;
     ServoManagementV2 srvo;
-    FestusLift lift;
     SeansEncLibrary enc;
+    FestusLift lift;
 
     ElapsedTime etime = new ElapsedTime();
 
@@ -82,6 +82,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
                 position = 0;
             }
             if (vMod.vuMark == RelicRecoveryVuMark.UNKNOWN) {
+                telemetry.addData("VuMark Status - ", "Unknown");
                 position = 1;
             }
             //Display Position
@@ -103,7 +104,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             waitFor(250);
 
             //Step 2: Lift Cube
-            lift.moveLiftTime(-0.25,1.25,this);
+            lift.moveLiftTime(-0.4,1.25,this);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
@@ -154,7 +155,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //Step 7: Drive to Appropriate Column
             double distance;
 
-            if(ultrasonicFront.getDistance()>1) {
+            if(ultrasonicFront.getDistance()/2.54>30) {
                 double centerPosition = 51;
                 double offset = 0;
 
@@ -173,7 +174,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
                 distance = distance*-1;
             }
             else{
-                double centerPosition = 37.5;
+                double centerPosition = 13.5;
                 double offset = 0;
 
                 if (position == 0) { //Right

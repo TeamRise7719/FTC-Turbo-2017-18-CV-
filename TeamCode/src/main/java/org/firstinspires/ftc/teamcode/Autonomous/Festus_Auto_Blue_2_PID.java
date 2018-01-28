@@ -83,6 +83,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
                 position = 0;
             }
             if (vMod.vuMark == RelicRecoveryVuMark.UNKNOWN) {
+                telemetry.addData("VuMark Status - ", "Unknown");
                 position = 1;
             }
             //Display Position
@@ -104,6 +105,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
 
             //Step 2: Lift Cube
             lift.moveLiftTime(-0.25,1,this);
+
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
             waitFor(1500);

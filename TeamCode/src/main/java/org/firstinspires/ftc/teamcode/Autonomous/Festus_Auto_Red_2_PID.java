@@ -83,6 +83,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
                 position = 0;
             }
             if (vMod.vuMark == RelicRecoveryVuMark.UNKNOWN) {
+                telemetry.addData("VuMark Status - ", "Unknown");
                 position = 1;
             }
             //Display Position
