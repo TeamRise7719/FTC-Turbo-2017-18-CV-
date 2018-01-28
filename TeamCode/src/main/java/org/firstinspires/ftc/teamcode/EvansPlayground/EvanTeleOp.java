@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.EvansPlayground;
 
+import android.media.MediaPlayer;
+import android.widget.MediaController;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -23,8 +26,13 @@ public class EvanTeleOp extends OpMode {
 
     private boolean isReady = false;
 
+    private boolean startState = false;
+    MediaPlayer horn;
+
     @Override
     public void init() {
+        horn = MediaPlayer.create(hardwareMap.appContext,com.qualcomm.ftcrobotcontroller.R.raw.horn);
+
         //Initialize robot
         robot = new FestusDrivetrain(hardwareMap, telemetry);
         robot.runUsingEncoders();
@@ -59,6 +67,17 @@ public class EvanTeleOp extends OpMode {
 
     @Override
     public void loop() {
+
+        if ((gamepad1.start)&&(!startState)) {
+            horn.reset();
+            horn = MediaPlayer.create(hardwareMap.appContext,com.qualcomm.ftcrobotcontroller.R.raw.horn);
+            horn.start();
+        }
+        startState = gamepad1.start;
+
+        if(horn.isPlaying()&&!startState){
+            horn.stop();
+        }
 
         srvo.knockJewel(0);
 
@@ -164,11 +183,11 @@ public class EvanTeleOp extends OpMode {
             srvo.rotateDown();
         }
 
-        if((gamepad1.left_trigger>0.1)&&(Math.abs(gamepad1.right_trigger)<0.1)) {
-            robot.winch(-gamepad1.left_trigger);
+        if((gamepad2.left_trigger>0.1)&&(Math.abs(gamepad2.right_trigger)<0.1)) {
+            robot.winch(-gamepad2.left_trigger);
         }
-        else if((gamepad1.right_trigger>0.1)&&(Math.abs(gamepad1.left_trigger)<0.1)) {
-            robot.winch(gamepad1.right_trigger);
+        else if((gamepad2.right_trigger>0.1)&&(Math.abs(gamepad2.left_trigger)<0.1)) {
+            robot.winch(gamepad2.right_trigger);
         }
         else{
             robot.winch(0);

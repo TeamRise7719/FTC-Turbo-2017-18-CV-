@@ -8,7 +8,9 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorControllerEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -21,7 +23,7 @@ public class SeansEncLibrary {
     DcMotor left_front_drive;
     DcMotor right_back_drive;
     DcMotor right_front_drive;
-
+    SynchronousPID turn_PID;
 
     BNO055IMU gyro;
     Orientation gyro_angle;
@@ -43,12 +45,16 @@ public class SeansEncLibrary {
     public  final double     DRIVE_SPEED             = 0.8;     // Nominal speed
     public  final double     DRIVE_SPEED_SLOW             = 0.4;     // Slower speed for better accuracy.
 
-    public  final double     TURN_SPEED              = 0.4;     // Nominal half speed for better accuracy.
+    public  final double     TURN_SPEED              = 0.8;     // Nominal half speed for better accuracy.
 
     private static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     private static final double     ENCODER_THRESHOLD       = 10;      // As tight as we can make it with an integer gyro
 
-    private static final double     P_TURN_COEFF            = 0.06;     // Larger is more responsive, but also less stable
+    private static  double     P_TURN_COEFF            = 0.035;     // Larger is more responsive, but also less stable
+    private static  double     I_TURN_COEFF            = 0.001;     // Larger is more responsive, but also less stable
+    private static  double     D_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
+
+
     private static final double     P_DRIVE_COEFF           = 0.16;     // Larger is more responsive, but also less stable
     private static final double     ULTRA_COEFF           = 0.06;     // Larger is more responsive, but also less stable
 
@@ -69,6 +75,17 @@ public class SeansEncLibrary {
 
     public void init(){
 
+        BNO055IMU.Parameters param = new BNO055IMU.Parameters();
+        param.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        param.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        param.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        gyro.initialize(param);
+        gyro_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        ultrasonicFront.initialize();
+        ultrasonicBack.initialize();
+
         left_back_drive.setDirection(DcMotor.Direction.REVERSE);
         left_front_drive.setDirection(DcMotor.Direction.REVERSE);
         left_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -78,16 +95,6 @@ public class SeansEncLibrary {
         right_front_drive.setDirection(DcMotor.Direction.FORWARD);
         right_back_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right_front_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-
-
-        BNO055IMU.Parameters param = new BNO055IMU.Parameters();
-        param.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        param.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        param.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        gyro.initialize(param);
-        gyro_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         left_back_drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -100,9 +107,15 @@ public class SeansEncLibrary {
         right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        ultrasonicFront.initialize();
-        ultrasonicBack.initialize();
 
+        DcMotorControllerEx motorControllerExLB = (DcMotorControllerEx) left_back_drive.getController();
+        int motorIndexLB = left_back_drive.getPortNumber();
+        PIDCoefficients pidOrigLB = motorControllerExLB.getPIDCoefficients(motorIndexLB, DcMotor.RunMode.RUN_USING_ENCODER);
+
+        turn_PID = new SynchronousPID(P_TURN_COEFF, I_TURN_COEFF, D_TURN_COEFF);
+        turn_PID.setContinuous(false);
+        turn_PID.setOutputRange(-TURN_SPEED, TURN_SPEED);
+        turn_PID.setInputRange(-180, 180);
     }
 
 
@@ -502,11 +515,15 @@ public class SeansEncLibrary {
      *                   If a relative angle is required, add/subtract from current heading.
      */
     public void gyroTurn (  double speed, double angle) {
-         boolean doneTurning = false;
+        turn_PID.reset();
+        turn_PID.setSetpoint(angle);
+        turn_PID.setOutputRange(-speed,speed);
+
+        boolean doneTurning = false;
+
         // keep looping while we are still active, and not on heading.
         while (linearOpMode.opModeIsActive() && !doneTurning) {
-            // Update telemetry & Allow time for other processes to run.
-             doneTurning = onHeading(speed, angle, P_TURN_COEFF);
+             doneTurning = onHeading(angle);
         }
     }
 
@@ -522,13 +539,17 @@ public class SeansEncLibrary {
      */
     public void gyroHold( double speed, double angle, double holdTime) {
 
+        turn_PID.reset();
+        turn_PID.setSetpoint(angle);
+        turn_PID.setOutputRange(-speed,speed);
+
         ElapsedTime holdTimer = new ElapsedTime();
 
         // keep looping while we have time remaining.
         holdTimer.reset();
         while (linearOpMode.opModeIsActive() && (holdTimer.time() < holdTime)) {
             // Update telemetry & Allow time for other processes to run.
-            onHeading(speed, angle, P_TURN_COEFF);
+            onHeading(angle);
         }
 
         // Stop all motion;
@@ -541,49 +562,32 @@ public class SeansEncLibrary {
     /**
      * Perform one cycle of closed loop heading control.
      *
-     * @param speed     Desired speed of turn.
      * @param angle     Absolute Angle (in Degrees) relative to last gyro reset.
      *                  0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                  If a relative angle is required, add/subtract from current heading.
-     * @param PCoeff    Proportional Gain coefficient
      * @return
      */
-    boolean onHeading(double speed, double angle, double PCoeff) {
-        double   error ;
-        double   steer ;
-        boolean  onTarget = false ;
-        double leftSpeed;
-        double rightSpeed;
+    boolean onHeading(double angle) {
 
-        // determine turn power based on +/- error
-        error = getError(angle);
+        double motorSpeed;
+        gyro_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        if (Math.abs(error) <= HEADING_THRESHOLD) {
-            steer = 0.0;
-            leftSpeed  = 0.0;
-            rightSpeed = 0.0;
-            onTarget = true;
-        }
-        else {
-            steer = getSteer(error, PCoeff);
-            rightSpeed  = -(speed * steer);
-            leftSpeed   = -rightSpeed;
-        }
+        motorSpeed = turn_PID.calculate(gyro_angle.firstAngle);
 
         // Send desired speeds to motors.
-        left_back_drive.setPower(-leftSpeed);
-        left_front_drive.setPower(-leftSpeed);
-        right_back_drive.setPower(-rightSpeed);
-        right_front_drive.setPower(-rightSpeed);
+        left_front_drive.setPower(-motorSpeed);
+        left_back_drive.setPower(-motorSpeed);
+        right_front_drive.setPower(motorSpeed);
+        right_back_drive.setPower(motorSpeed);
 
         // Display it for the driver.
         telemetry.addData("Target", "%5.2f", angle);
-        telemetry.addData("Err/St", "%5.2f/%5.2f", error, steer);
-        telemetry.addData("Angle", gyro_angle.firstAngle);
-        telemetry.addData("Speed.", "%5.2f:%5.2f", -leftSpeed, -rightSpeed);
+        telemetry.addData("Err/Angle", "%5.2f:%5.2f", turn_PID.getError(),gyro_angle.firstAngle);
+        telemetry.addData("Coef ", turn_PID.getState());
+        telemetry.addData("Speed.", "%5.2f:%5.2f", -motorSpeed, motorSpeed);
         telemetry.update();
 
-        return onTarget;
+        return turn_PID.onTarget(HEADING_THRESHOLD);
     }
 
     /**

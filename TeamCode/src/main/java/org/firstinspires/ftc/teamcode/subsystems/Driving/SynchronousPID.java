@@ -71,10 +71,7 @@ public class SynchronousPID {
             m_totalError = 0;
         }
 
-        // Don't blow away m_error so as to not break derivative
-        double proportionalError = Math.abs(m_error) < m_deadband ? 0 : m_error;
-
-        m_result = (m_P * proportionalError + m_I * m_totalError + m_D * (m_error - m_prevError));
+        m_result = ((m_P * m_error) + (m_I * m_totalError) + (m_D * (m_error - m_prevError)));
         m_prevError = m_error;
 
         if (m_result > m_maximumOutput) {
@@ -208,17 +205,7 @@ public class SynchronousPID {
      *            the desired setpoint
      */
     public void setSetpoint(double setpoint) {
-        if (m_maximumInput > m_minimumInput) {
-            if (setpoint > m_maximumInput) {
-                m_setpoint = m_maximumInput;
-            } else if (setpoint < m_minimumInput) {
-                m_setpoint = m_minimumInput;
-            } else {
-                m_setpoint = setpoint;
-            }
-        } else {
             m_setpoint = setpoint;
-        }
     }
 
     /**
@@ -266,9 +253,9 @@ public class SynchronousPID {
     public String getState() {
         String lState = "";
 
-        lState += "Kp: " + m_P + "\n";
-        lState += "Ki: " + m_I + "\n";
-        lState += "Kd: " + m_D + "\n";
+        lState += "Kp: " + m_P + " ";
+        lState += "Ki: " + m_I + " ";
+        lState += "Kd: " + m_D + " ";
 
         return lState;
     }

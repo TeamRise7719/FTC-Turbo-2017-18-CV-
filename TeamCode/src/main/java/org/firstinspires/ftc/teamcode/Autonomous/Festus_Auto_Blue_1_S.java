@@ -165,7 +165,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
                     offset = -7;
                 }
 
-                distance = (centerPosition + offset) - ((ultrasonicFront.getDistance() / 2.54)-5.5);
+                distance = (centerPosition + offset) - ((ultrasonicFront.getDistance() / 2.54)-9);
 
                 if ((distance > 21)&&(distance < 0))
                 {
