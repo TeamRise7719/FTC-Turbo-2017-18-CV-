@@ -25,8 +25,8 @@ public class SeansEncLibrary {
     DcMotor right_front_drive;
     SynchronousPID turn_PID;
 
-    BNO055IMU gyro;
-    Orientation gyro_angle;
+    public BNO055IMU gyro;
+    public Orientation gyro_angle;
 
     Telemetry telemetry;
     LinearOpMode linearOpMode;
