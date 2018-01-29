@@ -141,7 +141,7 @@ public class PIDAutotune {
         return 0;
     }
     // * Similar to the PID Compute function, returns 0 when done
-    
+
     public void SetOutputStep(double Step){
         oStep = Step;
     }
