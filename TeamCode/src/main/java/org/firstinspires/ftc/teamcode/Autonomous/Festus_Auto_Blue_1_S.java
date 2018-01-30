@@ -164,7 +164,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             telemetry.addData("Distance", -distance);
             telemetry.update();
-            waitFor(3000);
+            waitFor(2000);
 
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW,-distance,0,false);
             waitFor(500);

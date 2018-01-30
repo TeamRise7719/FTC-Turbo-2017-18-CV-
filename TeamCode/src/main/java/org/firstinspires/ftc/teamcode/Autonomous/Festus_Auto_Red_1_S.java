@@ -183,9 +183,9 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
                 distance = centerPosition + offset;
             }
 
-            telemetry.addData("Distance", distance);
+            telemetry.addData("Distance", -distance);
             telemetry.update();
-            waitFor(1000);
+            waitFor(2000);
 
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW,distance,0,false);
             waitFor(500);
@@ -193,15 +193,15 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
             //Step 8: Turn 90 Degrees
             enc.gyroTurn(enc.TURN_SPEED, -90);
             waitFor(500);
-            enc.gyroHold(enc.TURN_SPEED, -90, 1.5);
+            lift.moveLiftTime(0.3,0.5,this);
 
             //Step 9: Push Glyph into Column
             waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, 8, -90,false);
-            waitFor(500);
+            enc.gyroDrive(enc.DRIVE_SPEED, 12, -90,false);
+            waitFor(1000);
             srvo.openClaw();
-            waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, -11, -90,false);
+            waitFor(1000);
+            enc.gyroDrive(enc.DRIVE_SPEED, -13, -90,false);
             waitFor(500);
 
             //Step 10: Turn around towards field
@@ -209,41 +209,40 @@ public class Festus_Auto_Red_1_S extends LinearOpMode {
 
             //NEW CODE TO GET SECOND GLYPH //
 
-            lift.moveLiftTime(0.4,1.1,this);
-
-            //Slight Claw
-            srvo.slightClaw();
-            srvo.clawIntake2();
-
-            //Drive to Glyph
-            enc.gyroDrive(enc.DRIVE_SPEED, 15, 90,false);
-            waitFor(500);
-
-            //Close and Lift
             srvo.closeClaw();
-            waitFor(500);
-            lift.moveLiftTime(-1,1,this);
+            srvo.clawIntake2();
+            waitFor(1000);
+
+            //Drive to Glyph+9*
+            enc.gyroDrive(0.8, 21, 90,false);
+            waitFor(250);
+
+            // Lift
+            waitFor(250);
+            lift.moveLiftTime(-0.6,1.1,this);
             srvo.clawStop2();
 
             //Turn Around
             enc.gyroTurn(enc.TURN_SPEED, -90);
-            waitFor(500);
+            waitFor(250);
 
             //Drive to Column
-            enc.gyroDrive(enc.DRIVE_SPEED, 28, -90,false);
-            waitFor(500);
+            enc.gyroDrive(enc.DRIVE_SPEED, 35, -90,false);
+            srvo.clawEject2();
+            waitFor(250);
 
             //Back Off
             srvo.openClaw();
-            waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, -3, -90,false);
-            waitFor(500);
+            waitFor(250);
+            enc.gyroDrive(enc.DRIVE_SPEED, -6, -90,false);
+            waitFor(250);
 
             //END NEW CODE TO GET SECOND GLYPH //
 
             //End While Loop
             break;
         }
+        //Switch Autonomous to TeleOp
         srvo.clawStop1();
         srvo.clawStop2();
         AutoTransitioner.transitionOnStop(this, "EvanTeleOp");
