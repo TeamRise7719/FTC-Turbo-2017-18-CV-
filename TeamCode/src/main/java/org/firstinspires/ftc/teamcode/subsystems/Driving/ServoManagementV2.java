@@ -70,7 +70,7 @@ public class ServoManagementV2 {
         clawStop1();
         clawStop2();
 
-        jewelHinge.setPower(0.6);
+        jewelHinge.setPower(0.7);
         jewelKnock.setPower(0);
         relicRot.setPower(.75);
         jewelUp = true;
@@ -80,7 +80,7 @@ public class ServoManagementV2 {
     public void lowerJewel() {
         if (jewelUp) {
             jewelKnock.setPower(0);
-            jewelHinge.setPower(-0.4);
+            jewelHinge.setPower(-0.3);
             jewelUp = false;
         }
     }
@@ -89,7 +89,7 @@ public class ServoManagementV2 {
     public void raiseJewel() {
         if (!jewelUp) {
             jewelKnock.setPower(0);
-            jewelHinge.setPower(0.5);
+            jewelHinge.setPower(0.6);
             jewelUp = true;
         }
     }
@@ -101,50 +101,42 @@ public class ServoManagementV2 {
 
     public void toggleClaw1() {
         if (clawOpen1) {
-            clawTR.setPower(0.77);
-            clawTL.setPower(0.77);
-            clawOpen1 = false;
+            closeClaw1();
         }
        else if (!clawOpen1) {
-            clawTR.setPower(0.5);
-            clawTL.setPower(0.5);
-            clawOpen1 = true;
+            openClaw1();
         }
     }
 
     public void toggleClaw2() {
         if (clawOpen2) {
-            clawBR.setPower(0.8);
-            clawBL.setPower(0.8);
-            clawOpen2 = false;
+            closeClaw2();
         }
         else if (!clawOpen2) {
-            clawBR.setPower(0.5);
-            clawBL.setPower(0.5);
-            clawOpen2 = true;
+            openClaw2();
         }
     }
 
     //Close Claw
     public void closeClaw() {
-        clawTR.setPower(0.77);
-        clawTL.setPower(0.77);
-        clawBR.setPower(0.8);
-        clawBL.setPower(0.8);
+        clawTR.setPower(0.72);
+        clawTL.setPower(0.72);
+        clawBR.setPower(0.75);
+        clawBL.setPower(0.75);
 
         clawOpen1 = false;
         clawOpen2 = false;
     }
 
     public void closeClaw1() {
-        clawTR.setPower(0.77);
-        clawTL.setPower(0.77);
+        clawTR.setPower(0.72);
+        clawTL.setPower(0.72);
         clawOpen1 = false;
     }
 
     public void closeClaw2() {
-        clawBR.setPower(0.8);
-        clawBL.setPower(0.8);
+        clawBR.setPower(0.75);
+        clawBL.setPower(0.75);
         clawOpen2 = false;
     }
 
@@ -171,23 +163,23 @@ public class ServoManagementV2 {
     }
 
     public void slightClaw() {
-        clawTR.setPower(0.5);
-        clawBR.setPower(0.52);
-        clawTL.setPower(0.5);
-        clawBL.setPower(0.52);
+        clawTR.setPower(0.65);
+        clawBR.setPower(0.62);
+        clawTL.setPower(0.65);
+        clawBL.setPower(0.62);
         clawOpen1 = true;
         clawOpen2 = true;
     }
 
     public void slightClaw1() {
-        clawTR.setPower(0.5);
-        clawTL.setPower(0.5);
+        clawTR.setPower(0.65);
+        clawTL.setPower(0.65);
         clawOpen1 = true;
     }
 
     public void slightClaw2() {
-        clawBR.setPower(0.52);
-        clawBL.setPower(0.52);
+        clawBR.setPower(0.62);
+        clawBL.setPower(0.62);
         clawOpen2 = true;
     }
 
@@ -217,15 +209,16 @@ public class ServoManagementV2 {
     }
 
     public void openRelic() {
-        relicGrab.setPower(-.75);
+        relicGrab.setPower(-.2);
     }
 
     public void closeRelic() {
+
         relicGrab.setPower(.75);
     }
 
     public void  relicRelease() {
-        relicGrab.setPower(-.5);
+        relicGrab.setPower(.5);
     }
 
     public void rotateUp() {

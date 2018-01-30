@@ -113,7 +113,7 @@ public class SeansEncLibrary {
         PIDCoefficients pidOrigLB = motorControllerExLB.getPIDCoefficients(motorIndexLB, DcMotor.RunMode.RUN_USING_ENCODER);
 
         turn_PID = new SynchronousPID(P_TURN_COEFF, I_TURN_COEFF, D_TURN_COEFF);
-        turn_PID.setContinuous(false);
+        turn_PID.setContinuous(true);
         turn_PID.setOutputRange(-TURN_SPEED, TURN_SPEED);
         turn_PID.setInputRange(-180, 180);
     }
@@ -521,9 +521,15 @@ public class SeansEncLibrary {
 
         boolean doneTurning = false;
 
+        ElapsedTime etime = new ElapsedTime();
+        etime.reset();
+
         // keep looping while we are still active, and not on heading.
-        while (linearOpMode.opModeIsActive() && !doneTurning) {
+        while (linearOpMode.opModeIsActive() && etime.time()<0.25) {
              doneTurning = onHeading(angle);
+             if(!doneTurning){
+                 etime.reset();
+             }
         }
     }
 

@@ -22,7 +22,7 @@ public class TurnPID extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            enc.gyroHold(enc.TURN_SPEED, 90, 10);
+            enc.gyroHold(enc.TURN_SPEED, 180, 10);
         }
     }
 }

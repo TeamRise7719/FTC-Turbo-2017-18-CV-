@@ -27,15 +27,19 @@ public class EvanTeleOp extends OpMode {
     private boolean isReady = false;
 
     private boolean startState = false;
-    MediaPlayer horn;
+    private boolean aState = false;
+
+    MediaPlayer horn1;
+    MediaPlayer horn2;
 
     @Override
     public void init() {
-        horn = MediaPlayer.create(hardwareMap.appContext,com.qualcomm.ftcrobotcontroller.R.raw.horn);
+        horn1 = MediaPlayer.create(hardwareMap.appContext,com.qualcomm.ftcrobotcontroller.R.raw.horn);
+        horn2 = MediaPlayer.create(hardwareMap.appContext,com.qualcomm.ftcrobotcontroller.R.raw.myaah);
 
         //Initialize robot
         robot = new FestusDrivetrain(hardwareMap, telemetry);
-        robot.runUsingEncoders();
+        //robot.runUsingEncoders();
         lift = new FestusLift(hardwareMap, telemetry);
         lift.init();
 
@@ -69,14 +73,26 @@ public class EvanTeleOp extends OpMode {
     public void loop() {
 
         if ((gamepad1.start)&&(!startState)) {
-            horn.reset();
-            horn = MediaPlayer.create(hardwareMap.appContext,com.qualcomm.ftcrobotcontroller.R.raw.horn);
-            horn.start();
+            horn1.reset();
+            horn1 = MediaPlayer.create(hardwareMap.appContext,com.qualcomm.ftcrobotcontroller.R.raw.horn);
+            horn1.start();
         }
         startState = gamepad1.start;
 
-        if(horn.isPlaying()&&!startState){
-            horn.stop();
+        if ((gamepad1.a)&&(!aState)) {
+            horn2.reset();
+            horn2 = MediaPlayer.create(hardwareMap.appContext,com.qualcomm.ftcrobotcontroller.R.raw.myaah);
+            horn2.start();
+        }
+
+        aState = gamepad1.a;
+
+        if(horn1.isPlaying()&&!startState){
+            horn1.stop();
+        }
+
+        if(horn2.isPlaying()&&!aState){
+            horn2.stop();
         }
 
         srvo.knockJewel(0);

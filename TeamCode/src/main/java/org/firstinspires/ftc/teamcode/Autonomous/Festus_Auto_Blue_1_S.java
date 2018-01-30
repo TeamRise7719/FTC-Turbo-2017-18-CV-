@@ -20,8 +20,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Driving.ServoManagementV2;
 @Autonomous(name = "Festus_Auto_Blue_1_S", group = "Festus")
 public class Festus_Auto_Blue_1_S extends LinearOpMode {
     ColorSensor color;
-    I2CXL ultrasonicFront;
-
     RobotVision vMod;
     ServoManagementV2 srvo;
     SeansEncLibrary enc;
@@ -58,9 +56,6 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
         color = hardwareMap.colorSensor.get("color");
         color.enableLed(true);
-
-        ultrasonicFront = hardwareMap.get(I2CXL.class, "ultsonFront");
-        ultrasonicFront.initialize();
 
         //-----------------------------------------=+(Hardware Map)+=-----------------------------------------\\
 
@@ -112,6 +107,8 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //Reset time for Jewel method
             etime.reset();
+
+
             while ((etime.time() < 5)&&(opModeIsActive())) {
                 //Step 4: Jewel Knock Method
                 if (color.red() > color.blue()) {//if red
@@ -141,11 +138,9 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
                 telemetry.update();
             }
 
+
             //Bring up Arm
             srvo.raiseJewel();
-            waitFor(500);
-
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -24, 0,false);
             waitFor(500);
 
             //AUTO CALIBRATION
@@ -155,56 +150,36 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //Step 7: Drive to Appropriate Column
             double distance;
 
-            if(ultrasonicFront.getDistance()/2.54>35) {
-                double centerPosition = 51;
-                double offset = 0;
+            double centerPosition = 36;
+            double offset = 0;
 
-                if (position == 0) { //Right
+            if (position == 0) { //Right
                     offset = 7;
-                } else if (position == 2) { //Left
+            } else if (position == 2) { //Left
                     offset = -7;
-                }
-
-                distance = (centerPosition + offset) - ((ultrasonicFront.getDistance() / 2.54)-9);
-
-                if ((distance > 21)&&(distance < 0))
-                {
-                    distance = 11.8;
-                }
-                distance = distance*-1;
-            }
-            else{
-                double centerPosition = 13.5;
-                double offset = 0;
-
-                if (position == 0) { //Right
-                    offset = 7;
-                } else if (position == 2) { //Left
-                    offset = -7;
-                }
-
-                distance = centerPosition + offset;
             }
 
-            telemetry.addData("Distance", distance);
+            distance = centerPosition + offset;
+
+
+            telemetry.addData("Distance", -distance);
             telemetry.update();
             waitFor(3000);
 
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW,distance,0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW,-distance,0,false);
             waitFor(500);
 
             //Step 8: Turn 90 Degrees
             enc.gyroTurn(enc.TURN_SPEED, -90);
             waitFor(500);
-            srvo.openClaw();
-            waitFor(500);
+            lift.moveLiftTime(0.3,0.5,this);
 
             //Step 9: Push Glyph into Column
             waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, 10, -90,false);
-            waitFor(500);
+            enc.gyroDrive(enc.DRIVE_SPEED, 12, -90,false);
+            waitFor(1000);
             srvo.openClaw();
-            waitFor(500);
+            waitFor(1000);
             enc.gyroDrive(enc.DRIVE_SPEED, -13, -90,false);
             waitFor(500);
 
@@ -213,21 +188,17 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
 
             //NEW CODE TO GET SECOND GLYPH //
 
-            lift.moveLiftTime(0.4,1.1,this);
-            srvo.slightClaw();
+            srvo.closeClaw();
             srvo.clawIntake2();
             waitFor(1000);
-            lift.moveLiftTime(0.0, 0.1,this);
 
             //Drive to Glyph+9*
             enc.gyroDrive(0.8, 21, 90,false);
             waitFor(250);
 
-            //Close and Lift
-            srvo.closeClaw();
-
+            // Lift
             waitFor(250);
-            lift.moveLiftTime(-0.4,1.1,this);
+            lift.moveLiftTime(-0.6,1.1,this);
             srvo.clawStop2();
 
             //Turn Around
