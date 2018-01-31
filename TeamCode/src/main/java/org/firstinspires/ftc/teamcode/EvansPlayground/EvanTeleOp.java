@@ -39,7 +39,7 @@ public class EvanTeleOp extends OpMode {
 
         //Initialize robot
         robot = new FestusDrivetrain(hardwareMap, telemetry);
-        //robot.runUsingEncoders();
+        robot.runUsingEncoders();
         lift = new FestusLift(hardwareMap, telemetry);
         lift.init();
 

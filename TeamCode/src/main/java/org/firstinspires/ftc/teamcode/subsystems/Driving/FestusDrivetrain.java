@@ -41,8 +41,8 @@ public class FestusDrivetrain {
         lf.setDirection(DcMotor.Direction.FORWARD);
         lr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //lr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         rr = hardwareMap.dcMotor.get("driveBR");
         rf = hardwareMap.dcMotor.get("driveFR");
@@ -50,8 +50,8 @@ public class FestusDrivetrain {
         rf.setDirection(DcMotor.Direction.REVERSE);
         rr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //rr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit            = BNO055IMU.AngleUnit.RADIANS;
