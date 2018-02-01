@@ -149,12 +149,6 @@ public class FestusDrivetrain {
     public void drive(Gamepad gamepad1, Telemetry telemetry) {
         loop();
 
-        telemetry.addData("RAW Gyro: ",getRawHeading());
-        telemetry.addData("Heading: ",getHeading());
-        telemetry.addData("Offset: ",headingOffset);
-
-        telemetry.update();
-
         final double x = -gamepad1.left_stick_x;
         final double y = gamepad1.left_stick_y;
 
@@ -172,6 +166,14 @@ public class FestusDrivetrain {
         } else {
             setMotors(lf, lr, rf, rr);
         }
+
+        telemetry.addData("Speeds","%f,%f,%f,%f", lf,rf,lr,rr);
+        telemetry.addData("RAW Gyro: ",getRawHeading());
+        telemetry.addData("Heading: ",getHeading());
+        telemetry.addData("Offset: ",headingOffset);
+
+        telemetry.update();
+
 
     }
 }

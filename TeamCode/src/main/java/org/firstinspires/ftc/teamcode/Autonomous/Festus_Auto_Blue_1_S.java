@@ -172,7 +172,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //Step 8: Turn 90 Degrees
             enc.gyroTurn(enc.TURN_SPEED, -90);
             waitFor(500);
-            lift.moveLiftTime(0.3,0.5,this);
+            lift.moveLiftTime(0.25,0.5,this);
 
             //Step 9: Push Glyph into Column
             waitFor(500);

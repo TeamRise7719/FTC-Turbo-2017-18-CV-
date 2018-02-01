@@ -105,7 +105,7 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             waitFor(1000);
 
             //Step 2: Lift Cube
-            lift.moveLiftTime(-0.25,1,this);
+            lift.moveLiftTime(-0.4,1.25,this);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
@@ -147,15 +147,15 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
             //waitFor(500);
 
             //Step 7: Drive off Balancing Stone
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, 22.5, 0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, 23, 0,false);
             waitFor(1500);
 
 
-            //Step 9: Turn Towards Columns
+            //Step 8: Turn Towards Columns
             enc.gyroTurn(enc.TURN_SPEED, 90);
             waitFor(1000);
 
-            //Step 10: Drive to Appropriate Column
+            //Step 9: Drive to Appropriate Column
             double distance;
 
             if(ultrasonicBack.getDistance()>1) {
@@ -186,25 +186,26 @@ public class Festus_Auto_Red_2_PID extends LinearOpMode {
                 waitFor(2000);
             }
 
-            //Step 11: Turn back to 0 Degrees
+            //Step 10: Turn back to 0 Degrees
             enc.gyroTurn(enc.TURN_SPEED, 0);
             waitFor(500);
 
-            //Step 12: Open Claw
+            //Step 11: Lift
+            lift.moveLiftTime(0.25,0.5,this);
 
-            //Step 10: Push Glyph into Column
+            //Step 12: Push Glyph into Column
             waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, 8, 0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED, 10, 0,false);
             waitFor(1000);
             srvo.openClaw();
             waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, -6, 0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED, -8, 0,false);
             waitFor(1000);
 
-            //Step 11: Turn around towards field
+            //Step 13: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
 
-            //Step 12: Open Claw
+            //Step 14: Open Claw
             srvo.openClaw();
 
             //End While Loop

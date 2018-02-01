@@ -96,7 +96,7 @@ public @interface MotorType {
      *
      * @return the fraction of maxRPM which can be achieved in closed loop control
      */
-    double achieveableMaxRPMFraction() default 0.85;
+    double achieveableMaxRPMFraction() default 1.0;//0.85
 
     /**
      * Indicates the direction of rotation in which encoder counts increase when looking down

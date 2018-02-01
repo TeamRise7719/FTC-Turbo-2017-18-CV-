@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems.Driving;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -33,10 +34,10 @@ public class FestusLift {
     }
 
     public void init(){
-        liftMotorL.setDirection(DcMotor.Direction.FORWARD);
+        liftMotorL.setDirection(DcMotor.Direction.REVERSE);
         liftMotorL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        liftMotorR.setDirection(DcMotor.Direction.REVERSE);
+        liftMotorR.setDirection(DcMotor.Direction.FORWARD);
         liftMotorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         glyphRotate.setDirection(DcMotor.Direction.FORWARD);

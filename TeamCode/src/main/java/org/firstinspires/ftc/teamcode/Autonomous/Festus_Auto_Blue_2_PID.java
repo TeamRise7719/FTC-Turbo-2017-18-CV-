@@ -104,7 +104,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             waitFor(1000);
 
             //Step 2: Lift Cube
-            lift.moveLiftTime(-0.25,1,this);
+            lift.moveLiftTime(-0.4,1.25,this);
 
             //Step 3: Lower Jewel Arm
             srvo.lowerJewel();
@@ -143,7 +143,7 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             //waitFor(500);
 
             //Step 7: Drive off Balancing Stone
-            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -22.5, 0,false);
+            enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -23, 0,false);
             waitFor(1500);
 
             //Step 8: Turn Towards Columns
@@ -188,14 +188,16 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             enc.gyroTurn(enc.TURN_SPEED, 180);
             waitFor(500);
 
-            //Step 11: Open Claw
+            //Step 11: Lift
+            lift.moveLiftTime(0.25,0.5,this);
+
             //Step 12: Push Glyph into Column
             waitFor(500);
-            enc.gyroDrive(.45, 8, 180,false);
+            enc.gyroDrive(.45, 10, 180,false);
             waitFor(500);
             srvo.openClaw();
             waitFor(500);
-            enc.gyroDrive(enc.DRIVE_SPEED, -6, 180, false);
+            enc.gyroDrive(enc.DRIVE_SPEED, -8, 180, false);
 
             //Step 13: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED,  90);
