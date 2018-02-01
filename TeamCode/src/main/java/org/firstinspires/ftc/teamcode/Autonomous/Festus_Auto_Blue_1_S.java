@@ -139,7 +139,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             }
 
 
-            //Bring up Arm
+            //Step 5: Bring up Arm
             srvo.raiseJewel();
             waitFor(500);
 
@@ -147,7 +147,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //from this point and below to easily calibrate auto use the encoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            //Step 7: Drive to Appropriate Column
+            //Step 6: Drive to Appropriate Column
             double distance;
 
             double centerPosition = 36;
@@ -169,12 +169,12 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW,-distance,0,false);
             waitFor(500);
 
-            //Step 8: Turn 90 Degrees
+            //Step 7: Turn 90 Degrees
             enc.gyroTurn(enc.TURN_SPEED, -90);
             waitFor(500);
             lift.moveLiftTime(0.25,0.5,this);
 
-            //Step 9: Push Glyph into Column
+            //Step 8: Push Glyph into Column
             waitFor(500);
             enc.gyroDrive(enc.DRIVE_SPEED, 12, -90,false);
             waitFor(1000);
@@ -183,7 +183,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             enc.gyroDrive(enc.DRIVE_SPEED, -13, -90,false);
             waitFor(500);
 
-            //Step 10: Turn around towards field
+            //Step 9: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED, 90);
 
             //NEW CODE TO GET SECOND GLYPH //
@@ -192,25 +192,25 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             srvo.clawIntake2();
             waitFor(1000);
 
-            //Drive to Glyph+9*
+            //Step 10: Drive to Glyph
             enc.gyroDrive(0.8, 21, 90,false);
             waitFor(250);
 
-            // Lift
+            //Step 11: Lift
             waitFor(250);
             lift.moveLiftTime(-0.6,1.1,this);
             srvo.clawStop2();
 
-            //Turn Around
+            //Step 12: Turn Around
             enc.gyroTurn(enc.TURN_SPEED, -90);
             waitFor(250);
 
-            //Drive to Column
+            //Step 13: Drive to Column
             enc.gyroDrive(enc.DRIVE_SPEED, 35, -90,false);
             srvo.clawEject2();
             waitFor(250);
 
-            //Back Off
+            //Step 14: Back Off
             srvo.openClaw();
             waitFor(250);
             enc.gyroDrive(enc.DRIVE_SPEED, -6, -90,false);
@@ -221,6 +221,7 @@ public class Festus_Auto_Blue_1_S extends LinearOpMode {
             //End While Loop
             break;
         }
+
         //Switch Autonomous to TeleOp
         srvo.clawStop1();
         srvo.clawStop2();

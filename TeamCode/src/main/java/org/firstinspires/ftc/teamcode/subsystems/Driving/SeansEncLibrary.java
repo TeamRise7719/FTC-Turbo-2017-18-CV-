@@ -525,7 +525,7 @@ public class SeansEncLibrary {
         etime.reset();
 
         // keep looping while we are still active, and not on heading.
-        while (linearOpMode.opModeIsActive() && etime.time()<0.25) {
+        while (linearOpMode.opModeIsActive() && etime.time()<0.35) {
              doneTurning = onHeading(angle);
              if(!doneTurning){
                  etime.reset();

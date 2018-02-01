@@ -56,7 +56,6 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
         lift.init();
         lift.resetGlyphRotateMotor();
 
-
         ultrasonicBack = hardwareMap.get(I2CXL.class, "ultsonBack");
         ultrasonicBack.initialize();
 
@@ -142,18 +141,18 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             srvo.raiseJewel();
             //waitFor(500);
 
-            //Step 7: Drive off Balancing Stone
+            //Step 5: Drive off Balancing Stone
             enc.gyroDrive(enc.DRIVE_SPEED_SLOW, -23, 0,false);
             waitFor(1500);
 
-            //Step 8: Turn Towards Columns
+            //Step 6: Turn Towards Columns
             enc.gyroTurn(enc.TURN_SPEED, 90);
             waitFor(1000);
 
             //from this point and below to easily calibrate auto use the EncoderTest to find the distance between the left/right columns relative to center
             //then all you need to do is make sure center works and use the differences to have left and right working!!
 
-            //Step 9: Drive to Appropriate Column
+            //Step 7: Drive to Appropriate Column
             double distance;
 
             if(ultrasonicBack.getDistance()>1) {
@@ -184,14 +183,14 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
                 waitFor(2000);
             }
 
-            //Step 10: Turn back to 180 Degrees
+            //Step 8: Turn back to 180 Degrees
             enc.gyroTurn(enc.TURN_SPEED, 180);
             waitFor(500);
 
-            //Step 11: Lift
+            //Step 9: Lift
             lift.moveLiftTime(0.25,0.5,this);
 
-            //Step 12: Push Glyph into Column
+            //Step 10: Push Glyph into Column
             waitFor(500);
             enc.gyroDrive(.45, 10, 180,false);
             waitFor(500);
@@ -199,13 +198,16 @@ public class Festus_Auto_Blue_2_PID extends LinearOpMode {
             waitFor(500);
             enc.gyroDrive(enc.DRIVE_SPEED, -8, 180, false);
 
-            //Step 13: Turn around towards field
+            //Step 11: Turn around towards field
             enc.gyroTurn(enc.TURN_SPEED,  90);
+
+            //Step 12: Open Claw
             srvo.openClaw();
 
             //End While Loop
             break;
         }
+
         //Switch Autonomous to TeleOp
         srvo.clawStop1();
         srvo.clawStop2();
